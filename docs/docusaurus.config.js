@@ -16,7 +16,7 @@ const config = {
   url: "https://your-docusaurus-site.example.com",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/2024-T0002-EC09-G02/",
+  baseUrl: "/2024-T0002-EC10-G02/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -71,10 +71,40 @@ const config = {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
             position: "left",
-            label: "Introdução",
+            label: "Tudo",
           },
           {
-            href: "https://github.com/facebook/docusaurus",
+            type: "docSidebar",
+            sidebarId: "sprint1Side",
+            position: "left",
+            label: "Sprint 1",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "sprint2Side",
+            position: "left",
+            label: "Sprint 2",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "sprint3Side",
+            position: "left",
+            label: "Sprint 3",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "sprint4Side",
+            position: "left",
+            label: "Sprint 4",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "sprint5Side",
+            position: "left",
+            label: "Sprint 5",
+          },
+          {
+            href: "https://gxithub.com/Inteli-College/2024-1B-T02-EC10-G02/",
             label: "GitHub",
             position: "right",
           },
