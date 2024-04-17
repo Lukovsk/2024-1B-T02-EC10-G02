@@ -63,8 +63,8 @@ const config = {
       navbar: {
         title: "Ritalinos",
         logo: {
-          alt: "My Site Logo",
-          src: "img/logo_ritalinos.png",
+          alt: "Logo Inteli",
+          src: "img/inteli.svg",
         },
         items: [
           {
