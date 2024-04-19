@@ -20,8 +20,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "facebook", // Usually your GitHub org/user name.
-  projectName: "docusaurus", // Usually your repo name.
+  organizationName: "Inteli-College", // Usually your GitHub org/user name.
+  projectName: "2024-1B-T02-EC10-G02", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -41,10 +41,6 @@ const config = {
       ({
         docs: {
           sidebarPath: "./sidebars.js",
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
           routeBasePath: "/",
         },
         blog: false,
@@ -104,7 +100,7 @@ const config = {
             label: "Sprint 5",
           },
           {
-            href: "https://gxithub.com/Inteli-College/2024-1B-T02-EC10-G02/",
+            href: "https://github.com/Inteli-College/2024-1B-T02-EC10-G02/",
             label: "GitHub",
             position: "right",
           },

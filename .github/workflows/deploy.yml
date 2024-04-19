@@ -2,7 +2,9 @@ name: Deploy Docusaurus
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: 
+      - main
+      # - dev
     paths:
       - "docs/**"
   workflow_dispatch:
