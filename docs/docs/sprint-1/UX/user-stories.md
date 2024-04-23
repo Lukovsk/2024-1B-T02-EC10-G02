@@ -16,11 +16,11 @@ Com o intuito de definir os principais objetivos dos usuários e o que se é esp
   </thead>
   <tbody>
     <tr>
-      <td rowspan="3">Como técnico de farmácia do Hospital Sírio-Libanês, desejo ter acesso a um sistema que me permita gerenciar o estoque e as permissões de medicamentos, visando manter o controle e a segurança dos processos farmacêuticos. </td>
-      <td>Eu, como técnico de farmácia, quero gerenciar as permissões de acesso aos medicamentos, garantindo que apenas pessoal autorizado possa realizar solicitações.</td>
+      <td rowspan="3"> Como técnico de farmácia do Hospital Sírio-Libanês, desejo ter acesso a um sistema que me permita gerenciar o estoque e as solicitações de medicamentos, visando manter o controle e a eficiência dos processos farmacêuticos.</td>
+      <td>Eu, como técnico de farmácia, quero gerenciar as solicitações de medicamentos e priorizá-las com base na urgência e na disponibilidade de estoque, para garantir que os pacientes recebam os medicamentos corretos no momento certo.</td>
     </tr>
     <tr>
-      <td>Eu, como técnico de farmácia, desejo monitorar os níveis de estoque de medicamentos para antecipar necessidades de reposição e evitar a falta de medicamentos essenciais.</td>
+      <td>Eu, como técnico de farmácia, desejo monitorar os níveis de estoque de medicamentos constantemente para antecipar necessidades de reposição e evitar a falta de medicamentos críticos, permitindo-me tomar medidas proativas para reabastecer o estoque.</td>
     </tr>
     <tr>
       <td> Eu, como técnico de farmácia, quero registrar todas as transações relacionadas aos medicamentos de forma auditável, para atender aos requisitos de auditorias internas e externas.</td>
@@ -33,15 +33,14 @@ Com o intuito de definir os principais objetivos dos usuários e o que se é esp
       <td>Eu, como médico, desejo visualizar o status da dispensação dos medicamentos prescritos, para acompanhar se os tratamentos estão sendo administrados conforme o planejado.</td>
     </tr>
     <tr>
-      <td> Eu, como médico, quero acessar informações detalhadas sobre interações medicamentosas e contraindicações diretamente no aplicativo, para tomar decisões informadas durante a prescrição.
-</td>
+      <td> Eu, como médico, quero acessar informações detalhadas sobre interações medicamentosas e contraindicações diretamente no aplicativo, para uma escolha terapêutica mais segura e personalizada.</td>
     </tr>
     <tr>
-      <td rowspan="3">Como técnico de enfermagem do Hospital Sírio-Libanês, desejo ter acesso a uma plataforma mobile que me permita administrar o cuidado ao paciente de maneira eficiente, assegurando que os medicamentos sejam dispensados e administrados corretamente e no tempo certo.</td>
-      <td>Eu, como técnico de enfermagem, quero acessar detalhes dos medicamentos a serem administrados por paciente, para assegurar a correta aplicação das doses.</td>
+      <td rowspan="3">Como técnica de enfermagem do Hospital Sírio-Libanês, desejo ter acesso a uma plataforma mobile que me permita administrar o cuidado ao paciente de maneira eficiente, assegurando que os medicamentos sejam solicitados, dispensados e administrados corretamente e no tempo certo.</td>
+      <td>Como técnica de enfermagem, quero visualizar uma lista organizada dos medicamentos a serem administrados, com informações claras sobre dosagem e horário, para garantir a administração correta e pontual.</td>
     </tr>
     <tr>
-      <td> Eu, como técnico de enfermagem, desejo ser notificado sobre horários de administração de medicamentos, para manter a precisão no tratamento dos pacientes.</td>
+      <td> Como técnica de enfermagem, desejo poder solicitar a dispensação de medicamentos via plataforma mobile, para agilizar o atendimento e permitir um cuidado contínuo ao paciente.</td>
     </tr>
     <tr>
       <td> Eu, como técnico de enfermagem, quero utilizar um sistema que me permita registrar facilmente a administração de medicamentos, para manter um histórico atualizado do tratamento de cada paciente.</td>
