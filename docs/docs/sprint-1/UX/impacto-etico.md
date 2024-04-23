@@ -10,6 +10,23 @@ slug: /impacto-etico
 
 O desenvolvimento do sistema de aplicativo móvel para solicitação de medicamentos e controle de acesso aos dispensadores Pyxis no Hospital Sírio-Libanês promete otimizar e melhorar significativamente o processo de gestão de medicamentos, garantindo maior eficiência e segurança para pacientes e profissionais de saúde. No entanto, é crucial analisar os possíveis impactos dessa tecnologia em diferentes dimensões, incluindo privacidade, equidade, transparência, responsabilidade social e prevenção de viés e discriminação.
 
+## 1. Privacidade e Proteção de Dados
+
+O projeto proposto para o desenvolvimento do aplicativo móvel no Hospital Sírio-Libanês tem como objetivo aprimorar a gestão de solicitações de medicamentos, o que envolve a coleta e o armazenamento de informações pessoais dos colaboradores. Identificadores como nome e identificador único serão utilizados para autenticar os usuários e registrar suas interações com o sistema. Além disso, o histórico de solicitações e acesso aos medicamentos será armazenado de forma segura em bancos de dados protegidos. Todas essas medidas são implementadas em estrita conformidade com os princípios estabelecidos pela LGPD (Lei Geral de Proteção de Dados) no Brasil, garantindo a privacidade e a integridade das informações dos colaboradores.
+
+Para assegurar a conformidade com as regulamentações de privacidade, o projeto adotará medidas robustas de segurança de dados. Isso inclui a utilização de criptografia para proteger as informações sensíveis durante a transmissão e armazenamento. Apenas pessoal autorizado terá acesso aos dados, respeitando os princípios de minimização de dados e finalidade. A implementação dessas salvaguardas não só protege a privacidade dos colaboradores, mas também promove a confiança no aplicativo, fundamental para o sucesso e adoção da nova solução no ambiente hospitalar.
+
+O compromisso com a privacidade e proteção de dados vai além das exigências regulatórias. O projeto se esforça para estabelecer uma cultura de segurança da informação, promovendo a conscientização entre os colaboradores sobre a importância da proteção de dados pessoais. Mecanismos fáceis de entender e acessíveis para revogar o consentimento a qualquer momento e atualizar as preferências de privacidade serão disponibilizados, reforçando o respeito pelo direito à autodeterminação e controle sobre as informações médicas.
+
+## 2. Equidade e Justiça
+
+A implementação do sistema de solicitação de medicamentos no Hospital Sírio-Libanês visa promover a equidade e justiça no acesso aos serviços de saúde. Para garantir igualdade de oportunidades, todas as políticas e critérios de acesso serão transparentes e aplicados de forma justa. Treinamentos abrangentes podem ser oferecidos a todos os colaboradores, visando garantir que todos tenham acesso adequado e igualitário aos recursos disponíveis. Essa abordagem contribui para minimizar disparidades injustas entre os diferentes grupos de colaboradores, criando um ambiente mais inclusivo e equitativo.
+
+Medidas específicas serão implementadas para minimizar as disparidades socioeconômicas no acesso aos medicamentos. Políticas claras e transparentes serão estabelecidas para garantir que fatores financeiros ou hierárquicos não influenciam o acesso dos colaboradores aos tratamentos necessários. Além disso, o monitoramento contínuo permitirá identificar e corrigir possíveis disparidades ao longo do tempo, garantindo um ambiente hospitalar mais justo e igualitário para todos.
+
+A estratégia adotada pelo projeto inclui uma análise aprofundada dos dados e algoritmos do sistema para identificar e mitigar qualquer viés ou discriminação potencial. Testes de usabilidade serão conduzidos com uma amostra diversificada de usuários para garantir que o aplicativo seja acessível para todos, independentemente de sua origem étnica, socioeconômica ou outras características demográficas. O envolvimento de uma equipe diversa no desenvolvimento do aplicativo contribui para identificar e eliminar vieses subconscientes, promovendo a justiça e equidade no acesso aos cuidados de saúde.
+
+
 ## 3. Transparência e Consentimento Informado
 
 A transparência e o consentimento informado são elementos essenciais no processo de criação do aplicativo de gerenciamento de solicitações de medicamentos para o Hospital Sírio-Libanês. Em primeiro lugar, a transparência significa que os usuários estão cientes de como o aplicativo coleta, armazena e usa seus dados. Isso significa que durante o processo de desenvolvimento é fundamental explicar claramente quais dados serão coletados (por exemplo, informações de saúde dos pacientes) e por que é necessário, sendo também importante explicar como os dados serão protegidos.
