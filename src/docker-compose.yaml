@@ -11,8 +11,9 @@ services:
   db:
     image: postgres
     ports:
-      - "5432:5432"  # Expondo a porta 5432 para conexões externas
+      - "5432:5432"  
     environment:
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_HOST_AUTH_METHOD: trust  # Configurando o método de autenticação do host para trust
+      POSTGRES_HOST_AUTH_METHOD: trust  
+    volumes:
+      - ./scripts/000_setup.sql:/docker-entrypoint-initdb.d/000_setup.sql:ro
 
