@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # User Stories
 
-Com o intuito de definir os principais objetivos dos usuários e o que se é esperado do produto desenvolvido, foram-se delimitados os principais épicos, as grandes histórias do usuários, que necessitam ser subdivididos em users stories (histórias do usuário menores). Foram definidos dois principais épicos para as personas e delimitados user stories específicos para atender cada caso.
+Com o intuito de definir os principais objetivos dos usuários e o que se é esperado do produto desenvolvido, foram-se delimitados os principais épicos(as grandes histórias do usuários), que necessitam ser subdivididos em users stories (histórias do usuário menores). Foram definidos três principais épicos para as personas e três user stories específicos para atender cada caso.
 
 <table>
   <thead>
@@ -26,14 +26,14 @@ Com o intuito de definir os principais objetivos dos usuários e o que se é esp
       <td> Eu, como técnico de farmácia, quero registrar todas as transações relacionadas aos medicamentos de forma auditável, para atender aos requisitos de auditorias internas e externas.</td>
     </tr>
     <tr>
-      <td rowspan="3">Como médico do Hospital Sírio-Libanês, desejo ter acesso a uma plataforma que facilite a prescrição de medicamentos e o acompanhamento da dispensação, para garantir o tratamento eficaz aos meus pacientes.</td>
-      <td>Eu, como médico, quero prescrever medicamentos através da plataforma, para garantir que as prescrições sejam processadas rapidamente e de forma segura.</td>
+      <td rowspan="3">Como gerente de farmácia do Hospital Sírio-Libanês, desejo ter acesso a uma plataforma que otimize a gestão do estoque de medicamentos e melhore a tomada de decisão, assegurando a segurança no controle de medicamentos e a eficiência operacional.</td>
+      <td>Eu, como gerente de farmácia, desejo ter funcionalidades de previsão e alertas para níveis críticos de estoque, permitindo-me agir de forma proativa para manter o equilíbrio do estoque e a segurança dos pacientes.</td>
     </tr>
     <tr>
-      <td>Eu, como médico, desejo visualizar o status da dispensação dos medicamentos prescritos, para acompanhar se os tratamentos estão sendo administrados conforme o planejado.</td>
+      <td>Eu, como gerente de farmácia, quero acessar um módulo de rastreabilidade dos medicamentos que permita a verificação de movimentações e transações, garantindo transparência e ajudando a prevenir desvios e fraudes.</td>
     </tr>
     <tr>
-      <td> Eu, como médico, quero acessar informações detalhadas sobre interações medicamentosas e contraindicações diretamente no aplicativo, para uma escolha terapêutica mais segura e personalizada.</td>
+      <td>Eu, como gerente de farmácia, preciso que a plataforma seja intuitiva e fácil de usar para que a equipe possa adotá-la rapidamente e com o mínimo de treinamento, garantindo assim a eficiência e a redução de erros operacionais.</td>
     </tr>
     <tr>
       <td rowspan="3">Como técnica de enfermagem do Hospital Sírio-Libanês, desejo ter acesso a uma plataforma mobile que me permita administrar o cuidado ao paciente de maneira eficiente, assegurando que os medicamentos sejam solicitados, dispensados e administrados corretamente e no tempo certo.</td>
