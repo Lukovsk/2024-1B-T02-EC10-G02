@@ -4,7 +4,7 @@ sidebar_position: 1
 slug: /impacto-etico
 ---
 
-# Impactos da Aplicação Desenvolvida para o Sistema de Solicitação de Medicamentos e Controle de Acesso no Hospital Sírio-Libanês
+## Impactos da Aplicação Desenvolvida para o Sistema de Solicitação de Medicamentos e Controle de Acesso no Hospital Sírio-Libanês
 
 ## Introdução
 
