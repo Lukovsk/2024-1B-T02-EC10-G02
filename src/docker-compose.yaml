@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"  
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust  
+    volumes:
+      - ./scripts/000_setup.sql:/docker-entrypoint-initdb.d/000_setup.sql:ro
+
