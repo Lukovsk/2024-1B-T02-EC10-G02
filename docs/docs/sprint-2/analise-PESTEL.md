@@ -38,28 +38,24 @@ Dessa forma, a análise contida abaixo foi feita pelo grupo como uma forma de ma
 
 ## Tecnológico
 
-- **Inovação em Saúde:** A evolução da tecnologia médica e digital oferece oportunidades para inovação no diagnóstico, tratamento e prestação de serviços de saúde. O Hospital Sírio-Libanês deve estar atento às últimas tendências e avanços tecnológicos para garantir a entrega de cuidados de saúde de alta qualidade e eficácia.
+- **Infraestrutura Tecnológica:** A disponibilidade de uma infraestrutura tecnológica robusta é fundamental para o sucesso do projeto. Isso inclui acesso confiável à internet e sistemas de suporte adequados para a implementação e operação do aplicativo móvel. Estratégias de mitigação podem incluir parcerias com provedores de serviços de tecnologia confiáveis e investimentos em infraestrutura digital.
 
-- **Adoção de Tecnologia Médica:** A implementação e integração de tecnologias médicas, como sistemas de informação hospitalar, telemedicina, inteligência artificial e dispositivos médicos avançados, podem melhorar a eficiência operacional e a qualidade dos cuidados prestados pelo Hospital Sírio-Libanês. Estratégias de implantação e treinamento são essenciais para garantir uma transição suave e uma adoção eficaz.
+- **Nível de Inovação e Pesquisa e Desenvolvimento:** A capacidade de inovação e investimento em pesquisa e desenvolvimento na área de tecnologia médica pode influenciar a disponibilidade de soluções avançadas para o projeto. Estratégias para capitalizar sobre isso podem incluir parcerias com instituições de pesquisa e participação em programas de financiamento de inovação.
 
-- **Segurança e Proteção de Dados:** A segurança cibernética e a proteção de dados de saúde são preocupações críticas para o Hospital Sírio-Libanês, dada a natureza sensível das informações do paciente. Medidas robustas de segurança de TI, conformidade com regulamentações de privacidade de dados e conscientização do pessoal são fundamentais para mitigar riscos de violações de dados e garantir a confiança do paciente.
+- **Adoção de Novas Tecnologias:** A rapidez com que novas tecnologias são adotadas pela comunidade médica e pelos pacientes pode impactar a aceitação e o sucesso do projeto. Estratégias para promover a adoção incluem educação e treinamento para profissionais de saúde e pacientes, além de demonstrações de valor clínico e benefícios do aplicativo móvel.
 
 ## Ambiental
 
-- **Sustentabilidade Operacional:** O Hospital Sírio-Libanês pode adotar práticas ecológicas e sustentáveis em suas operações diárias para reduzir o impacto ambiental, como gestão de resíduos, eficiência energética, conservação de água e uso de materiais sustentáveis. Essas iniciativas não apenas contribuem para a proteção do meio ambiente, mas também podem gerar economias financeiras a longo prazo.
+- **Impacto Ambiental das Operações:** As operações do projeto podem ter um impacto significativo no meio ambiente, incluindo o uso de recursos naturais, geração de resíduos e emissões de carbono. Estratégias para mitigar esse impacto podem incluir a adoção de práticas sustentáveis, como o uso de energia renovável, a redução do desperdício e a implementação de programas de reciclagem.
 
-- **Saúde Ambiental e Bem-Estar:** A qualidade do ambiente físico no hospital, incluindo ar, água e ambiente interno, pode impactar a saúde e o bem-estar dos pacientes, visitantes e funcionários. Estratégias para melhorar a qualidade do ar interno, reduzir a exposição a produtos químicos tóxicos e promover um ambiente saudável são essenciais para garantir um ambiente de cura seguro e confortável.
+- **Consciência Ecológica da Sociedade:** A conscientização ecológica da sociedade pode influenciar a percepção do projeto e a disposição dos stakeholders em apoiá-lo. Estratégias para capitalizar sobre isso incluem a promoção de iniciativas de responsabilidade social corporativa e a participação em programas de educação ambiental na comunidade.
 
-- **Consciência Ecológica e Educação:** O Hospital Sírio-Libanês pode desempenhar um papel importante na promoção da consciência ecológica e educação ambiental entre pacientes, funcionários e a comunidade. Iniciativas de sensibilização, programas educacionais e eventos comunitários podem aumentar a conscientização sobre questões ambientais e promover práticas sustentáveis de vida e trabalho.
+- **Políticas Ambientais e Regulamentações:** As políticas ambientais e regulamentações governamentais podem impor requisitos específicos ao projeto, como normas de emissão e descarte de resíduos. O cumprimento dessas regulamentações é essencial para evitar multas e penalidades legais. Estratégias para garantir conformidade incluem o monitoramento regular das práticas ambientais e o envolvimento proativo com as autoridades reguladoras.
 
 ## Legal
 
-- **Conformidade Regulatória em Saúde:** O Hospital Sírio-Libanês está sujeito a uma série de regulamentações e normas legais relacionadas à prestação de serviços de saúde, ética médica, segurança
+- **Legislação Pertinente ao Setor de Saúde:** O projeto está sujeito a uma variedade de legislações e regulamentações relacionadas ao setor de saúde, incluindo ética médica, proteção de dados de saúde e padrões de qualidade de atendimento. O cumprimento rigoroso dessas leis é essencial para garantir a legalidade e a ética das operações do projeto.
 
- do paciente, proteção de dados de saúde e padrões de qualidade de atendimento. O cumprimento rigoroso dessas regulamentações é essencial para garantir a legalidade e a ética das operações hospitalares.
+- **Leis Trabalhistas e Responsabilidade Legal:** O respeito às leis trabalhistas e a gestão eficaz da responsabilidade legal são essenciais para proteger os interesses do projeto e garantir a segurança dos funcionários e pacientes. Estratégias para mitigar riscos incluem políticas claras de recursos humanos, treinamento em conformidade e seguro adequado.
 
-- **Responsabilidade Legal:** Questões legais, como responsabilidade médica, litígios de pacientes, contratos com fornecedores e disputas trabalhistas, podem afetar a reputação e as finanças do Hospital Sírio-Libanês. Estratégias para gerenciar e mitigar riscos legais são necessárias para proteger os interesses do hospital e garantir a prestação contínua de cuidados de saúde de alta qualidade.
-
-- **Proteção de Propriedade Intelectual:** A proteção de propriedade intelectual é importante para garantir que as inovações médicas, tecnológicas e científicas desenvolvidas pelo Hospital Sírio-Libanês sejam devidamente protegidas e aproveitadas. A obtenção de patentes, direitos autorais e outras formas de proteção de IP é fundamental para promover a inovação e o avanço na prestação de serviços de saúde.
-
-Essa análise PESTEL fornece uma visão abrangente dos fatores externos que podem influenciar o ambiente operacional e estratégico do Hospital Sírio-Libanês, permitindo uma melhor tomada de decisões e planejamento para o futuro.
+- **Proteção de Propriedade Intelectual:** A proteção da propriedade intelectual garante que as inovações desenvolvidas pelo projeto sejam devidamente protegidas e exploradas. Estratégias para proteção incluem a obtenção de patentes e direitos autorais, além de acordos de confidencialidade com colaboradores e fornecedores.
