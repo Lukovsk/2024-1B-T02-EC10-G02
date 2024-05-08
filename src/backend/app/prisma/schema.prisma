@@ -1,11 +1,12 @@
 generator client {
     provider  = "prisma-client-py"
     interface = "asyncio"
+    recursive_type_depth = 5
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = "./db.db" // env("DATABASE_URL") //"./db.db" 
+    provider = "sqlite" // postgresql
+    url      = "file:./db.db" // env("DATABASE_URL") 
 }
 
 // enum Role {
@@ -14,57 +15,80 @@ datasource db {
 //     ADMIN
 // }
 
+// enum Status {
+//     PENDING
+//     ACCEPTED
+//     REJECTED
+//     DONE
+//     CANCELED
+// }
+
 model User {
     id                Int        @id @default(autoincrement())
     name              String
-    register          String
+    password          String
     // role              Role[]     @default([NURSE])
     role              String
+    
+    createdAt         DateTime   @default(now())
+    updatedAt         DateTime   @updatedAt
+    deletedAt         DateTime?
+
     feedback_sent     Feedback[] @relation("feedbacks_sent")
     feedback_received Feedback[] @relation("feedbacks_received")
     request_sent      Request[]  @relation("request_sent")
     request_received  Request[]  @relation("request_received")
-    createdAt         DateTime   @default(now())
-    updatedAt         DateTime   @updatedAt
-    deletedAt         DateTime?
+    request_canceled  Request[] @relation("request_canceled")
 }
 
 model Feedback {
     id              Int       @id @default(autoincrement())
-    sender_user     User      @relation("feedbacks_sent", fields: [sender_userId], references: [id])
-    sender_userId   Int
-    receiver_user   User      @relation("feedbacks_received", fields: [receiver_userId], references: [id])
-    receiver_userId Int
     message_user    String?
     message_app     String?
     rate_user       Int
     rate_app        Int?
-    Request         Request[]
+    
     createdAt       DateTime  @default(now())
     updatedAt       DateTime  @updatedAt
     deletedAt       DateTime?
+
+    Request         Request[]
+    sender_user     User      @relation("feedbacks_sent", fields: [sender_userId], references: [id])
+    sender_userId   Int
+    receiver_user   User      @relation("feedbacks_received", fields: [receiver_userId], references: [id])
+    receiver_userId Int
 }
 
 model Request {
-    id              Int       @id @default(autoincrement())
-    sender_user     User      @relation("request_sent", fields: [sender_userId], references: [id])
-    sender_userId   Int
-    receiver_user   User?     @relation("request_received", fields: [receiver_userId], references: [id])
-    receiver_userId Int?
-    lot             Lots      @relation(fields: [lotId], references: [id])
+    id              Int             @id @default(autoincrement())
+    lot             Medications     @relation(fields: [lotId], references: [id])
     lotId           Int
-    status          Int
-    feedback        Feedback? @relation(fields: [feedbackId], references: [id])
+    status          String
+    
+    sender_user     User            @relation("request_sent", fields: [sender_userId], references: [id])
+    sender_userId   Int
+    receiver_user   User?           @relation("request_received", fields: [receiver_userId], references: [id])
+    receiver_userId Int?
+
+    feedback        Feedback?       @relation(fields: [feedbackId], references: [id])
     feedbackId      Int?
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
-    deletedAt       DateTime?
+
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+
+    canceledAt      DateTime?
+    canceledBy      User?           @relation("request_canceled", fields: [canceled_userId], references: [id])
+    canceled_userId Int?
+    canceled_reason String?
 }
 
-model Lots {
-    id       Int       @id @default(autoincrement())
-    lot_code Int
-    Request  Request[]
+model Medications {
+    id          Int       @id @default(autoincrement())
+    area        String?
+    description String? 
+    lot         Int
+    class       String
+    Requests  Request[]
 }
 
 model Logs {
