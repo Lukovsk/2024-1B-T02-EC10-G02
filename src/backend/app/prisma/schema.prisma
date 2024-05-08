@@ -1,0 +1,72 @@
+generator client {
+    provider  = "prisma-client-py"
+    interface = "asyncio"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = "./db.db" // env("DATABASE_URL") //"./db.db" 
+}
+
+// enum Role {
+//     NURSE
+//     ASSISTANT
+//     ADMIN
+// }
+
+model User {
+    id                Int        @id @default(autoincrement())
+    name              String
+    register          String
+    // role              Role[]     @default([NURSE])
+    role              String
+    feedback_sent     Feedback[] @relation("feedbacks_sent")
+    feedback_received Feedback[] @relation("feedbacks_received")
+    request_sent      Request[]  @relation("request_sent")
+    request_received  Request[]  @relation("request_received")
+    createdAt         DateTime   @default(now())
+    updatedAt         DateTime   @updatedAt
+    deletedAt         DateTime?
+}
+
+model Feedback {
+    id              Int       @id @default(autoincrement())
+    sender_user     User      @relation("feedbacks_sent", fields: [sender_userId], references: [id])
+    sender_userId   Int
+    receiver_user   User      @relation("feedbacks_received", fields: [receiver_userId], references: [id])
+    receiver_userId Int
+    message_user    String?
+    message_app     String?
+    rate_user       Int
+    rate_app        Int?
+    Request         Request[]
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @updatedAt
+    deletedAt       DateTime?
+}
+
+model Request {
+    id              Int       @id @default(autoincrement())
+    sender_user     User      @relation("request_sent", fields: [sender_userId], references: [id])
+    sender_userId   Int
+    receiver_user   User?     @relation("request_received", fields: [receiver_userId], references: [id])
+    receiver_userId Int?
+    lot             Lots      @relation(fields: [lotId], references: [id])
+    lotId           Int
+    status          Int
+    feedback        Feedback? @relation(fields: [feedbackId], references: [id])
+    feedbackId      Int?
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @updatedAt
+    deletedAt       DateTime?
+}
+
+model Lots {
+    id       Int       @id @default(autoincrement())
+    lot_code Int
+    Request  Request[]
+}
+
+model Logs {
+    id Int @id @default(autoincrement())
+}
