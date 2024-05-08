@@ -2,11 +2,8 @@ from __init__ import db
 from contextlib import asynccontextmanager
 
 class RequestService():
-    def __init__(self, name, email, password, id):
-        self.name = name
-        self.email = email
-        self.password = password
-        self.id = id
+    def __init__(self, id=None, medicationId=None, status=None):
+        pass
     
     
     

@@ -61,8 +61,8 @@ model Feedback {
 
 model Request {
     id              Int             @id @default(autoincrement())
-    lot             Medications     @relation(fields: [lotId], references: [id])
-    lotId           Int
+    medication             Medications     @relation(fields: [medicationId], references: [id])
+    medicationId           Int
     status          String
     
     sender_user     User            @relation("request_sent", fields: [sender_userId], references: [id])
