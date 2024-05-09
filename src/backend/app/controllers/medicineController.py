@@ -1,35 +1,18 @@
 from fastapi import HTTPException
-from ..model.model import MedicationBase
-from sqlalchemy.orm import Session
+import asyncio
+from prisma import Prisma
+from  services.medication import MedicationService
+from prisma.models import Medications, Request
 
 class MedicineController:
     @staticmethod
-    def create_medication(db: Session, medication: MedicationBase):
-        db_medication = MedicationBase(**medication.dict())
-        db.add(db_medication)
-        db.commit()
-        db.refresh(db_medication)
-        return db_medication
-
+    async def get_medication(id: int) -> Medications:
+        return await MedicationService.get_medication(id)
+    
     @staticmethod
-    def get_medication_by_id(db: Session, medication_id: int):
-        medication = db.query(MedicationBase).filter(MedicationBase.id == medication_id).first()
-        if not medication:
-            raise HTTPException(status_code=404, detail="Medication not found")
-        return medication
-
+    async def get_all_medications() -> list[Medications]:
+        return await MedicationService.get_all_medications()
+    
     @staticmethod
-    def update_medication(db: Session, medication_id: int, updated_medication: MedicationBase):
-        medication = MedicineController.get_medication_by_id(db, medication_id)
-        for key, value in updated_medication.dict().items():
-            setattr(medication, key, value)
-        db.commit()
-        db.refresh(medication)
-        return medication
-
-    @staticmethod
-    def delete_medication(db: Session, medication_id: int):
-        medication = MedicineController.get_medication_by_id(db, medication_id)
-        db.delete(medication)
-        db.commit()
-        return {"message": "Medication deleted successfully"}
+    async def create_medication(medication: Medications):
+        return await MedicationService.create_medication(medication)

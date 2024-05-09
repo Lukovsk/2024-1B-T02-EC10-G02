@@ -1,6 +1,7 @@
 from __init__ import db
 from prisma import Prisma, errors
 from contextlib import asynccontextmanager
+from prisma import Prisma
 import bcrypt
 
 class UserService():
