@@ -1,5 +1,6 @@
 from __init__ import db
 from contextlib import asynccontextmanager
+from prisma import Prisma
 import bcrypt
 
 class UserService():
