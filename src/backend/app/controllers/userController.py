@@ -1,35 +1,74 @@
 from fastapi import HTTPException
-from ..model.model import UserBase
-from sqlalchemy.orm import Session
+from prisma import errors
+from services.user import UserService
 
-class UserController:
-    @staticmethod
-    def create_user(db: Session, user: UserBase):
-        db_user = UserBase(**user.dict())
-        db.add(db_user)
-        db.commit()
-        db.refresh(db_user)
-        return db_user
+async def controller_create_user(email: str, name: str, password: str) -> dict:
+   user = UserService(email=email, name=name, password=password, id=None)
+   try:
+      new_user = await user.create_user()
+      return {"message": f"User {new_user.name} created successfully"}
+   
+   except NameError:
+      raise HTTPException(status_code=404, detail="User already exists")
+   
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=str(e))
+      
+async def controller_get_all_users() -> dict:
+   userService = UserService()
+   try:
+      users = await userService.get_all_users()
+      return {"users": users}
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=str(e))
 
-    @staticmethod
-    def get_user_by_id(db: Session, user_id: int):
-        user = db.query(UserBase).filter(UserBase.id == user_id).first()
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
-        return user
+async def controller_get_user_by_id(id: int) -> dict:
+   if id == "": 
+      raise HTTPException(status_code=400, detail="Invalid parameters")
+   
+   userService = UserService(id=id)
+   try:
+      user = await userService.get_user_by_id()
+      return {"user": user}
+   
+   except errors.RecordNotFoundError:
+      raise HTTPException(status_code=404, detail="User not found")
+   
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=str(e))
 
-    @staticmethod
-    def update_user(db: Session, user_id: int, updated_user: UserBase):
-        user = UserController.get_user_by_id(db, user_id)
-        for key, value in updated_user.dict().items():
-            setattr(user, key, value)
-        db.commit()
-        db.refresh(user)
-        return user
+async def controller_update_user(update_data: dict, id) -> dict:
+   checked_data = {k: v for k, v in update_data.items() if v is not None}
+   if checked_data == {}:
+      raise HTTPException(status_code=400, detail="Invalid parameters")
+   
+   userService = UserService(id=id)
+   try:
+      updated_user = await userService.update_user_by_id(checked_data)
+      return {"message": f"User {updated_user.name} updated successfully"}
+   
+   except errors.RecordNotFoundError:
+      raise HTTPException(status_code=404, detail="User not found")
+   
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=str(e))
+   
+async def controller_delete_user(data):
+   checked_data = {k: v for k, v in data.items() if v is not None}
 
-    @staticmethod
-    def delete_user(db: Session, user_id: int):
-        user = UserController.get_medication_by_id(db, user_id)
-        db.delete(user)
-        db.commit()
-        return {"message": "User deleted successfully"}
+   if checked_data == {}:
+      raise HTTPException(status_code=400, detail="Invalid parameters")
+   
+   userService = UserService()
+   try:
+      deleted_user = await userService.delete_user(checked_data)
+      return {"message": f"User {deleted_user.name} deleted successfully"}
+
+   except HTTPException:
+       raise HTTPException(status_code=400, detail="Invalid parameters")
+
+   except errors.RecordNotFoundError:
+      raise HTTPException(status_code=404, detail="User not found")
+   
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=str(e))
