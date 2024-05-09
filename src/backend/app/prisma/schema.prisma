@@ -87,7 +87,7 @@ model Medications {
     area        String?
     description String? 
     lot         Int
-    class       String
+    medClass       String
     Requests  Request[]
 }
 
