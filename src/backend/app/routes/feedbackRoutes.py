@@ -6,16 +6,22 @@ feedback_routes = APIRouter()
 
 @feedback_routes.post("/feedback/", response_model=None)
 async def create_feedback(feedback: Feedback):
-    return FeedbackService.create_feedback(**feedback)
+    return await FeedbackService.create_feedback(feedback.rate_user, feedback.Request, feedback.sender_userId, feedback.receiver_userId, feedback.message_user, feedback.message_app, feedback.rate_app)
 
-# @feedback_routes.get("/feedback{feedback_id}", response_model=None)
-# def get_feedback(user_id: int, db: Session = Depends(get_db)):
-#     return UserController.get_user_by_id(db, user_id)
+@feedback_routes.get("/feedback/", response_model=list[Feedback])
+async def get_all_feedbacks():
+    return await FeedbackService.get_all_feedbacks()
 
-# @feedback_routes.put("/feedback/{feedback_id}", response_model=None)
-# def update_feedback(user_id: int, updated_user: User, db: Session = Depends(get_db)):
-#     return UserController.update_user(db, user_id, updated_user)
+@feedback_routes.get("/feedback/{id}", response_model=Feedback)
+async def get_feedback_by_id(id: int):
+    return await FeedbackService.get_feedback_by_id(id)
 
-# @feedback_routes.delete("/feedback/{feedback_id}")
-# def delete_feedback(user_id: int, db: Session = Depends(get_db)):
-#     return UserController.delete_user(db, user_id)
+@feedback_routes.put("/feedback/{id}", response_model=Feedback)
+async def update_feedback(id: int, feedback: Feedback):
+    return await FeedbackService.update_feedback(id, feedback.rate_user, feedback.Request, feedback.sender_userId, feedback.receiver_userId, feedback.message_user, feedback.message_app, feedback.rate_app)
+
+@feedback_routes.delete("/feedback/{id}", response_model=Feedback)
+async def delete_feedback(id: int):
+    return await FeedbackService.delete_feedback(id)
+
+
