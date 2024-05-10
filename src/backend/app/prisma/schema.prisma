@@ -24,7 +24,7 @@ datasource db {
 // }
 
 model User {
-    id                Int        @id @default(autoincrement())
+    id                String        @id @default(uuid())
     name              String
     email             String
     password          String
@@ -43,7 +43,7 @@ model User {
 }
 
 model Feedback {
-    id              Int       @id @default(autoincrement())
+    id              Int      @unique @id @default(autoincrement())
     message_user    String?
     message_app     String?
     rate_user       Int
@@ -55,21 +55,21 @@ model Feedback {
 
     Request         Request[]
     sender_user     User      @relation("feedbacks_sent", fields: [sender_userId], references: [id])
-    sender_userId   Int
+    sender_userId   String
     receiver_user   User      @relation("feedbacks_received", fields: [receiver_userId], references: [id])
-    receiver_userId Int
+    receiver_userId String
 }
 
 model Request {
-    id              Int             @id @default(autoincrement())
+    id              Int             @unique @id @default(autoincrement())
     medication             Medications     @relation(fields: [medicationId], references: [id])
     medicationId           Int
     status          String
     
     sender_user     User            @relation("request_sent", fields: [sender_userId], references: [id])
-    sender_userId   Int
+    sender_userId   String
     receiver_user   User?           @relation("request_received", fields: [receiver_userId], references: [id])
-    receiver_userId Int?
+    receiver_userId String
 
     feedback        Feedback?       @relation(fields: [feedbackId], references: [id])
     feedbackId      Int?
@@ -79,12 +79,12 @@ model Request {
 
     canceledAt      DateTime?
     canceledBy      User?           @relation("request_canceled", fields: [canceled_userId], references: [id])
-    canceled_userId Int?
+    canceled_userId String?
     canceled_reason String?
 }
 
 model Medications {
-    id          Int       @id @default(autoincrement())
+    id          Int       @unique @id @default(autoincrement())
     area        String?
     description String? 
     lot         Int
@@ -93,5 +93,5 @@ model Medications {
 }
 
 model Logs {
-    id Int @id @default(autoincrement())
+    id Int @unique @id @default(autoincrement())
 }

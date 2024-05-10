@@ -1,7 +1,6 @@
 from __init__ import db
 from prisma import Prisma, errors
 from contextlib import asynccontextmanager
-from prisma import Prisma
 import bcrypt
 
 class UserService():
@@ -54,7 +53,7 @@ class UserService():
     
     async def get_user_by_id(self):
         async with self.database_connection():
-            user = await self.db.user.find_first_or_raise(
+            user = await self.db.user.find_unique_or_raise(
                 where={
                     "id": self.id
                 },
@@ -63,36 +62,44 @@ class UserService():
     
     async def update_user_by_id(self, update_data) -> Prisma.user:
         async with self.database_connection():
+            try:
+                # Check if the user exists before updating
+                await self.db.user.find_unique_or_raise(
+                    where={
+                        "id": self.id
+                    }
+                )
+                
+                # Perform the update operation
+                updated_user = await self.db.user.update(
+                    where={
+                        "id": self.id
+                    },
+                    data=update_data
+                )
 
-            await self.db.user.find_unique_or_raise(
-                where={
-                    "id": self.id
-                },
-            )
-        update_user = await self.db.user.update(
-            where={
-                "id": self.id
-            },
-            data={
-                **update_data
-            }
-        )
+                return updated_user
 
-        return update_user        
-        
+            except errors.RecordNotFoundError:
+                raise ValueError("User not found")     
+            
 
-    async def delete_user(self, query: dict) -> Prisma.user:
+    async def delete_user(self, id: str) -> None:
+        print (id)
         async with self.database_connection():
-            print(query)
-            await self.db.user.find_unique_or_raise(
-                where={
-                    **query
-                },
-            )
-        
-        return await self.db.user.delete(
-            where={
-                **query
-            }
-        )
-        
+            try:
+                # Check if the user exists before deleting
+                await self.db.user.find_unique_or_raise(
+                    where={
+                        "id": self.id
+                    }
+                )
+                # Perform the delete operation
+                await self.db.user.delete(
+                    where={
+                        "id": self.id
+                    }
+                )
+
+            except errors.RecordNotFoundError:
+                raise ValueError("User not found")

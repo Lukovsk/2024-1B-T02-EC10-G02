@@ -9,7 +9,6 @@ class UpdateUserRequest(BaseModel):
     name: str | None = None
 
 class DeleteUserRequest(BaseModel):
-    email: str | None = None
     id: str | None = None
 
 class CreateUserRequest(BaseModel):
