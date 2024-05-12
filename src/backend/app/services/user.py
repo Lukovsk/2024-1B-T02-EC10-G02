@@ -100,6 +100,5 @@ class UserService():
                         "id": self.id
                     }
                 )
-
             except errors.RecordNotFoundError:
                 raise ValueError("User not found")

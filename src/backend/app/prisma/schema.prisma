@@ -79,7 +79,7 @@ model Request {
 
     canceledAt      DateTime?
     canceledBy      User?           @relation("request_canceled", fields: [canceled_userId], references: [id])
-    canceled_userId String?
+    canceled_userId String?     
     canceled_reason String?
 }
 
