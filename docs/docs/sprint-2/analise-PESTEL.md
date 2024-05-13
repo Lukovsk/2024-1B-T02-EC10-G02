@@ -58,3 +58,4 @@ Dessa forma, a análise contida abaixo foi feita pelo grupo como uma forma de ma
 - **Leis Trabalhistas e Responsabilidade Legal no Desenvolvimento do Aplicativo do Pyxis:** O respeito às leis trabalhistas e a gestão eficaz da responsabilidade legal são aspectos fundamentais do projeto do aplicativo do Pyxis. Isso não apenas protege os interesses do projeto, mas também contribui para um ambiente de trabalho ético e seguro para todos os envolvidos no desenvolvimento e implementação do aplicativo.
 
 - **Proteção de Propriedade Intelectual e o Aplicativo do Pyxis:** A proteção da propriedade intelectual é essencial para garantir que as inovações e avanços tecnológicos associados ao aplicativo do Pyxis sejam devidamente protegidos. Isso não apenas assegura a exclusividade do projeto, mas também incentiva a contínua inovação e investimento em pesquisa e desenvolvimento.
+
