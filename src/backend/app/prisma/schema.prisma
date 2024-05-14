@@ -1,6 +1,6 @@
 generator client {
-    provider  = "prisma-client-py"
-    interface = "asyncio"
+    provider             = "prisma-client-py"
+    interface            = "asyncio"
     recursive_type_depth = 5
 }
 
@@ -24,74 +24,77 @@ datasource db {
 // }
 
 model User {
-    id                String        @id @default(uuid())
-    name              String
-    email             String
-    password          String
+    id       String  @id @default(uuid())
+    name     String
+    email    String
+    password String
     // role              Role[]     @default([NURSE])
-    role              String?
-    
-    createdAt         DateTime   @default(now())
-    updatedAt         DateTime   @updatedAt
-    deletedAt         DateTime?
+    role     String?
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
 
     feedback_sent     Feedback[] @relation("feedbacks_sent")
     feedback_received Feedback[] @relation("feedbacks_received")
-    request_sent      Request[]  @relation("request_sent")
-    request_received  Request[]  @relation("request_received")
-    request_canceled  Request[] @relation("request_canceled")
+    order_sent        Order[]    @relation("order_sent")
+    order_received    Order[]    @relation("order_received")
+    order_canceled    Order[]    @relation("order_canceled")
 }
 
 model Feedback {
-    id              Int      @unique @id @default(autoincrement())
-    message_user    String?
-    message_app     String?
-    rate_user       Int
-    rate_app        Int?
-    
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
-    deletedAt       DateTime?
+    id           Int     @id @unique @default(autoincrement())
+    message_user String?
+    message_app  String?
+    rate_user    Int
+    rate_app     Int?
 
-    Request         Request[]
-    sender_user     User      @relation("feedbacks_sent", fields: [sender_userId], references: [id])
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    Order           Order[]
+    sender_user     User    @relation("feedbacks_sent", fields: [sender_userId], references: [id])
     sender_userId   String
-    receiver_user   User      @relation("feedbacks_received", fields: [receiver_userId], references: [id])
+    receiver_user   User    @relation("feedbacks_received", fields: [receiver_userId], references: [id])
     receiver_userId String
 }
 
-model Request {
-    id              Int             @unique @id @default(autoincrement())
-    medication             Medications     @relation(fields: [medicationId], references: [id])
-    medicationId           Int
-    status          String
-    
-    sender_user     User            @relation("request_sent", fields: [sender_userId], references: [id])
+model Order {
+    id           Int         @id @unique @default(autoincrement())
+    medication   Medications @relation(fields: [medicationId], references: [id])
+    medicationId Int
+    status       String
+
+    sender_user     User   @relation("order_sent", fields: [sender_userId], references: [id])
     sender_userId   String
-    receiver_user   User?           @relation("request_received", fields: [receiver_userId], references: [id])
+    receiver_user   User?  @relation("order_received", fields: [receiver_userId], references: [id])
     receiver_userId String
 
-    feedback        Feedback?       @relation(fields: [feedbackId], references: [id])
-    feedbackId      Int?
+    feedback   Feedback? @relation(fields: [feedbackId], references: [id])
+    feedbackId Int?
 
-    createdAt       DateTime        @default(now())
-    updatedAt       DateTime        @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     canceledAt      DateTime?
-    canceledBy      User?           @relation("request_canceled", fields: [canceled_userId], references: [id])
-    canceled_userId String?     
+    canceledBy      User?     @relation("order_canceled", fields: [canceled_userId], references: [id])
+    canceled_userId String?
     canceled_reason String?
+    canceled        Boolean   @default(false)
+
+    deleted Boolean @default(false)
 }
 
 model Medications {
-    id          Int       @unique @id @default(autoincrement())
+    id          Int     @id @unique @default(autoincrement())
     area        String?
-    description String? 
+    description String?
     lot         Int
-    medClass       String
-    Requests  Request[]
+    medClass    String
+    Orders      Order[]
 }
 
 model Logs {
-    id Int @unique @id @default(autoincrement())
+    id Int @id @unique @default(autoincrement())
 }
