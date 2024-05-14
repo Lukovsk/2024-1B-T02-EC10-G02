@@ -37,22 +37,43 @@ Ao adotar o padrão MVC, cada componente tem responsabilidades claramente defini
 - **controller_get_all_users():** Lista todos os usuários cadastrados.
   - Entrada: Nenhuma
   - Saída: Lista de usuários.
+  - Possíveis respostas HTTP:
+      - 200 OK: usuários recuperados com sucesso.
+      - 404 Not Found: Usuários não encontrados.
+      - 500 Internal Server Error: Erro interno ao processar a solicitação.
 
 - **controller_get_user_by_id():** Lista todos os usuários cadastrados pelo id.
   - Entrada: `id`
   - Saída: Usuário com o id especificado.
+  - Possíveis respostas HTTP:
+      - 200 OK: usuário recuperado com sucesso.
+      - 404 Not Found: Usuário não encontrado com o ID fornecido.
+      - 500 Internal Server Error: Erro interno ao processar a solicitação.
 
 - **controller_create_user(nome: string, email: string, senha: string):** Cria um novo usuário.
   - Entrada: `nome`, `email`, `senha`
   - Saída: Mensagem de sucesso ou erro, detalhes do usuário registrado.
+  - Possíveis respostas HTTP:
+      - 200 OK: Usuário registrado com sucesso.
+      - 400 Bad Request: Requisição inválida, campos obrigatórios não fornecidos ou formato de dados incorreto.
+      - 500 Internal Server Error: Erro interno ao processar a solicitação.
 
 - **controller_update_user(id: int, novosDados: object):** Edita um usuário existente.
   - Entrada: `id`, `novosDados` (objeto contendo os campos editáveis)
   - Saída: Mensagem de sucesso ou erro, detalhes do usuário atualizado.
+  - Possíveis respostas HTTP:
+      - 200 OK: Perfil do usuário atualizado com sucesso.
+      - 400 Bad Request: Requisição inválida, campos obrigatórios não fornecidos ou formato de dados incorreto.
+      - 404 Not Found: Usuário não encontrado com o ID fornecido.
+      - 500 Internal Server Error: Erro interno ao processar a solicitação.
 
 - **controller_delete_user(id: int):** Exclui um usuário existente.
   - Entrada: `id`
   - Saída: Confirmação de exclusão.
+  - Possíveis respostas HTTP:
+      - 200 OK: Perfil do usuário excluído com sucesso.
+      - 404 Not Found: Usuário não encontrado com o ID fornecido.
+      - 500 Internal Server Error: Erro interno ao processar a solicitação.
 
 ### Views (Views):
 
