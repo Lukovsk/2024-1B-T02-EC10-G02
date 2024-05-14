@@ -22,10 +22,13 @@ Ao adotar o padrão MVC, cada componente tem responsabilidades claramente defini
 
 1. **Usuário:**
    - **ID:** Identificador único do usuário (chave primária).
-   - **Nome:** Nome do usuário.
+   - **Name:** Nome do usuário.
    - **Email:** Endereço de e-mail do usuário.
-   - **Senha (criptografada):** Senha criptografada do usuário para autenticação.
-   - **Cargo:** Cargo do usuário no hospital.
+   - **Password (criptografada):** Senha criptografada do usuário para autenticação.
+   - **Role:** Cargo do usuário no hospital.
+   - **createdAt:** Data de criação do usuário.
+   - **updatedAt:** Data da última atualização do usuário
+   - **deletedAt:** Data de exclusão do usuário (opcional)
 
 ### Controladores (Controllers):
 
