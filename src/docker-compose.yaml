@@ -9,11 +9,13 @@ services:
       - db
 
   db:
-    image: postgres
+    image: postgres:16.2
     ports:
       - "5432:5432"  
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust  
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: grupo02
+      POSTGRES_DB:  db.db
     volumes:
       - ./scripts/000_setup.sql:/docker-entrypoint-initdb.d/000_setup.sql:ro
 
