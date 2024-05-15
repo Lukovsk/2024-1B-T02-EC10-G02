@@ -1,10 +1,10 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from routes.userRouter import router as userRouter
-from routes.feedbackRoutes import feedback_routes
 from prismaClient import prismaClient
+
+from routes import user_router, order_router #, feedback_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -27,10 +27,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(userRouter)
-app.include_router(feedback_routes)
+app.include_router(user_router)
+# app.include_router(feedback_router)
+app.include_router(order_router)
 
 # app.include_router()
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=3003)
+    uvicorn.run(app, host="0.0.0.0", port=3000)
