@@ -1,0 +1,9 @@
+{
+    "label": "Negócios",
+    "position": 2,
+    "link": {
+      "type": "generated-index",
+      "description": "Espera-se encontrar os seguintes pontos na entrega do artefato: A proposta contempla os componentes separados de frontend, backend e API de comunicação (até 2.0 pontos). Os protocolos de comunicação da solução estão bem definidos e justificados (até 2.0 pontos). A API proposta está documentada (até 2.0 pontos). Os testes que serão realizados na aplicação estão com seus objetivos definidos (até 2.0 pontos). Existe, na documentação, um conjunto de instruções claras para executar a aplicação (até 2.0 pontos)."
+    }
+  }
+  
