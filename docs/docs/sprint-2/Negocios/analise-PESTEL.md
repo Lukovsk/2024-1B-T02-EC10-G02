@@ -1,7 +1,6 @@
 ---
 title: Análise PESTEL
-sidebar_position: 1
-slug: /pestel-analysis
+sidebar_position: 2
 ---
 
 A análise PESTEL é uma ferramenta estratégica utilizada para avaliar o ambiente externo no qual uma empresa ou projeto está inserido. O acrônimo PESTEL representa seis categorias de fatores externos que podem influenciar o sucesso ou fracasso de um empreendimento. Assim, os fatores estão descritos abaixo com uma análise dos pontos que devem ser levados em conta para este projeto em parceria com o Hospital Sírio Libanês.
@@ -34,7 +33,7 @@ Dessa forma, a análise contida abaixo foi feita pelo grupo como uma forma de ma
 
 - **Impacto na Comunidade:**
   - **Engajamento da Comunidade:** O lançamento do aplicativo móvel pode ter um impacto positivo no engajamento da comunidade com o Hospital Sírio-Libanês. O impacto potencial é positivo, pois o aplicativo pode facilitar a comunicação e o envolvimento dos pacientes com o sistema de saúde. Estratégias para capitalizar essa oportunidade incluem o lançamento de campanhas de conscientização e educação sobre o aplicativo, a coleta de feedback dos usuários para melhorias contínuas e o estabelecimento de canais de comunicação direta entre os pacientes e a equipe médica por meio do aplicativo.
- 
+
 ## Tecnológico
 
 - **Infraestrutura Tecnológica para o Aplicativo do Pyxis:** A disponibilidade de uma infraestrutura tecnológica robusta é crucial para o sucesso do projeto do aplicativo de gerenciamento de requisições do Pyxis. Isso inclui garantir acesso confiável à internet e sistemas de suporte adequados para a implementação e operação do aplicativo móvel. Estratégias de mitigação podem incluir parcerias estratégicas com provedores de serviços de tecnologia confiáveis e investimentos direcionados em infraestrutura digital.
@@ -58,4 +57,3 @@ Dessa forma, a análise contida abaixo foi feita pelo grupo como uma forma de ma
 - **Leis Trabalhistas e Responsabilidade Legal no Desenvolvimento do Aplicativo do Pyxis:** O respeito às leis trabalhistas e a gestão eficaz da responsabilidade legal são aspectos fundamentais do projeto do aplicativo do Pyxis. Isso não apenas protege os interesses do projeto, mas também contribui para um ambiente de trabalho ético e seguro para todos os envolvidos no desenvolvimento e implementação do aplicativo.
 
 - **Proteção de Propriedade Intelectual e o Aplicativo do Pyxis:** A proteção da propriedade intelectual é essencial para garantir que as inovações e avanços tecnológicos associados ao aplicativo do Pyxis sejam devidamente protegidos. Isso não apenas assegura a exclusividade do projeto, mas também incentiva a contínua inovação e investimento em pesquisa e desenvolvimento.
-
