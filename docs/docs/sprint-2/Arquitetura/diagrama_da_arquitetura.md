@@ -1,37 +1,39 @@
 ---
-sidebar_position: 4
-slug: /db1
+title: Arquitetura da Solução
+sidebar_position: 1
 ---
 
-# Arquitetura da Solução:
+## Enfermeiro
 
-## Enfermeiro:
 - O enfermeiro utiliza o aplicativo móvel para verificar o estoque de materiais, identificando alguma falta de suprimentos necessários para os procedimentos.
 
-## API:
+## API
+
 - Recebe a solicitação de reposição de materiais do enfermeiro.
 
-### Fluxo:
+### Fluxo
+
 1. **Enfermeiro verifica o aplicativo "Pyxi" e identifica falta de material.
 2. **Enfermeiro utiliza o aplicativo para realizar um pedido de reposição.
 
-### Caminhos da API:
+### Caminhos da API
+
 - **Caminho 1 (Superior - Notificação ao Auxiliar de Enfermagem):**
-   - A solicitação é encaminhada para o auxiliar de enfermagem.
-   - O auxiliar de enfermagem recebe uma notificação em seu dispositivo móvel informando sobre o pedido de reposição.
+  - A solicitação é encaminhada para o auxiliar de enfermagem.
+  - O auxiliar de enfermagem recebe uma notificação em seu dispositivo móvel informando sobre o pedido de reposição.
 
 - **Caminho 2 (Fila de Pedidos - Processamento pelo Controlador):**
-   - A solicitação é enfileirada para processamento.
-   - Um controlador de pedidos é acionado para processar a solicitação.
-   - O controlador executa três tarefas:
+  - A solicitação é enfileirada para processamento.
+  - Um controlador de pedidos é acionado para processar a solicitação.
+  - O controlador executa três tarefas:
      1. Notificação: Informa os responsáveis pela reposição sobre o pedido.
      2. Armazenamento: Registra os detalhes do pedido no banco de dados para controle e rastreamento.
      3. Sistema de Logs: Registra informações sobre o processamento do pedido para fins de auditoria e monitoramento.
 
 - **Caminho 3 (Direcionamento para o Admin):**
-   - A solicitação é encaminhada para o administrador responsável pela gestão de suprimentos.
+  - A solicitação é encaminhada para o administrador responsável pela gestão de suprimentos.
 
-# Fluxo da Solução:
+## Fluxo da Solução
 
 1. **Enfermeiro Verifica o Estoque:**
    - O enfermeiro acessa o aplicativo móvel "Pyxi" para verificar o estoque de materiais necessários para os procedimentos.
@@ -55,4 +57,3 @@ slug: /db1
    - A solicitação também é direcionada ao administrador responsável pela gestão de suprimentos para avaliação e ação adequada.
 
 ![Arquitetura da Solução](../../../static/img/arquitetura_sprint2.png)
-
