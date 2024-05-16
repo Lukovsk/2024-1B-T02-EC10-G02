@@ -50,3 +50,9 @@ coverage.xml
 docs/_build/
 
 .env
+
+node_modules
+
+venv
+
+./prisma/db.db
