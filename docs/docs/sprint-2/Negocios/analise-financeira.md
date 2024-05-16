@@ -1,6 +1,10 @@
-# Análise Financeira do Projeto de Plataforma de Requisição de Medicamentos
+---
+title: Análise Financeira
+sidebar_position: 1
+---
 
 ## Introdução
+
 Esta análise detalha os custos estimados associados ao desenvolvimento e implementação do projeto para a plataforma de requisição de medicamentos no Hospital Sírio Libanês. Os dados foram coletados com base em informações do Glassdoor para referência salarial, com uma janela de tempo da coleta de dados 12 meses, e a taxa de juros utilizada no cálculo foi a Taxa Selic para um período de 12 meses.
 
 ## Custos com Folha de Pagamento
