@@ -86,7 +86,7 @@ Esta tabela armazena registros de atividades, erros e outras mensagens de regist
 
 O modelo conceitual do banco de dados do Sistema de Requisição de Medicamentos - Pyxis reflete a estrutura e as relações entre os principais elementos do sistema, fornecendo uma visão abstrata e organizada das entidades e de como elas se relacionam entre si.
 
-![Modelo-conceitual](../../../static/img/modelo-conceitual.png)
+![Modelo-conceitual](../../../static/img/sprint-2/modelo-conceitual.png)
 
 ### Funcionamento
 
