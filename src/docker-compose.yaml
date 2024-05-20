@@ -2,18 +2,32 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build: 
+      context: ./backend
     ports:
-      - "8000:8000"
+      - "3000:3000"
+    env_file:
+      - .env
     depends_on:
       - db
+      - rabbitmq
 
   db:
-    image: postgres
+    image: postgres:16.2
     ports:
       - "5432:5432"  
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust  
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: grupo02
+      POSTGRES_DB:  db.db
     volumes:
       - ./scripts/000_setup.sql:/docker-entrypoint-initdb.d/000_setup.sql:ro
 
+  rabbitmq:
+    image: rabbitmq:3.12.14-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}

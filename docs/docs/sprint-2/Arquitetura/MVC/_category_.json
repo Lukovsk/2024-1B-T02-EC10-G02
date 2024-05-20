@@ -1,0 +1,8 @@
+{
+  "label": "MVC",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "O MVC (Model-View-Controller) é uma estrutura de arquitetura de software que divide uma aplicação em três componentes principais: Modelo, Visão e Controlador. Essa divisão permite uma separação clara entre a lógica de negócios, a apresentação de dados e a interação do usuário, facilitando o desenvolvimento e a manutenção de diversos tipos de projetos, como aplicativos web, desktop e mobile. Ao adotar o padrão MVC, cada componente tem responsabilidades claramente definidas, o que facilita a organização do código, a manutenção, o teste e a escalabilidade do projeto. Além disso, o MVC promove a reutilização de código, já que as diferentes camadas são independentes umas das outras, permitindo que sejam modificadas ou substituídas sem afetar as demais partes do sistema."
+  }
+}
