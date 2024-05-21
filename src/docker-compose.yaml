@@ -19,7 +19,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: grupo02
-      POSTGRES_DB:  db.db
+      POSTGRES_DB:  postgres
     volumes:
       - ./scripts/000_setup.sql:/docker-entrypoint-initdb.d/000_setup.sql:ro
 

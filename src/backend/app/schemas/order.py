@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
+from enum import Enum
 
 
 class CreateOrder(BaseModel):
@@ -7,6 +8,12 @@ class CreateOrder(BaseModel):
     senderId: str
     status: str
 
+class StatusEnum(str, Enum):
+    PENDING = "PENDING"
+    ACCEPTED = "ACCEPTED"
+    REJECTED = "REJECTED"
+    DONE = "DONE"
+    CANCELED = "CANCELED"
 
 class UpdateOrder(BaseModel):
     id: str
@@ -16,6 +23,8 @@ class UpdateOrder(BaseModel):
     feedbackId: Optional[str] = None
     canceled_reason: Optional[str] = None
     canceled_userId: Optional[str] = None
+    status: Optional[List[StatusEnum]] = None
+    
 
 
 class CancelateOrder(BaseModel):

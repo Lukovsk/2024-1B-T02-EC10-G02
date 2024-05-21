@@ -2,16 +2,21 @@ import os
 import pika
 
 
+
 def get_connection():
-    credentials = pika.PlainCredentials(
-        os.environ["RABBITMQ_DEFAULT_USER"], os.environ["RABBITMQ_DEFAULT_PASS"]
-    )
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(
-            os.environ["RABBITMQ_HOST"], os.environ["RABBITMQ_PORT"], "/", credentials
-        )
+    rabbitmq_host = os.getenv('RABBITMQ_HOST', 'localhost')
+    rabbitmq_port = int(os.getenv('RABBITMQ_PORT', 5672))
+    rabbitmq_user = os.getenv('RABBITMQ_DEFAULT_USER', 'inteli')
+    rabbitmq_pass = os.getenv('RABBITMQ_DEFAULT_PASS', 'inteli_secret')
+    
+    credentials = pika.PlainCredentials(rabbitmq_user, rabbitmq_pass)
+    parameters = pika.ConnectionParameters(
+        host=rabbitmq_host,
+        port=rabbitmq_port,
+        credentials=credentials
     )
 
+    connection = pika.BlockingConnection(parameters)
     return connection
 
 

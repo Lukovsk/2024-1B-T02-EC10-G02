@@ -38,19 +38,16 @@ if __name__ == "__main__":
 
     if "RABBITMQ_HOST" in os.environ:
         import threading
-        from routes.queue import app as queue_router
         from controllers.queue import create_order_queue
 
         try:
             thread = threading.Thread(target=create_order_queue)
             thread.start()
 
-            app.include_router(queue_router)
-
             uvicorn.run(app, host="0.0.0.0", port=3000)
         except Exception as e:
             print(f"Finalizando fila: {e}")
-            thread.stop()
+            thread.join()
     else:
         print(
             "HOST e PORT do RabbitMQ deveriam estar no .env, iniciando sem conexão com a fila"

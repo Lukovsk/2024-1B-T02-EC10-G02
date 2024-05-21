@@ -5,31 +5,31 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite" // postgresql
-    url      = "file:./db.db" // env("DATABASE_URL") 
+    provider = "postgresql"//"sqlite" 
+    url      = env("DATABASE_URL")  //file:./db.db // 
 }
 
-// enum Role {
-//     NURSE
-//     ASSISTANT
-//     ADMIN
-// }
+enum Role {
+    NURSE
+    ASSISTANT
+    ADMIN
+}
 
-// enum Status {
-//     PENDING
-//     ACCEPTED
-//     REJECTED
-//     DONE
-//     CANCELED
-// }
+enum Status {
+    PENDING
+    ACCEPTED
+    REJECTED
+    DONE
+    CANCELED
+}
 
 model User {
     id       String  @id @default(uuid())
     name     String
     email    String
     password String
-    // role              Role[]     @default([NURSE])
-    role     String?
+    role              Role[]     @default([NURSE])
+    //role     String?
 
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
@@ -64,7 +64,7 @@ model Order {
     id           Int         @id @unique @default(autoincrement())
     medication   Medications @relation(fields: [medicationId], references: [id])
     medicationId Int
-    status       String
+    status       Status[]     @default([PENDING])
 
     sender_user     User   @relation("order_sent", fields: [sender_userId], references: [id])
     sender_userId   String
