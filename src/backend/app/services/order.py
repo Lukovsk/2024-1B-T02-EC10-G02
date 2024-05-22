@@ -1,5 +1,6 @@
 from __init__ import db
 from contextlib import asynccontextmanager
+import json
 
 
 class OrderService:
@@ -55,7 +56,7 @@ class OrderService:
                     await self.db.order.find_many(
                         where={
                             "deleted": False,
-                            "status": "CLOSED",  # TODO: change closed status to some enum from prisma
+                            "status": "CLOSED",  #  TODO: change closed status to some enum from prisma
                             "senderId": self.senderId,
                         }
                     )
@@ -111,36 +112,23 @@ class OrderService:
                 return order
             except Exception as e:
                 raise e
-
-    ## Quero adicionar um novo pedido
+ 
     async def create(self):
-
         async with self.database_connection():
             try:
                 new_order = await self.db.order.create(
                     data={
                         "medicationId": self.medicationId,
-                        "status": self.status,  # deve ser stado com um dos enums do prisma, como PENDING
+                        "status": self.status,  # deve ser estado com um dos enums do prisma, como PENDING
                         "senderId": self.senderId,
                     }
                 )
+                await self.publish_to_queue({"action": "CREATE", "order": new_order.dict()})
                 return new_order
             except Exception as e:
                 raise e
 
-    ## Quero atualizar um pedido
     async def update(self, new_data):
-        """update an order
-
-        Args:
-            new_data (dict): data that will update the order
-
-        Raises:
-            e: if any exception raises from here, log the exception
-
-        Returns:
-            Prisma.order: returns the updated order
-        """
         async with self.database_connection():
             try:
                 order = await self.db.order.update(
@@ -149,6 +137,7 @@ class OrderService:
                     },
                     data={**new_data},
                 )
+                await self.publish_to_queue({"action": "UPDATE", "order": order.dict()})
                 return order
             except Exception as e:
                 raise e
@@ -170,6 +159,7 @@ class OrderService:
                         "status": "CANCELED",  # TODO: change this status to an enum with prisma
                     },
                 )
+                self.publish_to_queue({"action": "CANCEL", "order_id": self.id})
                 return True
             except Exception as e:
                 raise e
