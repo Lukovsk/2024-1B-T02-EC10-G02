@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'widgets/login_page.dart';
+import 'screens/admin/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Tela de Login',
-      home: LoginPage(),
+      home: AdminHome(),
     );
   }
 }
