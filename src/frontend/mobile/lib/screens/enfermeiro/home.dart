@@ -1,37 +1,46 @@
 import 'package:flutter/material.dart';
+import '/widgets/custom_app_bar.dart';
+import '/widgets/bottom_navigation_bar.dart';
+import 'package:mobile/screens/enfermeiro/request_page.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _currentIndex = 0;
+
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => RequestPage()),
+        );
+        break;
+      case 2:
+        // Navigate to ProfileScreen()
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
-        child: AppBar(
-          flexibleSpace: Container(
-            decoration:const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF2563AF),
-                  Color(0xFF3D97D3),
-                ],
-              ),
-            ),
-          ),
-          title: Column(
-            children: [
-              Image.asset(
-                'lib/assets/logo.png',
-                height: 55.0,
-              ),
-              SizedBox(width: 15.0),
-            ],
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -42,8 +51,8 @@ class Home extends StatelessWidget {
                 hintText: 'Pesquisar medicamento',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(255, 116, 116, 116), 
+                  borderSide: const BorderSide(
+                    color: Color.fromARGB(255, 116, 116, 116), 
                   ),
                 ),
                 filled: true,
@@ -107,7 +116,7 @@ class Home extends StatelessWidget {
               label: const Text('Nova Solicitação',
                   style: TextStyle(fontSize: 20.0, color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF2563AF),
+                backgroundColor: const Color(0xFF2563AF),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -121,23 +130,9 @@ class Home extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt),
-            label: 'Pedidos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-        ],
-        selectedItemColor: Color(0xFF2563AF),
-        unselectedItemColor: Colors.grey,
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTap,
       ),
     );
   }
