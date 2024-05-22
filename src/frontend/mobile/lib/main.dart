@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'widgets/login_page.dart';
-import 'screens/admin/home.dart';
 import 'package:mobile/screens/splash.dart';
+import 'package:mobile/screens/enfermeiro/request_page.dart';
 
 void main() {
   runApp(MyApp());
