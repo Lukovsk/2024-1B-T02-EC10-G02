@@ -5,8 +5,8 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"//"sqlite" 
-    url      = env("DATABASE_URL")  //file:./db.db // 
+    provider = "postgresql"//"sqlite" DATABASE_URL = postgres://postgres:grupo02@0.0.0.0:5432/postgres
+    url      = "postgres://postgres:grupo02@0.0.0.0:5432/postgres"  //file:./db.db // env("DATABASE_URL")
 }
 
 enum Role {
@@ -43,7 +43,7 @@ model User {
 }
 
 model Feedback {
-    id           Int     @id @unique @default(autoincrement())
+    id           String   @id @default(uuid())
     message_user String?
     message_app  String?
     rate_user    Int
@@ -61,19 +61,19 @@ model Feedback {
 }
 
 model Order {
-    id           Int         @id @unique @default(autoincrement())
-    medication   Medications @relation(fields: [medicationId], references: [id])
-    medicationId Int
+    id           String   @id @default(uuid())
+    medication   Medications? @relation(fields: [medicationId], references: [id])
+    medicationId String?
     status       Status[]     @default([PENDING])
 
     sender_user     User   @relation("order_sent", fields: [sender_userId], references: [id])
     sender_userId   String
     receiver_user   User?  @relation("order_received", fields: [receiver_userId], references: [id])
-    receiver_userId String
+    receiver_userId String?
 
     feedback   Feedback? @relation(fields: [feedbackId], references: [id])
-    feedbackId Int?
-
+    feedbackId String?
+    
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -87,7 +87,7 @@ model Order {
 }
 
 model Medications {
-    id          Int     @id @unique @default(autoincrement())
+    id          String   @id @default(uuid())
     area        String?
     description String?
     lot         Int

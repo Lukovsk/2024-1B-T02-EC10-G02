@@ -1,17 +1,22 @@
 from fastapi import Depends, APIRouter
 from prisma.models import Medications
-from controllers.medicineController import MedicineController
+from schemas.medication import MedSchema
+from controllers.medicineController import (
+    controller_get_all_medications, 
+    controller_create_medication, 
+    controller_get_medication
+)
 
-medication_routes = APIRouter()
+medication_routes = APIRouter(prefix="/medication", tags=["medication"])
 
-@medication_routes.post("/newMedications", response_model=None)
-async def create_medication(medication: Medications):
-    return await MedicineController.create_medication(medication)
+@medication_routes.post("/new")
+async def create_medication(medication_data: MedSchema):
+    return await controller_create_medication(area=medication_data.area, description=medication_data.description, lot=medication_data.lot, medClass=medication_data.medClass)
 
-@medication_routes.get("/medication/{medication_id}", response_model=Medications)
-async def get_medication(medication_id: int):
-    return await MedicineController.get_medication(medication_id)
+@medication_routes.get("/{id}")
+async def get_medication(id: str):
+    return await controller_get_medication( id)
 
-@medication_routes.get("/medications", response_model=list[Medications])
-def get_medicatoins():
-    return MedicineController.get_all_medications()
+@medication_routes.get("/all")
+async def list_all_medications():
+    return await controller_get_all_medications()

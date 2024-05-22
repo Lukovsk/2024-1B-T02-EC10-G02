@@ -1,16 +1,6 @@
 version: '3.8'
 
 services:
-  app:
-    build: 
-      context: ./backend
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    depends_on:
-      - db
-      - rabbitmq
 
   db:
     image: postgres:16.2
@@ -22,6 +12,18 @@ services:
       POSTGRES_DB:  postgres
     volumes:
       - ./scripts/000_setup.sql:/docker-entrypoint-initdb.d/000_setup.sql:ro
+
+  # app:
+  #   build: 
+  #     context: ./backend
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - db
+  #     - rabbitmq
+
 
   rabbitmq:
     image: rabbitmq:3.12.14-management-alpine

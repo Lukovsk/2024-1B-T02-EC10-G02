@@ -1,6 +1,5 @@
 from __init__ import db
 from contextlib import asynccontextmanager
-from queueConfig import get_connection, create_topic
 import json
 
 
@@ -113,19 +112,6 @@ class OrderService:
                 return order
             except Exception as e:
                 raise e
-
-
-    def publish_to_queue(self, message):
-        connection = get_connection()
-        channel = connection.channel()
-        channel.queue_declare(queue=create_topic)
-        channel.basic_publish(
-            exchange="",
-            routing_key=create_topic,
-            body=json.dumps(message),
-        )
-        connection.close()
-    ## Quero adicionar um novo pedido
  
     async def create(self):
         async with self.database_connection():
