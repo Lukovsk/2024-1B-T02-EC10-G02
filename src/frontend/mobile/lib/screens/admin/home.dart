@@ -56,7 +56,7 @@ class _HomeState extends State<AdminHome> {
                         contentPadding: EdgeInsets.all(0),
                         prefixIcon: Icon(
                           Icons.search,
-                          color: tdBlack,
+                          color: hsBlackColor,
                           size: 20,
                         ),
                         prefixIconConstraints: BoxConstraints(
@@ -93,12 +93,12 @@ class _HomeState extends State<AdminHome> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: tdBlack,
+                                  color: hsBlackColor,
                                 ),
                               ),
                               child: Icon(
-                                Icons.medical_services,
-                                color: tdBlack,
+                                Icons.medical_services_rounded,
+                                color: hsBlackColor,
                                 size: 30,
                               ),
                             ),
