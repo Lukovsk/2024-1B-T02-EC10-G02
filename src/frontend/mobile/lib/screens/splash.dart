@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:mobile/screens/enfermeiro/home.dart';
+import 'package:mobile/screens/login.dart';
 
 class Splash extends StatelessWidget {
   @override
@@ -20,9 +21,9 @@ class Splash extends StatelessWidget {
         child: AnimatedSplashScreen(
           duration: 3000,
           splash: Image.asset('lib/assets/logo.png'),
-          nextScreen: Home(),
+          nextScreen: LoginPage(),
           splashTransition: SplashTransition.fadeTransition,
-          backgroundColor: Colors.transparent, 
+          backgroundColor: Colors.transparent,
         ),
       ),
     );

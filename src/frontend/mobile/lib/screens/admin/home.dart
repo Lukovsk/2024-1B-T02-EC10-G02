@@ -95,7 +95,7 @@ class _HomeState extends State<AdminHome> {
             )
           ],
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(
+        bottomNavigationBar: AdCustomBottomNavigationBar(
             currentIndex: _currentIndex, onTap: _onTap));
   }
 
@@ -239,11 +239,11 @@ class OrderItem extends StatelessWidget {
   }
 }
 
-class CustomBottomNavigationBar extends StatelessWidget {
+class AdCustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
 
-  const CustomBottomNavigationBar({
+  const AdCustomBottomNavigationBar({
     required this.currentIndex,
     required this.onTap,
   });
