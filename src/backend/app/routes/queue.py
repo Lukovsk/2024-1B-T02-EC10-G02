@@ -7,8 +7,7 @@ router = APIRouter()
 @router.post("/queue/create")
 async def create_order_endpoint(request: CreateOrder = Body()):
     payload = request.dict()
-    print (payload)
-    handle_create_order(payload)
+    await handle_create_order(payload)
     return {"message":"Order queued succesfully"}
 
 @router.post("/queue/update")

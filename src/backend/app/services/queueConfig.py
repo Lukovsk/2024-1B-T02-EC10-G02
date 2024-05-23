@@ -22,11 +22,11 @@ def get_connection():
     return connection
 
 
-create_topic = os.environ["RABBITMQ_QUEUE_CREATE_ORDER"]
-accept_topic = os.environ["RABBITMQ_QUEUE_ACCEPT_ORDER"]
-refuse_topic = os.environ["RABBITMQ_QUEUE_REFUSE_ORDER"]
-complete_topic = os.environ["RABBITMQ_QUEUE_COMPLETE_ORDER"]
-cancel_topic = os.environ["RABBITMQ_QUEUE_CANCEL_ORDER"]
+# create_topic = os.environ["RABBITMQ_QUEUE_CREATE_ORDER"]
+# accept_topic = os.environ["RABBITMQ_QUEUE_ACCEPT_ORDER"]
+# refuse_topic = os.environ["RABBITMQ_QUEUE_REFUSE_ORDER"]
+# complete_topic = os.environ["RABBITMQ_QUEUE_COMPLETE_ORDER"]
+# cancel_topic = os.environ["RABBITMQ_QUEUE_CANCEL_ORDER"]
 
 
 def publish_order(queue_name, message):
