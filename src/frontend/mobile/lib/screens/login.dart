@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:mobile/api/user.dart';
 import 'package:mobile/constants/colors.dart';
+import 'package:mobile/screens/admin/home.dart';
+import 'package:mobile/screens/auxiliar/home.dart';
+import 'package:mobile/screens/enfermeiro/home.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -66,7 +70,9 @@ class LoginPage extends StatelessWidget {
 
                 // login
                 LoginButton(
-                  onTap: () {},
+                  onTap: () {
+                    _login(context);
+                  },
                 ),
 
                 SizedBox(width: 10),
@@ -76,6 +82,34 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _login(context) async {
+    Map<dynamic, dynamic> user =
+        await login(userController.text, passwordController.text);
+
+    if (user["name"] == "Administrador") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AdminHome()),
+      );
+    } else if (user["name"] == "Auxiliar") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AuxHome()),
+      );
+    } else if (user["name"] == "Enfermeiro") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no login!'),
+        ),
+      );
+    }
   }
 }
 
