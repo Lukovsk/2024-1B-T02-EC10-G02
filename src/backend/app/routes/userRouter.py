@@ -30,7 +30,9 @@ class CreateUserRequest(BaseModel):
 @router.post("/createUser")
 async def create_user(user_data: CreateUserRequest):
     return await controller_create_user(
-        email=user_data.email, name=user_data.name, password=user_data.password
+        email=user_data.email,
+        name=user_data.name, 
+        password=user_data.password
     )
 
 

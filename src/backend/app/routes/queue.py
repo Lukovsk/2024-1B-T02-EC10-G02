@@ -1,25 +1,21 @@
-# Serviço 2 - recebe as mensagens via RabbitMQ e as armazena em um banco de dados em memória
+from fastapi import APIRouter, Body
+from schemas.order import UpdateOrder, CreateOrder
+from controllers.queue import handle_create_order, handle_update_order
 
-from fastapi import APIRouter
-import os
-from schemas.order import CreateOrder
-from controllers.order import controller_create_order
-from controllers.queue import send_new_order
-from queueConfig import create_topic
+router = APIRouter(prefix="/queue", tags=["queue"])
 
-# Ajuste para tentar reconectar ao RabbitMQ
-from pika.connection import Parameters
+@router.post("/neworder")
+async def create_order_endpoint(request: CreateOrder = Body()):
+    payload = request.dict()
+    await handle_create_order(payload)
+    return {"message":"Order queued succesfully"}
 
-Parameters.DEFAULT_CONNECTION_ATTEMPTS = 10
+@router.post("/updatestatus")
+async def update_order_endpoint(request: UpdateOrder = Body()):
+    payload = request.dict()
+    return await update_order_queue(payload)
 
-
-app = APIRouter(prefix="/queues", tags=["RabbitMQ"])
-
-
-@app.post("/")
-async def create_order(message: CreateOrder):
-    return send_new_order(message, create_topic)
-
-
-# @app.put("/")
-# async def accepct_order()
+@router.post("/cancel")
+async def cancel_order_endpoint(request: UpdateOrder = Body()):
+    payload = request.dict()
+    return await cancel_order_queue()
