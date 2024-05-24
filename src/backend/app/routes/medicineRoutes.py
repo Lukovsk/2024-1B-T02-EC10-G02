@@ -9,7 +9,7 @@ from controllers.medicineController import (
 
 medication_routes = APIRouter(prefix="/medication", tags=["medication"])
 
-@medication_routes.post("/new")
+@medication_routes.post("/newmedication")
 async def create_medication(medication_data: MedSchema):
     return await controller_create_medication(area=medication_data.area, description=medication_data.description, lot=medication_data.lot, medClass=medication_data.medClass)
 
