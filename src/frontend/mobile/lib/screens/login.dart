@@ -155,22 +155,25 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: hsLightBlueColor,
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 25),
+      child: Material(
+        color: hsLightBlueColor,
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(8),
-        ),
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.symmetric(horizontal: 25),
-        child: Center(
-          child: Text(
-            "Login",
-            style: TextStyle(
-              fontSize: 25,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Center(
+              child: Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ),
@@ -201,6 +204,10 @@ class LoginTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+        ),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
@@ -209,12 +216,12 @@ class LoginTextField extends StatelessWidget {
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: hsRedColor,
+              color: hsLightBlueColor,
             ),
           ),
           hintText: hintText,
           hintStyle: TextStyle(
-            color: Colors.white,
+            color: hsGrayColor,
           ),
         ),
       ),
