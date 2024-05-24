@@ -1,4 +1,4 @@
-package br.com.ritalinos.mobile
+package br.com.ritalinos.PharmaControl
 
 import io.flutter.embedding.android.FlutterActivity
 

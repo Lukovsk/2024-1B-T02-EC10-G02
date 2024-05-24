@@ -1,4 +1,4 @@
 ---
-title: Aplicação Mobile
+title: Aplicação PharmaControl
 sidebar_position: 3
 ---

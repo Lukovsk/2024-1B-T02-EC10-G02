@@ -19,7 +19,7 @@ A organização operacional do projeto deu-se a partir dos pilares postulados pe
 - Aprofundamento no mercado e na solução proposta.
 - Compreensão detalhada da experi~encia do usuário no contexto do projeto.
 - Desenvolvimento da arquiteutra inicial do sistema, incorporando requisitos coerentemente.
-- Desenvolvimento do wireframe para o aplicativo mobile.
+- Desenvolvimento do wireframe para o aplicativo PharmaControl.
 
 #### **Apresentação da primeira sprint review**
 

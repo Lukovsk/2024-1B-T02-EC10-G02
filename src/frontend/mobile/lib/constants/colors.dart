@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 
 const Color tdRed = Color(0xFFDA4040);
-const Color tdBlue = Color(0xFF5F52EE);
+const Color tdBlue = Color(0xFF2563AF);
 
-const Color tdGrey = Color(0xFF717171);
+const Color tdGrey = Color.fromARGB(255, 116, 116, 116);
 
 const Color tdBGColor = Color(0xFFEEEFF5);
+
+const LinearGradient tdGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [
+    Color(0xFF2563AF),
+    Color(0xFF3D97D3),
+  ],
+);
+
 
 const Color hsBlackColor = Color(0xFF292728);
 const Color hsDarkBlueColor = Color(0xFF19396F);

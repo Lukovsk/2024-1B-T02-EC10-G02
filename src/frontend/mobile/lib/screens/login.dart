@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:mobile/api/user.dart';
-import 'package:mobile/constants/colors.dart';
-import 'package:mobile/screens/admin/home.dart';
-import 'package:mobile/screens/auxiliar/home.dart';
-import 'package:mobile/screens/enfermeiro/home.dart';
+import 'package:PharmaControl/api/user.dart';
+import 'package:PharmaControl/constants/colors.dart';
+import 'package:PharmaControl/screens/admin/home.dart';
+import 'package:PharmaControl/screens/auxiliar/home.dart';
+import 'package:PharmaControl/screens/enfermeiro/home.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -158,7 +158,7 @@ class LoginButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 25),
       child: Material(
-        color: hsLightBlueColor,
+        color: Color.fromARGB(255, 220, 217, 217),
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
           onTap: onTap,
@@ -167,10 +167,10 @@ class LoginButton extends StatelessWidget {
             padding: EdgeInsets.all(20),
             child: Center(
               child: Text(
-                "Login",
+                "Acessar",
                 style: TextStyle(
                   fontSize: 25,
-                  color: Colors.white,
+                  color: hsDarkBlueColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),

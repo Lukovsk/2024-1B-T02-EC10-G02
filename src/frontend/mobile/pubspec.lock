@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  autocomplete_textfield:
+    dependency: "direct main"
+    description:
+      name: autocomplete_textfield
+      sha256: "8170e66d381c21623f1cfbb957ab9c6b5a45d9c50a6daac7fc57dbc3ba94abb4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -118,11 +126,27 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  flutter_rating_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_rating_bar
+      sha256: d2af03469eac832c591a1eba47c91ecc871fe5708e69967073c043b2d775ed93
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+  gif_view:
+    dependency: "direct main"
+    description:
+      name: gif_view
+      sha256: "8647947d1fc13ed18b4e8a053c2c63237975fe44337faceb62dc1d894a3fcfcc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.3"
   http:
     dependency: "direct main"
     description:
@@ -187,6 +211,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  lottie:
+    dependency: "direct main"
+    description:
+      name: lottie
+      sha256: "6a24ade5d3d918c306bb1c21a6b9a04aab0489d51a2582522eea820b4093b62b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   matcher:
     dependency: transitive
     description:
@@ -211,6 +243,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   page_transition:
     dependency: transitive
     description:
@@ -235,6 +275,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -338,3 +386,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.3.4 <4.0.0"
+  flutter: ">=3.16.0"
