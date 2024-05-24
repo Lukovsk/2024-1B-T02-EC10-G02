@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
                 // logo
                 Image.asset(
                   'lib/assets/logo.png',
-                  width: 300,
+                  width: 250,
                 ),
                 // Faça seu login
                 Text(
