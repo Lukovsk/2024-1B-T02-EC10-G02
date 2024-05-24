@@ -4,6 +4,8 @@ import '/widgets/custom_app_bar.dart';
 import '/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
 import 'package:PharmaControl/widgets/enfermeiro/my_requests_card.dart';
+import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
+
 import 'page_state.dart'; 
 
 
@@ -25,7 +27,7 @@ class _HomeState extends State<Home> {
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => RequestPage()),
+          MaterialPageRoute(builder: (context) => OrderScreen()),
         );
         break;
       case 2:

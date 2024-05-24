@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/admin/dashboard.dart';
-import 'package:mobile/widgets/custom_app_bar.dart';
+import 'package:PharmaControl/screens/admin/dashboard.dart';
+import 'package:PharmaControl/widgets/custom_app_bar.dart';
 import '../../constants/colors.dart';
 
 class AdminHome extends StatefulWidget {

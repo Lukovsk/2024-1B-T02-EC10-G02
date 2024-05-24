@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/constants/colors.dart';
-import 'package:mobile/screens/admin/home.dart';
-import 'package:mobile/widgets/custom_app_bar.dart';
+import 'package:PharmaControl/constants/colors.dart';
+import 'package:PharmaControl/screens/admin/home.dart';
+import 'package:PharmaControl/widgets/custom_app_bar.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard({super.key});

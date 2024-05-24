@@ -4,15 +4,23 @@ import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/screens/enfermeiro/home.dart';
 import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
-import 'package:lottie/lottie.dart';
+import 'package:gif_view/gif_view.dart';
+import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
 
+class CheckGif extends StatefulWidget {
+  @override
+  _CheckGifState createState() => _CheckGifState();
+}
 
-class CheckGif extends StatelessWidget {
-  const CheckGif({super.key});
-
+class _CheckGifState extends State<CheckGif> {
   @override
   Widget build(BuildContext context) {
-    return Lottie.asset('lib/assets/videos/check.json');
+    return GifView.asset(
+      'lib/assets/videos/check.gif',
+      height: 200,
+      width: 200,
+      frameRate: 30, 
+    );
   }
 }
 
@@ -34,7 +42,7 @@ class _CheckPage extends State<CheckPage> {
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => CheckPage()),
+          MaterialPageRoute(builder: (context) => OrderScreen()),
         );
         break;
       case 2:
@@ -50,21 +58,24 @@ class _CheckPage extends State<CheckPage> {
     int _currentIndex = context.watch<PageState>().currentIndex;
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Pedido realizado com sucesso!',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-                color: tdBlack,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Solicitação enviada com sucesso!',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: hsBlackColor,
+                ),
               ),
-            ),
-            CheckGif(),
-          ],
+              SizedBox(height: 20), // Espaço entre o texto e o GIF
+              CheckGif(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(

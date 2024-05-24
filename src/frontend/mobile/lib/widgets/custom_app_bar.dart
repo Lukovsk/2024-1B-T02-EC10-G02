@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
-import 'package:mobile/screens/login.dart';
+import 'package:PharmaControl/screens/login.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+                MaterialPageRoute(builder: (context) => LoginPage()), 
               );
             },
             icon: Image.asset(
@@ -32,14 +32,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               height: 55.0,
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.menu,
-              color: Colors.white,
-              size: 40,
-            ),
-          ),
+          //IconButton(
+           // onPressed: () {},
+           // icon: Icon(
+             // Icons.menu,
+           //   color: Colors.white,
+           //   size: 40,
+           // ),
+          //),
         ],
       ),
       centerTitle: true,

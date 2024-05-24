@@ -98,7 +98,7 @@ class _RequestPageState extends State<RequestPage> {
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
-                color: tdBlack,
+                color: hsBlackColor,
               ),
             ),
             SizedBox(height: 16.0),

@@ -7,7 +7,7 @@ class OrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meus Pedidos'),
+        title: Text('Meus Pedidos', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue,
       ),
       body: Padding(
@@ -38,7 +38,7 @@ class OrderScreen extends StatelessWidget {
                     rating: 4,
                   ),
                   OrderCard(
-                    title: 'Dipirona',
+                    title: 'Morfina',
                     status: 'Pedido Cancelado',
                     statusColor: Colors.red,
                     statusIcon: Icons.cancel,
@@ -46,6 +46,26 @@ class OrderScreen extends StatelessWidget {
                     pyxis: '3',
                     sector: '12B',
                     rating: 2,
+                  ),
+                  OrderCard(
+                    title: 'Paracetamol',
+                    status: 'Pedido Cancelado',
+                    statusColor: Colors.red,
+                    statusIcon: Icons.cancel,
+                    date: '22/03/2024',
+                    pyxis: '1',
+                    sector: '12B',
+                    rating: 1,
+                  ),
+                  OrderCard(
+                    title: 'Dipirona',
+                    status: 'Pedido Concluído',
+                    statusColor: Colors.green,
+                    statusIcon: Icons.check_circle,
+                    date: '22/03/2024',
+                    pyxis: '4',
+                    sector: '12B',
+                    rating: 4,
                   ),
                 ],
               ),
