@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/splash.dart';
-import 'package:mobile/screens/enfermeiro/request_page.dart';
+import 'package:PharmaControl/screens/splash.dart';
+import 'package:provider/provider.dart';
+import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
+import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
+import 'package:PharmaControl/widgets/enfermeiro/text_field.dart';
+
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => PageState(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,6 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tela de Login',
       home: Splash(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

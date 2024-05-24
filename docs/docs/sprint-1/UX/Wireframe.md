@@ -27,6 +27,6 @@ sidebar_position: 1
 ![Home Page](../../../static/img/sprint-1/homePage.png)
 
 ## Página de dashboards 
-- Para a página de dash a visualização dos graficos sera na vertical para que cada gráfico ocupe toda a área visivel na sua altura de tela, possibilitando assim a melhor visualização das informações do gráfico. Já para a visualização web foi pensado em 2 graficos na mesma linha para complementrar a visualização além da possibilidade de aplicação de filtros, que pode ser implementada na visualização mobile, contudo  seguindo o padrão de aplicações web é mais comum visualizações com filtros em sites do que apps. 
+- Para a página de dash a visualização dos graficos sera na vertical para que cada gráfico ocupe toda a área visivel na sua altura de tela, possibilitando assim a melhor visualização das informações do gráfico. Já para a visualização web foi pensado em 2 graficos na mesma linha para complementrar a visualização além da possibilidade de aplicação de filtros, que pode ser implementada na visualização PharmaControl, contudo  seguindo o padrão de aplicações web é mais comum visualizações com filtros em sites do que apps. 
 
 ![Dash Page](../../../static/img/sprint-1/graficoPage.png)

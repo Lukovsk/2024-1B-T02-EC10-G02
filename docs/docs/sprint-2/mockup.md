@@ -28,7 +28,7 @@
 
 ![Side Bar](../../static/img/sprint-2/mockup/SideBarAdm.png)
 
-- Por fim, a última página deste fluxo é a página de dashboards. Ela ainda não está bem definida, pois os verdadeiros gráficos serão utilizados com outra interface, sendo o metabase para trazer o dashboard. Portanto, essa página serve apenas para simular a visualização no ambiente mobile.
+- Por fim, a última página deste fluxo é a página de dashboards. Ela ainda não está bem definida, pois os verdadeiros gráficos serão utilizados com outra interface, sendo o metabase para trazer o dashboard. Portanto, essa página serve apenas para simular a visualização no ambiente PharmaControl.
 
 ![Dashboard Page](../../static/img/sprint-2/mockup/DashsAdmMockup.png)
 
