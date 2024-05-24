@@ -20,6 +20,12 @@ class _HomeState extends State<AuxHome> {
   bool _notificationAllowed = false;
   bool _hasNotification = false;
 
+  void _hamburguerOnTap() {
+    setState(() {
+      _hasNotification = !_hasNotification;
+    });
+  }
+
   void _onTap(int index) {
     setState(() {
       _currentIndex = index;
@@ -52,7 +58,9 @@ class _HomeState extends State<AuxHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(
+        hamburguerOnTap: _hamburguerOnTap,
+      ),
       body: _hasNotification ? _buildNotified() : _buildUnNotified(),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _currentIndex,
@@ -101,40 +109,44 @@ class _HomeState extends State<AuxHome> {
         color: Colors.white,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           // Icone gigante
-          Icon(
-            _notificationAllowed
-                ? Icons.alarm_on_rounded
-                : Icons.alarm_off_rounded,
-            size: 120,
-            color: hsGreyColor,
+          Column(
+            children: [
+              Icon(
+                _notificationAllowed
+                    ? Icons.alarm_on_rounded
+                    : Icons.alarm_off_rounded,
+                size: 120,
+                color: hsGreyColor,
+              ),
+              Text(
+                _notificationAllowed ? "Disponível" : "Indisponivel",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              // Textinho
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
+                child: Text(
+                  _notificationAllowed
+                      ? "Nenhum pedido solicitado. Para ficar indisponível basta clicar no botão"
+                      : "No momento você não está recebendo alertas de atendimento. para ficar disponivel basta clicar no botão",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(),
+                ),
+              ),
+            ],
           ),
 
           // Titulozinho
-          Text(
-            _notificationAllowed ? "Disponível" : "Indisponivel",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-
-          // Textinho
-          Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 10,
-            ),
-            child: Text(
-              _notificationAllowed
-                  ? "Nenhum pedido solicitado. Para ficar indisponível basta clicar no botão"
-                  : "No momento você não está recebendo alertas de atendimento. para ficar disponivel basta clicar no botão",
-              textAlign: TextAlign.center,
-              style: TextStyle(),
-            ),
-          ),
 
           // Botãozinho
           Row(

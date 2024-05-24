@@ -5,6 +5,13 @@ import '../constants/colors.dart';
 import 'package:PharmaControl/screens/login.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final Function()? hamburguerOnTap;
+
+  const CustomAppBar({
+    super.key,
+    this.hamburguerOnTap,
+  });
+
   @override
   Size get preferredSize => const Size.fromHeight(80.0);
 
@@ -24,7 +31,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage()), 
+                MaterialPageRoute(builder: (context) => LoginPage()),
               );
             },
             icon: Image.asset(
@@ -32,14 +39,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               height: 55.0,
             ),
           ),
-          //IconButton(
-           // onPressed: () {},
-           // icon: Icon(
-             // Icons.menu,
-           //   color: Colors.white,
-           //   size: 40,
-           // ),
-          //),
+          if (hamburguerOnTap != null)
+            IconButton(
+              onPressed: hamburguerOnTap,
+              icon: Icon(
+                Icons.menu,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
         ],
       ),
       centerTitle: true,
