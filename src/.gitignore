@@ -56,3 +56,5 @@ node_modules
 venv
 
 ./prisma/db.db
+
+.vscode
