@@ -6,7 +6,7 @@ sidebar_position: 2
 # Matriz de risco
 
 
-![matriz de risco](../../../static/img/matriz_de_risco.png)
+![matriz de risco](../../../static/img/sprint-1/matriz_de_risco.png)
 
 Ações de mitigação para cada risco identificado no projeto:
 

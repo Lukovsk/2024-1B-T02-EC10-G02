@@ -5,31 +5,31 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite" // postgresql
-    url      = "file:./db.db" // env("DATABASE_URL") 
+    provider = "postgresql"//"sqlite" DATABASE_URL = postgres://postgres:grupo02@0.0.0.0:5432/postgres
+    url      = "postgres://postgres:grupo02@0.0.0.0:5432/postgres"  //file:./db.db // env("DATABASE_URL")
 }
 
-// enum Role {
-//     NURSE
-//     ASSISTANT
-//     ADMIN
-// }
+enum Role {
+    NURSE
+    ASSISTANT
+    ADMIN
+}
 
-// enum Status {
-//     PENDING
-//     ACCEPTED
-//     REJECTED
-//     DONE
-//     CANCELED
-// }
+enum Status {
+    PENDING
+    ACCEPTED
+    REJECTED
+    DONE
+    CANCELED
+}
 
 model User {
     id       String  @id @default(uuid())
     name     String
     email    String
     password String
-    // role              Role[]     @default([NURSE])
-    role     String?
+    role              Role[]     @default([NURSE])
+    //role     String?
 
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
@@ -43,7 +43,7 @@ model User {
 }
 
 model Feedback {
-    id           Int     @id @unique @default(autoincrement())
+    id           String   @id @default(uuid())
     message_user String?
     message_app  String?
     rate_user    Int
@@ -61,33 +61,33 @@ model Feedback {
 }
 
 model Order {
-    id           Int         @id @unique @default(autoincrement())
-    medication   Medications @relation(fields: [medicationId], references: [id])
-    medicationId Int
-    status       String
+    id           String   @id @default(uuid())
+    medication   Medications? @relation(fields: [medicationId], references: [id])
+    medicationId String?
+    status       Status[]     @default([PENDING])
 
-    sender_user     User   @relation("order_sent", fields: [sender_userId], references: [id])
-    sender_userId   String
+    sender_user     User?   @relation("order_sent", fields: [sender_userId], references: [id])
+    sender_userId   String?
     receiver_user   User?  @relation("order_received", fields: [receiver_userId], references: [id])
-    receiver_userId String
+    receiver_userId String?
 
     feedback   Feedback? @relation(fields: [feedbackId], references: [id])
-    feedbackId Int?
-
+    feedbackId String?
+    
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    updatedAt DateTime? @updatedAt
 
     canceledAt      DateTime?
     canceledBy      User?     @relation("order_canceled", fields: [canceled_userId], references: [id])
     canceled_userId String?
     canceled_reason String?
-    canceled        Boolean   @default(false)
+    canceled        Boolean?   @default(false)
 
-    deleted Boolean @default(false)
+    deleted Boolean? @default(false)
 }
 
 model Medications {
-    id          Int     @id @unique @default(autoincrement())
+    id          String   @id @default(uuid())
     area        String?
     description String?
     lot         Int

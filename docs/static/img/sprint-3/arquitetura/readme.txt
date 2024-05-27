@@ -1,0 +1,1 @@
+Imagens relacionadas à arquitetura aqui
