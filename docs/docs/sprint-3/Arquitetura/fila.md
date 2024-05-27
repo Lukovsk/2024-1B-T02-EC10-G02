@@ -263,7 +263,7 @@ if __name__ == "__main__":
             # Cria uma thread para receber as mensagens do RabbitMQ
             thread = threading.Thread(target=consume_order_queue)
             thread.start()
-            uvicorn.run(app, host="0.0.0.0", port=3001)
+            uvicorn.run(app, host="0.0.0.0", port=8001)
         except Exception as e:
             print(f"Finalizando a execução da thread: {e}")
             thread.join()
