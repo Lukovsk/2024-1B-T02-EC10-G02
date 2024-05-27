@@ -2,6 +2,7 @@
 
 // import 'dart:ffi';
 
+import 'package:PharmaControl/screens/auxiliar/order.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
@@ -47,6 +48,19 @@ class _HomeState extends State<AuxHome> {
       default:
         break;
     }
+  }
+
+  void _onOrderAccepted() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => OrderDetail()),
+    );
+  }
+
+  void _onOrderDenied() {
+    setState(() {
+      _hasNotification = false;
+    });
   }
 
   @override
@@ -96,7 +110,10 @@ class _HomeState extends State<AuxHome> {
               ),
             ],
           ),
-          AuxRequestedOrder()
+          AuxRequestedOrder(
+            onAccepted: _onOrderAccepted,
+            onDenied: _onOrderDenied,
+          )
         ],
       ),
     );
@@ -189,8 +206,13 @@ class _HomeState extends State<AuxHome> {
 }
 
 class AuxRequestedOrder extends StatelessWidget {
+  final Function() onAccepted;
+  final Function() onDenied;
+
   const AuxRequestedOrder({
     super.key,
+    required this.onAccepted,
+    required this.onDenied,
   });
 
   @override
@@ -299,7 +321,7 @@ class AuxRequestedOrder extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: onAccepted,
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStatePropertyAll<Color>(hsGreenColor),
@@ -313,7 +335,7 @@ class AuxRequestedOrder extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: onDenied,
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll<Color>(hsRedColor),
                   fixedSize: MaterialStatePropertyAll<Size>(Size(120, 0)),
