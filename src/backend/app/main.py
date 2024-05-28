@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from logs.logger import setup_logger
 from prismaClient import prismaClient
 from routes import user_router, order_router, queue_router, medication_router # , feedback_router
 import os
@@ -16,6 +17,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+logger = setup_logger('main')
 
 origins = [
     "http://localhost:3000",
