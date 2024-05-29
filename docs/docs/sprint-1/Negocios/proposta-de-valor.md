@@ -9,7 +9,7 @@ Este é o nosso canvas de proposta de valor:
 
 ## Melhorando o aplicativo móvel para controlar o acesso a pyxies
 
-Aqui estão alguns insights sobre a proposta de valor em relação ao aplicativo mobile.
+Aqui estão alguns insights sobre a proposta de valor em relação ao aplicativo PharmaControl.
 
 ### Comunicação e coleta de dados
 
