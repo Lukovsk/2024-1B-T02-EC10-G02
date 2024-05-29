@@ -66,8 +66,8 @@ model Order {
     medicationId String?
     status       Status[]     @default([PENDING])
 
-    sender_user     User   @relation("order_sent", fields: [sender_userId], references: [id])
-    sender_userId   String
+    sender_user     User?   @relation("order_sent", fields: [sender_userId], references: [id])
+    sender_userId   String?
     receiver_user   User?  @relation("order_received", fields: [receiver_userId], references: [id])
     receiver_userId String?
 
@@ -75,15 +75,15 @@ model Order {
     feedbackId String?
     
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    updatedAt DateTime? @updatedAt
 
     canceledAt      DateTime?
     canceledBy      User?     @relation("order_canceled", fields: [canceled_userId], references: [id])
     canceled_userId String?
     canceled_reason String?
-    canceled        Boolean   @default(false)
+    canceled        Boolean?   @default(false)
 
-    deleted Boolean @default(false)
+    deleted Boolean? @default(false)
 }
 
 model Medications {

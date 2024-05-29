@@ -2,6 +2,8 @@ import os
 import pika
 #from controllers.queue import handle_create_order, handle_update_order, handle_cancel_order
 import json
+from .order import OrderService
+import asyncio
 
 
 
@@ -22,11 +24,11 @@ def get_connection():
     return connection
 
 
-create_topic = os.environ["RABBITMQ_QUEUE_CREATE_ORDER"]
-accept_topic = os.environ["RABBITMQ_QUEUE_ACCEPT_ORDER"]
-refuse_topic = os.environ["RABBITMQ_QUEUE_REFUSE_ORDER"]
-complete_topic = os.environ["RABBITMQ_QUEUE_COMPLETE_ORDER"]
-cancel_topic = os.environ["RABBITMQ_QUEUE_CANCEL_ORDER"]
+# create_topic = os.environ["RABBITMQ_QUEUE_CREATE_ORDER"]
+# accept_topic = os.environ["RABBITMQ_QUEUE_ACCEPT_ORDER"]
+# refuse_topic = os.environ["RABBITMQ_QUEUE_REFUSE_ORDER"]
+# complete_topic = os.environ["RABBITMQ_QUEUE_COMPLETE_ORDER"]
+# cancel_topic = os.environ["RABBITMQ_QUEUE_CANCEL_ORDER"]
 
 
 def publish_order(queue_name, message):
@@ -75,3 +77,18 @@ def update_order_queue(payload):
 
 #     channel.basic_consume(queue='cancel_order_queue', on_message_callback=callback, auto_ack=True)
 #     channel.start_consuming()
+
+def consume_order_queue():
+    connection = get_connection()
+    channel = connection.channel()
+    channel.queue_declare(queue='create_order_queue', durable=True)
+
+    order_service = OrderService()
+
+    def callback(ch, method, properties, body):
+        payload = json.loads(body)
+        print(body)
+        asyncio.run(order_service.create_in_db(payload))
+
+    channel.basic_consume(queue='create_order_queue', on_message_callback=callback, auto_ack=True)
+    channel.start_consuming()

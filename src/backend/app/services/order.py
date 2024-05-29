@@ -1,7 +1,7 @@
 from __init__ import db
 from contextlib import asynccontextmanager
 import json
-
+from datetime import datetime
 
 class OrderService:
     def __init__(
@@ -9,9 +9,10 @@ class OrderService:
         id=None,
         medicationId=None,
         status=None,
-        senderId=None,
-        receiverId=None,
+        sender_userId=None,
+        receiver_userId=None,
         feedbackId=None,
+        createdAt=None,
         canceledAt=None,
         canceledBy=None,
         canceled_reason=None,
@@ -19,9 +20,10 @@ class OrderService:
         self.id = id
         self.medicationId = medicationId
         self.status = status
-        self.senderId = senderId
-        self.receiverId = receiverId
+        self.sender_userId = sender_userId
+        self.receiver_userId = receiver_userId
         self.feedbackId = feedbackId
+        self.createdAt = createdAt
         self.canceledAt = canceledAt
         self.canceledBy = canceledBy
         self.canceled_reason = canceled_reason
@@ -113,56 +115,56 @@ class OrderService:
             except Exception as e:
                 raise e
  
-    async def create(self):
+    async def create_in_db(self, payload):
         async with self.database_connection():
             try:
                 new_order = await self.db.order.create(
                     data={
-                        "medicationId": self.medicationId,
-                        "status": self.status,  # deve ser estado com um dos enums do prisma, como PENDING
-                        "senderId": self.senderId,
+                        "medicationId": payload['medicationId'],
+                        "sender_userId": payload['sender_userId'],
+                        "status": payload.get('status',['PENDING']),
+                        "createdAt": datetime.now()
                     }
                 )
-                await self.publish_to_queue({"action": "CREATE", "order": new_order.dict()})
-                return new_order
+                print(f"Order stored successfully: {payload['medicationId']}")
             except Exception as e:
-                raise e
+                print(f"Failed to store order: {e}")
 
-    async def update(self, new_data):
-        async with self.database_connection():
-            try:
-                order = await self.db.order.update(
-                    where={
-                        "id": self.id,
-                    },
-                    data={**new_data},
-                )
-                await self.publish_to_queue({"action": "UPDATE", "order": order.dict()})
-                return order
-            except Exception as e:
-                raise e
+    # async def update(self, new_data):
+    #     async with self.database_connection():
+    #         try:
+    #             order = await self.db.order.update(
+    #                 where={
+    #                     "id": self.id,
+    #                 },
+    #                 data={**new_data},
+    #             )
+    #             await self.publish_to_queue({"action": "UPDATE", "order": order.dict()})
+    #             return order
+    #         except Exception as e:
+    #             raise e
 
-    async def cancel(self) -> bool:
-        import datetime
+    # async def cancel(self) -> bool:
+    #     import datetime
 
-        async with self.database_connection():
-            try:
-                await self.db.order.update(
-                    where={
-                        "id": self.id,
-                    },
-                    data={
-                        "canceled": True,
-                        "canceled_reason": self.canceled_reason,
-                        "canceledBy": self.canceledBy,
-                        "canceledAt": datetime.datetime.now(),
-                        "status": "CANCELED",  # TODO: change this status to an enum with prisma
-                    },
-                )
-                self.publish_to_queue({"action": "CANCEL", "order_id": self.id})
-                return True
-            except Exception as e:
-                raise e
+    #     async with self.database_connection():
+    #         try:
+    #             await self.db.order.update(
+    #                 where={
+    #                     "id": self.id,
+    #                 },
+    #                 data={
+    #                     "canceled": True,
+    #                     "canceled_reason": self.canceled_reason,
+    #                     "canceledBy": self.canceledBy,
+    #                     "canceledAt": datetime.datetime.now(),
+    #                     "status": "CANCELED",  # TODO: change this status to an enum with prisma
+    #                 },
+    #             )
+    #             self.publish_to_queue({"action": "CANCEL", "order_id": self.id})
+    #             return True
+    #         except Exception as e:
+    #             raise e
 
     ## Quero deletar um pedido
     async def delete(self) -> bool:
