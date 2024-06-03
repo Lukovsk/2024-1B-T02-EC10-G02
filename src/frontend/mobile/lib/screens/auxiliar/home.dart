@@ -2,6 +2,7 @@
 
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/order.dart';
+import 'package:PharmaControl/screens/auxiliar/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
@@ -42,10 +43,10 @@ class _HomeState extends State<AuxHome> {
         );
         break;
       case 1:
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => Dashboard()),
-        // );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AuxOrders()),
+        );
         break;
       default:
         break;
