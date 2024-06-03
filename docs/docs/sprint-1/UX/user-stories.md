@@ -36,11 +36,11 @@ Com o intuito de definir os principais objetivos dos usuários e o que se é esp
       <td>Eu, como gerente de farmácia, preciso que a plataforma seja intuitiva e fácil de usar para que a equipe possa adotá-la rapidamente e com o mínimo de treinamento, garantindo assim a eficiência e a redução de erros operacionais.</td>
     </tr>
     <tr>
-      <td rowspan="3">Como técnica de enfermagem do Hospital Sírio-Libanês, desejo ter acesso a uma plataforma mobile que me permita administrar o cuidado ao paciente de maneira eficiente, assegurando que os medicamentos sejam solicitados, dispensados e administrados corretamente e no tempo certo.</td>
+      <td rowspan="3">Como técnica de enfermagem do Hospital Sírio-Libanês, desejo ter acesso a uma plataforma PharmaControl que me permita administrar o cuidado ao paciente de maneira eficiente, assegurando que os medicamentos sejam solicitados, dispensados e administrados corretamente e no tempo certo.</td>
       <td>Como técnica de enfermagem, quero visualizar uma lista organizada dos medicamentos a serem administrados, com informações claras sobre dosagem e horário, para garantir a administração correta e pontual.</td>
     </tr>
     <tr>
-      <td> Como técnica de enfermagem, desejo poder solicitar a dispensação de medicamentos via plataforma mobile, para agilizar o atendimento e permitir um cuidado contínuo ao paciente.</td>
+      <td> Como técnica de enfermagem, desejo poder solicitar a dispensação de medicamentos via plataforma PharmaControl, para agilizar o atendimento e permitir um cuidado contínuo ao paciente.</td>
     </tr>
     <tr>
       <td> Eu, como técnico de enfermagem, quero utilizar um sistema que me permita registrar facilmente a administração de medicamentos, para manter um histórico atualizado do tratamento de cada paciente.</td>

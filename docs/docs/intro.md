@@ -19,7 +19,7 @@ A organização operacional do projeto deu-se a partir dos pilares postulados pe
 - Aprofundamento no mercado e na solução proposta.
 - Compreensão detalhada da experi~encia do usuário no contexto do projeto.
 - Desenvolvimento da arquiteutra inicial do sistema, incorporando requisitos coerentemente.
-- Desenvolvimento do wireframe para o aplicativo mobile.
+- Desenvolvimento do wireframe para o aplicativo PharmaControl.
 
 #### **Apresentação da primeira sprint review**
 
@@ -41,14 +41,23 @@ A organização operacional do projeto deu-se a partir dos pilares postulados pe
 
 [Ou aqui para o link direto ao Canva](https://www.canva.com/design/DAGEpOlf4Dc/DUNxGVev4g_skPARg7t7Vw/view?utm_content=DAGEpOlf4Dc&utm_campaign=share_your_design&utm_medium=link&utm_source=shareyourdesignpanel)
 
-### Sprint 3
+### Sprint 3: Desenvolvimento do Aplicativo e aprimoramento do backend
 
-<img src="<https://i.redd.it/q0dd3k02unqb1.gif>" alt="Boot process" style={{ display: 'block', marginLeft: 'auto', maxHeight: '30vh', marginRight: 'auto' }} />
+- Aprimoramos o fluxo principal do backend.
+- Desenvolvemos o fluxo principal do aplicativo mobile.
+- Evoluímos a arquitetura da solução.
+- Efetuamos testes de carga no fluxo principal.
+
+#### **Apresentação da segunda sprint review**
+
+[Acesse a apresentação aqui!!](../static/reviews/SPRINT%2003%20-%20GRUPO%202%20-%20M10.pdf)
+
+[Ou aqui para o link direto ao Canva](https://www.canva.com/design/DAGGI_A8M3E/qo1E8Go0sUXf6uJoRcro-A/view?utm_content=DAGGI_A8M3E&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 
 ### Sprint 4
 
-<img src="<https://i.redd.it/q0dd3k02unqb1.gif>" alt="Boot process" style={{ display: 'block', marginLeft: 'auto', maxHeight: '30vh', marginRight: 'auto' }} />
+<img src="https://i.redd.it/q0dd3k02unqb1.gif" alt="Boot process" style={{ display: 'block', marginLeft: 'auto', maxHeight: '30vh', marginRight: 'auto' }} />
 
 ### Sprint 5
 
-<img src="<https://i.redd.it/q0dd3k02unqb1.gif>" alt="Boot process" style={{ display: 'block', marginLeft: 'auto', maxHeight: '30vh', marginRight: 'auto' }} />
+<img src="https://i.redd.it/q0dd3k02unqb1.gif" alt="Boot process" style={{ display: 'block', marginLeft: 'auto', maxHeight: '30vh', marginRight: 'auto' }} />

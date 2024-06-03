@@ -56,4 +56,4 @@ sidebar_position: 1
 7. **Direcionamento ao Administrador:**
    - A solicitação também é direcionada ao administrador responsável pela gestão de suprimentos para avaliação e ação adequada.
 
-![Arquitetura da Solução](../../../static/img/arquitetura_sprint2.png)
+![Arquitetura da Solução](../../../static/img/sprint-2/arquitetura_sprint2.png)
