@@ -1,32 +1,34 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 // import 'dart:ffi';
 
+import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/order.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
 import '/widgets/bottom_navigation_bar.dart';
-import 'package:PharmaControl/screens/admin/home.dart';
 
 class AuxHome extends StatefulWidget {
-  AuxHome({super.key});
+  const AuxHome({super.key});
 
   @override
   State<AuxHome> createState() => _HomeState();
 }
 
 class _HomeState extends State<AuxHome> {
+  // ? Será que não é melhor colocar isso buildin no bottom navigation bar?
   int _currentIndex = 0;
+
   bool _notificationAllowed = false;
   bool _hasNotification = false;
 
+  // TODO: deve haver um push notification que altera automaticamente para "requisição recebida"
   void _hamburguerOnTap() {
     setState(() {
       _hasNotification = !_hasNotification;
     });
   }
 
+  // ? Será que não é melhor colocar isso buildin no bottom navigation bar?
   void _onTap(int index) {
     setState(() {
       _currentIndex = index;
@@ -50,13 +52,23 @@ class _HomeState extends State<AuxHome> {
     }
   }
 
+  // TODO: integrando, deve alterar o estado do auxiliar (faz uma requisição ao controller para alterar o estado dele)
+  void changeAllowNotification() {
+    setState(() {
+      _notificationAllowed = !_notificationAllowed;
+    });
+  }
+
+  // TODO: integrando, deve alterar o estado do pedido na fila, colocando que há um auxiliar que fará o pedido
   void _onOrderAccepted() {
+    final order = Order.getExample();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => OrderDetail()),
+      MaterialPageRoute(builder: (context) => OrderDetail(order: order)),
     );
   }
 
+  // TODO: integrando, deve fazer com que um outro auxiliar receba uma notificação (ideal guardar a informação que o pedido foi negato e por quem)
   void _onOrderDenied() {
     setState(() {
       _hasNotification = false;
@@ -83,126 +95,118 @@ class _HomeState extends State<AuxHome> {
     );
   }
 
-  Container _buildNotified() {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  "Atendimento solicitado",
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
+  Container _buildNotified() => Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: const Text(
+                    "Atendimento solicitado",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-              Divider(
-                color: hsNiceBlueColor,
-                thickness: 6,
-              ),
-            ],
-          ),
-          AuxRequestedOrder(
-            onAccepted: _onOrderAccepted,
-            onDenied: _onOrderDenied,
-          )
-        ],
-      ),
-    );
-  }
-
-  Container _buildUnNotified() {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          // Icone gigante
-          Column(
-            children: [
-              Icon(
-                _notificationAllowed
-                    ? Icons.alarm_on_rounded
-                    : Icons.alarm_off_rounded,
-                size: 120,
-                color: hsGreyColor,
-              ),
-              Text(
-                _notificationAllowed ? "Disponível" : "Indisponivel",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                const Divider(
+                  color: hsNiceBlueColor,
+                  thickness: 6,
                 ),
-              ),
+              ],
+            ),
+            AuxRequestedOrder(
+              onAccepted: _onOrderAccepted,
+              onDenied: _onOrderDenied,
+            )
+          ],
+        ),
+      );
 
-              // Textinho
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
-                ),
-                child: Text(
+  Container _buildUnNotified() => Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            // Icone gigante
+            Column(
+              children: [
+                Icon(
                   _notificationAllowed
-                      ? "Nenhum pedido solicitado. Para ficar indisponível basta clicar no botão"
-                      : "No momento você não está recebendo alertas de atendimento. para ficar disponivel basta clicar no botão",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(),
+                      ? Icons.alarm_on_rounded
+                      : Icons.alarm_off_rounded,
+                  size: 120,
+                  color: hsGreyColor,
                 ),
-              ),
-            ],
-          ),
-
-          // Titulozinho
-
-          // Botãozinho
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                margin: EdgeInsets.only(
-                  top: 20,
-                  right: 40,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _notificationAllowed = !_notificationAllowed;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: hsNiceBlueColor,
-                    minimumSize: Size(60, 80),
-                    elevation: 10,
+                Text(
+                  _notificationAllowed ? "Disponível" : "Indisponivel",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  child: Icon(
+                ),
+
+                // Textinho
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
+                  child: Text(
                     _notificationAllowed
-                        ? Icons.notifications_off_rounded
-                        : Icons.notifications_on_rounded,
-                    size: 40,
-                    color: Colors.white,
+                        ? "Nenhum pedido solicitado. Para ficar indisponível basta clicar no botão"
+                        : "No momento você não está recebendo alertas de atendimento. para ficar disponivel basta clicar no botão",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(),
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
+              ],
+            ),
+
+            // Titulozinho
+
+            // Botãozinho
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(
+                    top: 20,
+                    right: 40,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: changeAllowNotification,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: hsNiceBlueColor,
+                      minimumSize: const Size(60, 80),
+                      elevation: 10,
+                    ),
+                    child: Icon(
+                      _notificationAllowed
+                          ? Icons.notifications_off_rounded
+                          : Icons.notifications_on_rounded,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
 }
 
 class AuxRequestedOrder extends StatelessWidget {
@@ -218,20 +222,20 @@ class AuxRequestedOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 40,
         horizontal: 20,
       ),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border(
+          border: const Border(
             top: BorderSide(
               color: hsYellowColor,
               width: 24,
             ),
           ),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black38,
               spreadRadius: 1,
@@ -239,7 +243,7 @@ class AuxRequestedOrder extends StatelessWidget {
               offset: Offset(0, 4),
             )
           ]),
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 20,
         bottom: 12,
         left: 10,
@@ -249,7 +253,7 @@ class AuxRequestedOrder extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
+            padding: const EdgeInsets.symmetric(vertical: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -257,8 +261,8 @@ class AuxRequestedOrder extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(right: 10),
-                      padding: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 10,
                       ),
@@ -268,13 +272,13 @@ class AuxRequestedOrder extends StatelessWidget {
                           color: hsBlackColor,
                         ),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.medical_services_rounded,
                         color: hsBlackColor,
                         size: 40,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "Pyxi - 12B",
                       style: TextStyle(
                         fontSize: 14,
@@ -284,7 +288,7 @@ class AuxRequestedOrder extends StatelessWidget {
                     )
                   ],
                 ),
-                Column(
+                const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -322,12 +326,11 @@ class AuxRequestedOrder extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: onAccepted,
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStatePropertyAll<Color>(hsGreenColor),
-                  fixedSize: MaterialStatePropertyAll<Size>(Size(120, 0)),
+                style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll<Color>(hsGreenColor),
+                  fixedSize: WidgetStatePropertyAll<Size>(Size(120, 0)),
                 ),
-                child: Text(
+                child: const Text(
                   "Aceitar",
                   style: TextStyle(
                     color: Colors.white,
@@ -336,11 +339,11 @@ class AuxRequestedOrder extends StatelessWidget {
               ),
               TextButton(
                 onPressed: onDenied,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(hsRedColor),
-                  fixedSize: MaterialStatePropertyAll<Size>(Size(120, 0)),
+                style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll<Color>(hsRedColor),
+                  fixedSize: WidgetStatePropertyAll<Size>(Size(120, 0)),
                 ),
-                child: Text(
+                child: const Text(
                   "Negar",
                   style: TextStyle(
                     color: Colors.white,

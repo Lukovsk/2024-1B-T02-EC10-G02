@@ -1,10 +1,10 @@
+import 'package:PharmaControl/screens/auxiliar/home.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/screens/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
 import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
 import 'package:PharmaControl/widgets/enfermeiro/text_field.dart';
-
 
 void main() {
   runApp(
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tela de Login',
-      home: Splash(),
+      home: AuxHome(),
       debugShowCheckedModeBanner: false,
     );
   }
