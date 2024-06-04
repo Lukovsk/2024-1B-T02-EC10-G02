@@ -91,13 +91,13 @@ class UserService():
                 # Check if the user exists before deleting
                 await self.db.user.find_unique_or_raise(
                     where={
-                        "id": self.id
+                        "id": id
                     }
                 )
                 # Perform the delete operation
                 await self.db.user.delete(
                     where={
-                        "id": self.id
+                        "id": id
                     }
                 )
             except errors.RecordNotFoundError:

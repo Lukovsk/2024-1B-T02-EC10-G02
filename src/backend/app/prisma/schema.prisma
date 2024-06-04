@@ -6,7 +6,8 @@ generator client {
 
 datasource db {
     provider = "postgresql"//"sqlite" DATABASE_URL = postgres://postgres:grupo02@0.0.0.0:5432/postgres
-    url      = "postgres://postgres:grupo02@0.0.0.0:5432/postgres"  //file:./db.db // env("DATABASE_URL")
+    url      = "postgres://postgres.wrftveqnrqsolcpblwuj:upYSm1mENNr7FDyW@aws-0-sa-east-1.pooler.supabase.com:5432/postgres"  //file:./db.db // env("DATABASE_URL")
+    directUrl = "postgres://postgres.wrftveqnrqsolcpblwuj:upYSm1mENNr7FDyW@aws-0-sa-east-1.pooler.supabase.com:6543/postgres/?pgbouncer=true&connection_limit=1"
 }
 
 enum Role {
