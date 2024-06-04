@@ -5,13 +5,6 @@ from prismaClient import prismaClient
 from routes import order_pub_router
 import os
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await prismaClient.connect()
-    yield
-    await prismaClient.disconnect()
-
-
 app = FastAPI(lifespan=lifespan)
 
 
