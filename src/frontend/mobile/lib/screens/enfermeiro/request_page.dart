@@ -1,4 +1,5 @@
 import 'package:PharmaControl/screens/enfermeiro/check_page.dart';
+import 'package:PharmaControl/screens/enfermeiro/revision_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
@@ -49,7 +50,6 @@ class _RequestPageState extends State<RequestPage> {
     String selectedOption = '';
     TextEditingController customOptionController = TextEditingController();
 
-    List<String> options = ['Opção 1', 'Opção 2', 'Opção 3'];
     List<String> pyxisOptions = [
       'Pyxis 1',
       'Pyxis 2',
@@ -57,6 +57,7 @@ class _RequestPageState extends State<RequestPage> {
     ];
 
     List<String> materialOptions = [
+      'Esparadrapo',
       'Gaze',
       'Luva',
       'Máscara',
@@ -66,7 +67,6 @@ class _RequestPageState extends State<RequestPage> {
       'Touca',
       'Álcool em gel',
       'Fita adesiva',
-      'Esparadrapo',
       'Soro fisiológico',
     ];
     
@@ -88,69 +88,69 @@ class _RequestPageState extends State<RequestPage> {
         ),
         backgroundColor: Color(0xFF2563AF),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Preencha as informações',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-                color: hsBlackColor,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            children: [
+              const Text(
+                'Preencha as informações',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: hsBlackColor,
+                ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            AutoCompleteTextFieldWidget(
-                suggestions: problem, labelText: 'Qual o seu problema?'),
-            SizedBox(height: 16.0),
-            AutoCompleteTextFieldWidget(
-                suggestions: pyxisOptions, labelText: 'Qual o pyxis?'),
-            SizedBox(height: 16.0),
-            AutoCompleteTextFieldWidget(
-                suggestions: materialOptions, labelText: 'Qual o material?'),
-            SizedBox(height: 16.0),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: TextField(
-                maxLines: 4,
-                decoration: InputDecoration(
-                  alignLabelWithHint: true,
-                  labelText: 'Alguma observação?',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+              SizedBox(height: 16.0),
+              AutoCompleteTextFieldWidget(
+                  suggestions: problem, labelText: 'Qual o seu problema?'),
+              SizedBox(height: 16.0),
+              AutoCompleteTextFieldWidget(
+                  suggestions: pyxisOptions, labelText: 'Qual o pyxis?'),
+              SizedBox(height: 16.0),
+              AutoCompleteTextFieldWidget(
+                  suggestions: materialOptions, labelText: 'Qual o material?'),
+              SizedBox(height: 16.0),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    alignLabelWithHint: true,
+                    labelText: 'Alguma observação?',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Spacer(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => CheckPage()),
-                  );
-                
-                },
-                child: Text(
-                  'Enviar solicitação',
-                  style: TextStyle(fontSize: 20.0, color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF2563AF),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 32.0,
-                    vertical: 12.0,
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => NovaSolicitacao()),
+                    );
+                  
+                  },
+                  child: Text(
+                    'Enviar solicitação',
+                    style: TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF2563AF),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 32.0,
+                      vertical: 12.0,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(

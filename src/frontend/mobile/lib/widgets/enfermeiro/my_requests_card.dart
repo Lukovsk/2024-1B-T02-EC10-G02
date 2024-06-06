@@ -18,7 +18,7 @@ class MyRequestsCard extends StatelessWidget {
         ),
         color: tdGradient.colors[1],
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(11.0),
           child: Row(
             children: [
               Column(
@@ -52,8 +52,13 @@ class MyRequestsCard extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              const Image(
-                image: AssetImage('lib/assets/images/medicine.png'),
+              const SizedBox(
+                height: 50.0, 
+                width: 50.0,  
+                child: Image(
+                  image: AssetImage('lib/assets/images/medicine.png'),
+                  fit: BoxFit.contain,
+                ),
               ),
             ],
           ),
