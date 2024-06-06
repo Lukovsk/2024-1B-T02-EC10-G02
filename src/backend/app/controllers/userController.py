@@ -53,16 +53,11 @@ async def controller_update_user(update_data: dict, id) -> dict:
    except Exception as e:
       raise HTTPException(status_code=500, detail=str(e))
    
-async def controller_delete_user(data):
-   checked_data = {k: v for k, v in data.items() if v is not None}
-
-   if checked_data == {}:
-      raise HTTPException(status_code=400, detail="Invalid parameters")
-   
+async def controller_delete_user(id: str) -> dict:
    userService = UserService()
    try:
-      deleted_user = await userService.delete_user(checked_data)
-      return {"message": f"User {deleted_user.name} deleted successfully"}
+      await userService.delete_user(id)
+      return {"message": f"User with id {id} deleted successfully"}
 
    except HTTPException:
        raise HTTPException(status_code=400, detail="Invalid parameters")
