@@ -1,10 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
+import 'package:PharmaControl/screens/enfermeiro/home.dart';
+import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
+import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
+import 'package:provider/provider.dart';
 
 
-class OrderScreen extends StatelessWidget {
+class OrderScreen extends StatefulWidget {
   @override
+  _OrderScreen createState() => _OrderScreen();
+}
+
+class _OrderScreen extends State<OrderScreen>  {
+  void _onTap(int index) {
+ 
+
+    context.read<PageState>().setIndex(index);
+    
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => OrderScreen()),
+        );
+        break;
+      case 2:
+        // Navigate to ProfileScreen()
+        break;
+      default:
+        break;
+    }
+  }
+  @override
+  
+
   Widget build(BuildContext context) {
+  int _currentIndex = context.watch<PageState>().currentIndex;
     return Scaffold(
       appBar: AppBar(
         title: Text('Meus Pedidos', style: TextStyle(color: Colors.white)),
@@ -28,12 +66,12 @@ class OrderScreen extends StatelessWidget {
               child: ListView(
                 children: [
                   OrderCard(
-                    title: 'Dipirona',
+                    title: 'Esparadrapo',
                     status: 'Pedido Concluído',
                     statusColor: Colors.green,
                     statusIcon: Icons.check_circle,
                     date: '22/03/2024',
-                    pyxis: '3',
+                    pyxis: '2',
                     sector: '12B',
                     rating: 4,
                   ),
@@ -72,6 +110,10 @@ class OrderScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+       bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTap,
       ),
     );
   }
