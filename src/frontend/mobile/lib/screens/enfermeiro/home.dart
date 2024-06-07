@@ -5,6 +5,7 @@ import '/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
 import 'package:PharmaControl/widgets/enfermeiro/my_requests_card.dart';
 import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
+import 'package:PharmaControl/screens/auxiliar/home.dart';
 
 import 'page_state.dart'; 
 
@@ -31,7 +32,10 @@ class _HomeState extends State<Home> {
         );
         break;
       case 2:
-        // Navigate to ProfileScreen()
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AuxHome()),
+        );
         break;
       default:
         break;

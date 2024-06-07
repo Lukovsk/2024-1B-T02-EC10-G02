@@ -327,9 +327,9 @@ class AuxRequestedOrder extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: onAccepted,
-                style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll<Color>(hsGreenColor),
-                  fixedSize: WidgetStatePropertyAll<Size>(Size(120, 0)),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(hsRedColor),
+                  fixedSize: MaterialStatePropertyAll<Size>(Size(120, 0)),
                 ),
                 child: const Text(
                   "Aceitar",
@@ -341,8 +341,8 @@ class AuxRequestedOrder extends StatelessWidget {
               TextButton(
                 onPressed: onDenied,
                 style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll<Color>(hsRedColor),
-                  fixedSize: WidgetStatePropertyAll<Size>(Size(120, 0)),
+                  backgroundColor: MaterialStatePropertyAll<Color>(hsRedColor),
+                  fixedSize: MaterialStatePropertyAll<Size>(Size(120, 0)),
                 ),
                 child: const Text(
                   "Negar",
