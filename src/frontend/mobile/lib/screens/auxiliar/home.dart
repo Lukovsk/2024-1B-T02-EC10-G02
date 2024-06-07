@@ -1,10 +1,12 @@
 // import 'dart:ffi';
 
+import 'package:PharmaControl/api/user.dart';
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/order.dart';
 import 'package:PharmaControl/screens/auxiliar/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/constants/colors.dart';
+import 'package:PharmaControl/globals.dart' as globals;
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
 import '/widgets/bottom_navigation_bar.dart';
 
@@ -53,11 +55,19 @@ class _HomeState extends State<AuxHome> {
     }
   }
 
-  // TODO: integrando, deve alterar o estado do auxiliar (faz uma requisição ao controller para alterar o estado dele)
-  void changeAllowNotification() {
-    setState(() {
-      _notificationAllowed = !_notificationAllowed;
-    });
+  // TODO: #92 integrando, deve alterar o estado do auxiliar (faz uma requisição ao controller para alterar o estado dele)
+  void changeAllowNotification() async {
+    if (await changeDisponibilty(globals.user!.id!)) {
+      setState(() {
+        _notificationAllowed = !_notificationAllowed;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha em se tornar disponível!'),
+        ),
+      );
+    }
   }
 
   // TODO: integrando, deve alterar o estado do pedido na fila, colocando que há um auxiliar que fará o pedido

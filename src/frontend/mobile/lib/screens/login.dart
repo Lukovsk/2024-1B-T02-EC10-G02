@@ -88,17 +88,23 @@ class LoginPage extends StatelessWidget {
     Map<dynamic, dynamic> user =
         await login(userController.text, passwordController.text);
 
-    if (user["name"] == "Administrador") {
+    if (user["user"] == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no login!'),
+        ),
+      );
+    } else if (user["role"][0] == "ADMIN") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AdminHome()),
       );
-    } else if (user["name"] == "Auxiliar") {
+    } else if (user["role"][0] == "ASSISTANT") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AuxHome()),
       );
-    } else if (user["name"] == "Enfermeiro") {
+    } else if (user["role"][0] == "NURSE") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Home()),
