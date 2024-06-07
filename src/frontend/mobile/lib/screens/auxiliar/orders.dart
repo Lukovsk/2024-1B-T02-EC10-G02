@@ -1,19 +1,21 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:flutter/material.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
-import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
+import 'package:PharmaControl/screens/enfermeiro/order_state.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:PharmaControl/screens/auxiliar/pharma_control_card.dart';
 
 class AuxOrders extends StatefulWidget {
   const AuxOrders({super.key});
 
   @override
-  State<AuxOrders> createState() => Aux_OrdersState();
+  State<AuxOrders> createState() => _AuxOrdersState();
 }
 
-class Aux_OrdersState extends State<AuxOrders> {
+class _AuxOrdersState extends State<AuxOrders> {
   int _currentIndex = 1;
 
   void _bottomNavOnTap(int index) {
@@ -41,6 +43,8 @@ class Aux_OrdersState extends State<AuxOrders> {
 
   @override
   Widget build(BuildContext context) {
+    var orders = context.watch<OrderState>().orders;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(),
@@ -59,56 +63,34 @@ class Aux_OrdersState extends State<AuxOrders> {
             ),
             SizedBox(height: 16),
             Expanded(
-              child: ListView(
-                children: [
-                  OrderCard(
-                    title: 'Dipirona',
-                    status: 'Pedido Concluído',
-                    statusColor: Colors.green,
-                    statusIcon: Icons.check_circle,
-                    date: '22/03/2024',
-                    pyxis: '3',
-                    sector: '12B',
-                    rating: 4,
-                  ),
-                  OrderCard(
-                    title: 'Morfina',
-                    status: 'Pedido Cancelado',
-                    statusColor: Colors.red,
-                    statusIcon: Icons.cancel,
-                    date: '22/03/2024',
-                    pyxis: '3',
-                    sector: '12B',
-                    rating: 2,
-                  ),
-                  OrderCard(
-                    title: 'Paracetamol',
-                    status: 'Pedido Cancelado',
-                    statusColor: Colors.red,
-                    statusIcon: Icons.cancel,
-                    date: '22/03/2024',
-                    pyxis: '1',
-                    sector: '12B',
-                    rating: 1,
-                  ),
-                  OrderCard(
-                    title: 'Dipirona',
-                    status: 'Pedido Concluído',
-                    statusColor: Colors.green,
-                    statusIcon: Icons.check_circle,
-                    date: '22/03/2024',
-                    pyxis: '4',
-                    sector: '12B',
-                    rating: 4,
-                  ),
-                ],
+              child: ListView.builder(
+                itemCount: orders.length,
+                itemBuilder: (context, index) {
+                  var order = orders[index];
+                  return PharmaControlCard(
+                    title: order.material.isNotEmpty ? order.material : order.problema,
+                    idMedicamento: "1234543",  // substitua com os dados reais
+                    quantidade: "20 unidades",  // substitua com os dados reais
+                    pontoReferencia: "Ala-pediátrica",  // substitua com os dados reais
+                    onAccepted: () {
+                      // lógica de aceitação
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pedido aceito')));
+                    },
+                    onDeclined: () {
+                      // lógica de recusa
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pedido recusado')));
+                    },
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: _currentIndex, onTap: _bottomNavOnTap),
+        currentIndex: _currentIndex,
+        onTap: _bottomNavOnTap,
+      ),
     );
   }
 }

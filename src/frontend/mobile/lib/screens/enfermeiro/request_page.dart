@@ -1,13 +1,11 @@
-import 'package:PharmaControl/screens/enfermeiro/check_page.dart';
 import 'package:PharmaControl/screens/enfermeiro/revision_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
+import 'package:PharmaControl/widgets/enfermeiro/text_field.dart';
 import 'package:PharmaControl/screens/enfermeiro/home.dart';
 import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:PharmaControl/widgets/enfermeiro/text_field.dart';
 
 class RequestPage extends StatefulWidget {
   @override
@@ -15,6 +13,16 @@ class RequestPage extends StatefulWidget {
 }
 
 class _RequestPageState extends State<RequestPage> {
+  TextEditingController problemController = TextEditingController();
+  TextEditingController pyxisController = TextEditingController();
+  TextEditingController materialController = TextEditingController();
+  TextEditingController medicineController = TextEditingController();
+  TextEditingController mainController = TextEditingController();
+
+  String thirdInputLabel = 'Qual o material?';
+  List<String> thirdInputOptions = [];
+  bool showThirdInput = true;
+
   void _onTap(int index) {
     context.read<PageState>().setIndex(index);
     switch (index) {
@@ -38,6 +46,53 @@ class _RequestPageState extends State<RequestPage> {
     }
   }
 
+  void _updateThirdInputLabel(String selectedProblem) {
+    setState(() {
+      if (selectedProblem == "Medicamento acabou") {
+        thirdInputLabel = "Qual medicamento está em falta?";
+        thirdInputOptions = [
+          'Dipirona',
+          'Paracetamol',
+          'Ibuprofeno',
+          'Dorflex',
+          'Buscopan',
+          'Omeprazol',
+          'Dexametasona',
+          'Prednisona',
+          'Amoxicilina',
+          'Azitromicina',
+        ];
+        mainController = medicineController;
+        showThirdInput = true;
+      } else if (selectedProblem == "Material em falta") {
+        thirdInputLabel = "Qual material está em falta?";
+        thirdInputOptions = [
+          'Esparadrapo',
+          'Gaze',
+          'Luva',
+          'Máscara',
+          'Seringa',
+          'Agulha',
+          'Avental',
+          'Touca',
+          'Álcool em gel',
+          'Fita adesiva',
+          'Soro fisiológico',
+        ];
+        mainController = materialController;
+        showThirdInput = true;
+      } else if (selectedProblem == "Problemas técnicos com o pyxis") {
+        showThirdInput = false;
+        thirdInputLabel = "Problemas técnicos com o pyxis";
+        pyxisController.text = "Pyxis 1";
+      } else {
+        thirdInputLabel = "Qual o material?";
+        thirdInputOptions = [];
+        showThirdInput = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> problem = [
@@ -47,32 +102,12 @@ class _RequestPageState extends State<RequestPage> {
     ];
 
     int _currentIndex = context.watch<PageState>().currentIndex;
-    String selectedOption = '';
-    TextEditingController customOptionController = TextEditingController();
 
     List<String> pyxisOptions = [
       'Pyxis 1',
       'Pyxis 2',
       'Pyxis 3',
     ];
-
-    List<String> materialOptions = [
-      'Esparadrapo',
-      'Gaze',
-      'Luva',
-      'Máscara',
-      'Seringa',
-      'Agulha',
-      'Avental',
-      'Touca',
-      'Álcool em gel',
-      'Fita adesiva',
-      'Soro fisiológico',
-    ];
-    
-    List<String> added = [];
-    String currentText = "";
-    GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
 
     return Scaffold(
       appBar: AppBar(
@@ -103,13 +138,39 @@ class _RequestPageState extends State<RequestPage> {
               ),
               SizedBox(height: 16.0),
               AutoCompleteTextFieldWidget(
-                  suggestions: problem, labelText: 'Qual o seu problema?'),
+                suggestions: problem,
+                labelText: 'Qual o seu problema?',
+                controller: problemController,
+                onSelected: (selection) {
+                  setState(() {
+                    problemController.text = selection;
+                    _updateThirdInputLabel(selection);
+                  });
+                },
+              ),
               SizedBox(height: 16.0),
               AutoCompleteTextFieldWidget(
-                  suggestions: pyxisOptions, labelText: 'Qual o pyxis?'),
+                suggestions: pyxisOptions,
+                labelText: 'Qual o pyxis?',
+                controller: pyxisController,
+                onSelected: (selection) {
+                  setState(() {
+                    pyxisController.text = selection;
+                  });
+                },
+              ),
               SizedBox(height: 16.0),
-              AutoCompleteTextFieldWidget(
-                  suggestions: materialOptions, labelText: 'Qual o material?'),
+              if (showThirdInput)
+                AutoCompleteTextFieldWidget(
+                  suggestions: thirdInputOptions,
+                  labelText: thirdInputLabel,
+                  controller: mainController,
+                  onSelected: (selection) {
+                    setState(() {
+                      mainController.text = selection;
+                    });
+                  },
+                ),
               SizedBox(height: 16.0),
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -127,14 +188,20 @@ class _RequestPageState extends State<RequestPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => NovaSolicitacao()),
+                      MaterialPageRoute(
+                        builder: (context) => NovaSolicitacao(
+                          problema: problemController.text,
+                          pyxis: pyxisController.text,
+                          material: mainController.text,
+                            problemSelected: thirdInputLabel,
+                        ),
+                      ),
                     );
-                  
                   },
                   child: Text(
-                    'Enviar solicitação',
+                    'Revisar solicitação',
                     style: TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
                   style: ElevatedButton.styleFrom(
