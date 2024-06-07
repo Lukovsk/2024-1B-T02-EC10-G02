@@ -17,11 +17,23 @@ async def get_sender_orders(senderId):
 async def get_receiver_orders(receiverId):
     orderService = OrderService(receiverId=receiverId)
     try:
-        orders = orderService.get_closed_orders()
+        orders = await orderService.get_closed_orders()
         
         return orders
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+async def controller_get_last_pending_order():
+    orderService = OrderService()
+    try:
+        orders = await orderService.get_all_by_status(status="PENDING")
+        
+        return orders[0]
+    except IndexError as e:
+        raise HTTPException(status_code=204, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    pass
 
 ## Eu quero todos os pedidos
 async def get_all_orders():
@@ -63,14 +75,6 @@ async def controller_update_order(new_data, order_id):
         return order
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-async def _update_status_aux(new_data, order_id):
-    orderService = OrderService(id=order_id)
-    try:
-        order = orderService.update(new_data=new_data)
-        return order
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 # FILA:
 
 # async def controller_update_status(order_id):
@@ -79,6 +83,24 @@ async def _update_status_aux(new_data, order_id):
 #         order = orderService.update(new_data={"status": })
 
 #DELETE
+async def controller_update_status_accepted(id: str) -> dict:
+    orderService = OrderService(id=id)
+    try:
+        order = await orderService.update_status_accepted(id)
+        return {"message": f"Order {order.id} updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+async def controller_update_status_done(id: str) -> dict:
+    orderService = OrderService(id=id)
+    try:
+        order = await orderService.update_status_done(id)
+        return {"message": f"Order {order.id} updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 
 async def controller_cancel_order(order_id, reason, user_id):
     orderService = OrderService(id=order_id, canceled_reason=reason, canceledBy=user_id)

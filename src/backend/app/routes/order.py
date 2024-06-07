@@ -8,6 +8,9 @@ from controllers.order import (
     controller_delete_order,
     controller_update_order,
     controller_cancel_order,
+    controller_update_status_accepted,
+    controller_update_status_done,
+    controller_get_last_pending_order
 )
 from schemas.order import CreateOrder, UpdateOrder, CancelateOrder
 app = APIRouter(prefix="/orders", tags=["order"])
@@ -38,6 +41,10 @@ async def get_receiver_orders_route(receiver_id: str):
     """
     return await get_receiver_orders(receiver_id)
 
+@app.get("/pending")
+async def get_peding_order():
+    return await controller_get_last_pending_order()
+
 
 @app.get("/")
 async def get_all_orders_route():
@@ -57,6 +64,15 @@ async def get_canceled_orders_route():
         list[dict]: list of canceled orders
     """
     return await get_canceled_orders()
+
+
+@app.put("/accepted/{order_id}")
+async def update_status_order_accepted(order_id:str):
+    return await controller_update_status_accepted(order_id)
+
+@app.put("/done/{order_id}")
+async def update_status_order_accepted(order_id:str):
+    return await controller_update_status_done(order_id)
 
 
 @app.post("/")

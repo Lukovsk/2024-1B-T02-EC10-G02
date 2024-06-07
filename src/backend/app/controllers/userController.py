@@ -72,7 +72,6 @@ async def update_aux_status(id: str) -> dict:
    userService = UserService(id=id)
    try: 
       updated_user = await userService.update_status(id)
-      print(updated_user)
       return {"message": f"User {updated_user.name} updated successfully"}
    except Exception as e:
       raise HTTPException(status_code=500, detail=str(e))

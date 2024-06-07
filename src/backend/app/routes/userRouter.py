@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter
 from logs.logger import setup_logger
 from controllers.userController import (
     controller_get_all_users,
