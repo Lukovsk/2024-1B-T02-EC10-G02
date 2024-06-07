@@ -46,7 +46,6 @@ class OrderService:
                 orders = await self.db.order.find_many(
                     where={
                         "deleted": False,
-                        "status": ["DONE"],  # TODO: change closed status to some enum in prisma
                     },
                 )
                 return orders
@@ -60,16 +59,14 @@ class OrderService:
                     await self.db.order.find_many(
                         where={
                             "deleted": False,
-                            "status": "CLOSED",  #  TODO: change closed status to some enum from prisma
-                            "senderId": self.senderId,
+                            "sender_userId": self.sender_userId,
                         }
                     )
-                    if self.senderId
+                    if self.sender_userId
                     else await self.db.order.find_many(
                         where={
                             "deleted": False,
-                            "status": "CLOSED",  # TODO: change closed status to some enum from prisma
-                            "receiverId": self.receiverId,
+                            "receiver_userId": self.receiver_userId,
                         }
                     )
                 )
@@ -117,7 +114,6 @@ class OrderService:
                 orders = await self.db.order.find_many(
                     where={
                         "deleted": False,
-                        "status": not "CLOSED",
                     },
                 )
                 return orders
@@ -134,6 +130,20 @@ class OrderService:
                     },
                 )
                 return order
+            except Exception as e:
+                raise e
+            
+    async def create(self):
+        async with self.database_connection():
+            try:
+                new_order = await self.db.order.create(
+                    data={
+                        "medicationId": self.medicationId,
+                        "sender_userId": self.sender_userId,
+                    }
+                )
+                
+                return new_order
             except Exception as e:
                 raise e
  

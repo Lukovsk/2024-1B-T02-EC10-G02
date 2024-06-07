@@ -12,7 +12,8 @@ class Status(str, Enum):
 class CreateOrder(BaseModel):
     medicationId: Optional[str] = None
     sender_userId: str 
-    status: Optional[List[Status]] = None
+    # status: Optional[List[Status]] = None
+
 
 
 class UpdateOrder(BaseModel):
