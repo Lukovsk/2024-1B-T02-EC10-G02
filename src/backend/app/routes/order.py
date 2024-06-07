@@ -10,7 +10,6 @@ from controllers.order import (
     controller_cancel_order,
 )
 from schemas.order import CreateOrder, UpdateOrder, CancelateOrder
-
 app = APIRouter(prefix="/orders", tags=["order"])
 
 

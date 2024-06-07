@@ -9,3 +9,10 @@ class CreateUserRequest(BaseModel):
     email: str
     name: str
     password: str
+
+class LoginUserRequest(BaseModel):
+    email: str
+    password: str
+
+class AuxUpdate(BaseModel):
+    disponibility: bool

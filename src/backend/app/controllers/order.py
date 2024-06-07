@@ -64,6 +64,13 @@ async def controller_update_order(new_data, order_id):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+async def _update_status_aux(new_data, order_id):
+    orderService = OrderService(id=order_id)
+    try:
+        order = orderService.update(new_data=new_data)
+        return order
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 # FILA:
 
 # async def controller_update_status(order_id):

@@ -23,10 +23,10 @@ class UpdateOrder(BaseModel):
     feedbackId: Optional[str] = None
     canceled_reason: Optional[str] = None
     canceled_userId: Optional[str] = None
-    status: Optional[List[Status]] = None
+    status: Optional[List[Status]] = None 
+
+
     
-
-
 class CancelateOrder(BaseModel):
     id: str
     reason: str

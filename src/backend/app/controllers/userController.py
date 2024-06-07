@@ -67,3 +67,23 @@ async def controller_delete_user(id: str) -> dict:
    
    except Exception as e:
       raise HTTPException(status_code=500, detail=str(e))
+   
+async def update_aux_status(id: str) -> dict:
+   userService = UserService(id=id)
+   try: 
+      updated_user = await userService.update_status(id)
+      print(updated_user)
+      return {"message": f"User {updated_user.name} updated successfully"}
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=str(e))
+
+
+async def controller_login(email: str, password: str):
+   userSerivce = UserService(email=email, password=password)
+   try:
+      user = await userSerivce.login()
+      return {"user": user}
+   except ValueError as wrong:
+      raise HTTPException(status_code=401, detail=f"{str(wrong)}")
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=f"Error while logging in: ${str(e)}")
