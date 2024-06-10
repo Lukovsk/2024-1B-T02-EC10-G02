@@ -1,8 +1,10 @@
+from typing import List
 from __init__ import db
 from contextlib import asynccontextmanager
+from prisma import errors, enums
 import json
 from datetime import datetime
-
+from schemas.order import Status
 class OrderService:
     def __init__(
         self,
@@ -44,7 +46,6 @@ class OrderService:
                 orders = await self.db.order.find_many(
                     where={
                         "deleted": False,
-                        "status": "CLOSED",  # TODO: change closed status to some enum in prisma
                     },
                 )
                 return orders
@@ -58,20 +59,38 @@ class OrderService:
                     await self.db.order.find_many(
                         where={
                             "deleted": False,
-                            "status": "CLOSED",  #  TODO: change closed status to some enum from prisma
-                            "senderId": self.senderId,
+                            "sender_userId": self.sender_userId,
                         }
                     )
-                    if self.senderId
+                    if self.sender_userId
                     else await self.db.order.find_many(
                         where={
                             "deleted": False,
-                            "status": "CLOSED",  # TODO: change closed status to some enum from prisma
-                            "receiverId": self.receiverId,
+                            "receiver_userId": self.receiver_userId,
                         }
                     )
                 )
                 return orders
+            except Exception as e:
+                raise e
+    
+    async def get_all_by_status(self, status: str):
+        async with self.database_connection():
+            try:
+                all_orders = await self.db.order.find_many(
+                    where = {
+                        "deleted": False,
+                    },
+                    order = {
+                        "createdAt": "desc",
+                    }
+                )
+                
+                orders = [order for order in all_orders if status in order.status]
+                
+                return orders
+            except IndexError as e:
+                raise IndexError(f"Nenhum pedido com o status {status}")
             except Exception as e:
                 raise e
 
@@ -95,7 +114,6 @@ class OrderService:
                 orders = await self.db.order.find_many(
                     where={
                         "deleted": False,
-                        "status": not "CLOSED",
                     },
                 )
                 return orders
@@ -114,6 +132,20 @@ class OrderService:
                 return order
             except Exception as e:
                 raise e
+            
+    async def create(self):
+        async with self.database_connection():
+            try:
+                new_order = await self.db.order.create(
+                    data={
+                        "medicationId": self.medicationId,
+                        "sender_userId": self.sender_userId,
+                    }
+                )
+                
+                return new_order
+            except Exception as e:
+                raise e
  
     async def create_in_db(self, payload):
         async with self.database_connection():
@@ -129,6 +161,53 @@ class OrderService:
                 print(f"Order stored successfully: {payload['medicationId']}")
             except Exception as e:
                 print(f"Failed to store order: {e}")
+
+    async def update_status_accepted(self, id=str):
+        async with self.database_connection():
+            try:
+                order = await self.db.order.find_unique_or_raise(
+                    where={
+                        "id": id,
+                    },
+                )
+                new_order = Status[order.status[0]]
+                if new_order == Status.PENDING:
+                    order_updated = await self.db.order.update(
+                        where={
+                            "id": id,
+                        },
+                        data={
+                            "status": ['ACCEPTED'],
+                        })
+                    return order_updated
+                else:
+                    raise ValueError("Order is not pending")
+            except errors.RecordNotFoundError:
+                    raise ValueError("User not found")
+            
+    async def update_status_done(self, id=str):
+        async with self.database_connection():
+            try:
+                order = await self.db.order.find_unique_or_raise(
+                    where={
+                        "id": id,
+                    },
+                )
+                new_order = Status[order.status[0]]
+                if new_order == Status.ACCEPTED:
+                    order_updated = await self.db.order.update(
+                        where={
+                            "id": id,
+                        },
+                        data={
+                            "status": ['DONE'],
+                        })
+                    return order_updated
+                else:
+                    raise ValueError("Order is not accepted")
+            except errors.RecordNotFoundError:
+                    raise ValueError("User not found")
+
 
     # async def update(self, new_data):
     #     async with self.database_connection():

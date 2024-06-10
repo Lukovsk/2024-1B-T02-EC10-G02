@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
         #threads = start_queue_publishers()
         #try:
-    uvicorn.run(app, host="0.0.0.0", port=3000)
+    uvicorn.run(app, host="localhost", port=3000)
     #     except Exception as e:
     #         print(f"Shutting down: {e}")
     #         for thread in threads:
