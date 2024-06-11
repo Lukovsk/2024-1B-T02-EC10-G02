@@ -1,7 +1,10 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import user_router  # , medication_router #, order_router, queue_router
+from routes import (
+    user_router,
+    order_router,
+)  # , medication_router #, order_router, queue_router
 
 
 @asynccontextmanager
@@ -30,8 +33,8 @@ app.add_middleware(
 )
 
 app.include_router(user_router)
+app.include_router(order_router)
 # app.include_router(medication_router)
-# app.include_router(order_router)
 # app.include_router(queue_router)
 
 if __name__ == "__main__":

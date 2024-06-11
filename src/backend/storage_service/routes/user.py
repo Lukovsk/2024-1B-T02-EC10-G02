@@ -3,12 +3,11 @@ from controllers.user import (
     controller_get_all_users,
     controller_change_role,
     controller_login,
-    controller_update_user,
     controller_create_user,
     controller_delete_user,
     update_aux_status,
 )
-from schemas.user import UpdateUserRequest, CreateUserRequest, LoginUserRequest, Role
+from schemas.user import CreateUserRequest, LoginUserRequest, Role
 
 router = APIRouter(prefix="/user", tags=["user"])
 

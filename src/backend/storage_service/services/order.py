@@ -5,12 +5,17 @@ from prisma import errors, enums
 import json
 from datetime import datetime
 from schemas.order import Status
+
+
 class OrderService:
     def __init__(
         self,
         id=None,
-        medicationId=None,
         status=None,
+        problem=None,
+        pyxiId=None,
+        description=None,
+        itemId=None,
         sender_userId=None,
         receiver_userId=None,
         feedbackId=None,
@@ -18,10 +23,14 @@ class OrderService:
         canceledAt=None,
         canceledBy=None,
         canceled_reason=None,
+        deleted=None,
     ):
         self.id = id
-        self.medicationId = medicationId
         self.status = status
+        self.problem = problem
+        self.pyxiId = pyxiId
+        self.description = description
+        self.itemId = itemId
         self.sender_userId = sender_userId
         self.receiver_userId = receiver_userId
         self.feedbackId = feedbackId
@@ -29,6 +38,7 @@ class OrderService:
         self.canceledAt = canceledAt
         self.canceledBy = canceledBy
         self.canceled_reason = canceled_reason
+        self.deleted = deleted
 
     @asynccontextmanager
     async def database_connection(self):
@@ -60,6 +70,7 @@ class OrderService:
                         where={
                             "deleted": False,
                             "sender_userId": self.sender_userId,
+                            "status": "DONE",
                         }
                     )
                     if self.sender_userId
@@ -67,27 +78,27 @@ class OrderService:
                         where={
                             "deleted": False,
                             "receiver_userId": self.receiver_userId,
+                            "status": "DONE",
                         }
                     )
                 )
                 return orders
             except Exception as e:
                 raise e
-    
+
     async def get_all_by_status(self, status: str):
         async with self.database_connection():
             try:
-                all_orders = await self.db.order.find_many(
-                    where = {
+                orders = await self.db.order.find_many(
+                    where={
                         "deleted": False,
+                        "status": status,
                     },
-                    order = {
+                    order={
                         "createdAt": "desc",
-                    }
+                    },
                 )
-                
-                orders = [order for order in all_orders if status in order.status]
-                
+
                 return orders
             except IndexError as e:
                 raise IndexError(f"Nenhum pedido com o status {status}")
@@ -127,123 +138,106 @@ class OrderService:
                 order = await self.db.order.find_unique_or_raise(
                     where={
                         "id": self.id,
+                        "deleted": False,
+                    },
+                    include={
+                        "sender_user": True,
+                        "receiver_user": True,
+                        "canceledBy": True,
+                        "item": True,
+                        "pyxis": True,
                     },
                 )
                 return order
             except Exception as e:
                 raise e
-            
-    async def create(self):
+
+    async def create_technical(self):
         async with self.database_connection():
             try:
-                new_order = await self.db.order.create(
+                order = await self.db.order.create(
                     data={
-                        "medicationId": self.medicationId,
+                        "problem": "TECHNICAL",
+                        "status": "PENDING",
+                        "pyxiId": self.pyxiId,
+                        "description": self.description,
                         "sender_userId": self.sender_userId,
                     }
                 )
-                
-                return new_order
+
+                return order
             except Exception as e:
                 raise e
- 
-    async def create_in_db(self, payload):
+
+    async def create_stock(self):
         async with self.database_connection():
             try:
-                new_order = await self.db.order.create(
+                order = await self.db.order.create(
                     data={
-                        "medicationId": payload['medicationId'],
-                        "sender_userId": payload['sender_userId'],
-                        "status": payload.get('status',['PENDING']),
-                        "createdAt": datetime.now()
+                        "problem": "STOCK",
+                        "status": "PENDING",
+                        "pyxiId": self.pyxiId,
+                        "description": self.description,
+                        "itemId": self.itemId,
+                        "sender_userId": self.sender_userId,
                     }
                 )
-                print(f"Order stored successfully: {payload['medicationId']}")
+                return order
             except Exception as e:
-                print(f"Failed to store order: {e}")
+                raise e
 
-    async def update_status_accepted(self, id=str):
+    async def accept(self):
         async with self.database_connection():
             try:
-                order = await self.db.order.find_unique_or_raise(
+                order = await self.db.order.update(
                     where={
-                        "id": id,
+                        "id": self.id,
+                        "deleted": False,
+                    },
+                    data={
+                        "status": "ACCEPTED",
+                        "receiver_userId": self.receiver_userId,
                     },
                 )
-                new_order = Status[order.status[0]]
-                if new_order == Status.PENDING:
-                    order_updated = await self.db.order.update(
-                        where={
-                            "id": id,
-                        },
-                        data={
-                            "status": ['ACCEPTED'],
-                        })
-                    return order_updated
-                else:
-                    raise ValueError("Order is not pending")
-            except errors.RecordNotFoundError:
-                    raise ValueError("User not found")
-            
-    async def update_status_done(self, id=str):
+                return order
+            except Exception as e:
+                raise e
+
+    async def close(self):
         async with self.database_connection():
             try:
-                order = await self.db.order.find_unique_or_raise(
+                order = await self.db.order.update(
                     where={
-                        "id": id,
+                        "id": self.id,
+                        "deleted": False,
+                    },
+                    data={
+                        "status": "DONE",
                     },
                 )
-                new_order = Status[order.status[0]]
-                if new_order == Status.ACCEPTED:
-                    order_updated = await self.db.order.update(
-                        where={
-                            "id": id,
-                        },
-                        data={
-                            "status": ['DONE'],
-                        })
-                    return order_updated
-                else:
-                    raise ValueError("Order is not accepted")
-            except errors.RecordNotFoundError:
-                    raise ValueError("User not found")
+                return order
+            except Exception as e:
+                raise e
 
-
-    # async def update(self, new_data):
-    #     async with self.database_connection():
-    #         try:
-    #             order = await self.db.order.update(
-    #                 where={
-    #                     "id": self.id,
-    #                 },
-    #                 data={**new_data},
-    #             )
-    #             await self.publish_to_queue({"action": "UPDATE", "order": order.dict()})
-    #             return order
-    #         except Exception as e:
-    #             raise e
-
-    # async def cancel(self) -> bool:
-    #     import datetime
-
-    #     async with self.database_connection():
-    #         try:
-    #             await self.db.order.update(
-    #                 where={
-    #                     "id": self.id,
-    #                 },
-    #                 data={
-    #                     "canceled": True,
-    #                     "canceled_reason": self.canceled_reason,
-    #                     "canceledBy": self.canceledBy,
-    #                     "canceledAt": datetime.datetime.now(),
-    #                     "status": "CANCELED",  # TODO: change this status to an enum with prisma
-    #                 },
-    #             )
-    #             self.publish_to_queue({"action": "CANCEL", "order_id": self.id})
-    #             return True
-    #         except Exception as e:
-    #             raise e
+    async def cancel(self):
+        async with self.database_connection():
+            try:
+                order = await self.db.order.update(
+                    where={
+                        "id": self.id,
+                        "deleted": False,
+                    },
+                    data={
+                        "status": "CANCELED",
+                        "canceled": True,
+                        "canceled_reason": self.canceled_reason,
+                        "canceled_userId": self.canceledBy,
+                        "canceledAt": datetime.now(),
+                    },
+                )
+                return order
+            except Exception as e:
+                raise e
 
     ## Quero deletar um pedido
     async def delete(self) -> bool:
