@@ -97,7 +97,7 @@ class UserService:
             )
             return user
 
-    async def update_user_by_id(self, update_data) -> Prisma.user:
+    async def update_user(self, update_data) -> Prisma.user:
         async with self.database_connection():
             try:
                 # Check if the user exists before updating

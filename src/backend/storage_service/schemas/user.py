@@ -6,6 +6,7 @@ from prisma.enums import Role
 class UpdateUserRequest(BaseModel):
     email: Optional[str] = None
     name: Optional[str] = None
+    
 
 
 class CreateUserRequest(BaseModel):

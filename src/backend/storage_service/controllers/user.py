@@ -45,14 +45,19 @@ async def controller_get_user_by_id(id: int) -> dict:
 
 
 async def controller_update_user(update_data: dict, id) -> dict:
-    checked_data = {k: v for k, v in update_data.items() if v is not None}
-    if checked_data == {}:
-        raise HTTPException(status_code=400, detail="Invalid parameters")
-
     userService = UserService(id=id)
     try:
-        updated_user = await userService.update_user_by_id(checked_data)
+        updated_user = await userService.update_user(update_data)
         return {"message": f"User {updated_user.name} updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+async def controller_change_role(id: str, role: str):
+    service = UserService(id=id, role=role)
+    try:
+        user = await service.update_role()
+        return {"user": user}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
