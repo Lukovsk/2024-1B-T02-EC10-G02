@@ -33,11 +33,12 @@ model User {
     name          String
     email         String
     password      String
-    role          Role    @default(NURSE)
+    role          Role      @default(NURSE)
     disponibility Boolean   @default(false)
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
     deletedAt     DateTime?
+    deleted       Boolean   @default(false)
 
     feedback_sent     Feedback[] @relation("feedbacks_sent")
     feedback_received Feedback[] @relation("feedbacks_received")
@@ -57,6 +58,8 @@ model Feedback {
     updatedAt DateTime  @updatedAt
     deletedAt DateTime?
 
+    deleted Boolean @default(false)
+
     Order           Order[]
     sender_user     User    @relation("feedbacks_sent", fields: [sender_userId], references: [id])
     sender_userId   String
@@ -65,11 +68,11 @@ model Feedback {
 }
 
 model Order {
-    id          String  @id @default(uuid())
-    status      Status  @default(PENDING)
-    problem     Problem
-    pyxis       Pyxis   @relation(fields: [pyxiId], references: [id])
-    pyxiId      String
+    id      String  @id @default(uuid())
+    status  Status  @default(PENDING)
+    problem Problem
+    pyxis   Pyxis   @relation(fields: [pyxiId], references: [id])
+    pyxiId  String
 
     description String?
 
@@ -91,7 +94,7 @@ model Order {
     canceledBy      User?     @relation("order_canceled", fields: [canceled_userId], references: [id])
     canceled_userId String?
     canceled_reason String?
-    canceled        Boolean  @default(false)
+    canceled        Boolean   @default(false)
 
     deleted Boolean @default(false)
 }
@@ -107,25 +110,25 @@ model Item {
     order        Order[]
     pyxis        Pyxis[]
 
-    createdAt DateTime @default(now())
+    createdAt DateTime  @default(now())
     updatedAt DateTime? @updatedAt
     deletedAt DateTime?
-    deleted Boolean @default(false)
+    deleted   Boolean   @default(false)
 }
 
 model Pyxis {
     id        String  @id @default(uuid())
     name      String
     reference String?
-    sector     String?
+    sector    String?
     ala       String?
     floor     String?
     items     Item[]
 
     order Order[]
 
-    createdAt DateTime @default(now())
+    createdAt DateTime  @default(now())
     updatedAt DateTime? @updatedAt
     deletedAt DateTime?
-    deleted Boolean @default(false)
+    deleted   Boolean   @default(false)
 }
