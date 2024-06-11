@@ -1,6 +1,6 @@
 ---
 title: Serviços e Deploy
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 ## Descrição da Arquitetura
