@@ -2,7 +2,7 @@ import os
 import pika
 #from controllers.queue import handle_create_order, handle_update_order, handle_cancel_order
 import json
-from .order import OrderService
+from ...storage.services.order import OrderService
 import asyncio
 
 
@@ -66,18 +66,6 @@ def publish_update(queue_name, message):
 def update_order_queue(payload):
     publish_update('update_order_queue', payload)
 
-# def cancel_order_queue():
-#     connection = get_connection()
-#     channel = connection.channel()
-#     channel.queue_declare(queue='cancel_order_queue', durable=True)
-
-#     def callback(ch, method, properties, body):
-#         payload = json.loads(body)
-#         asyncio.run(handle_cancel_order(payload))
-
-#     channel.basic_consume(queue='cancel_order_queue', on_message_callback=callback, auto_ack=True)
-#     channel.start_consuming()
-
 def consume_order_queue():
     connection = get_connection()
     channel = connection.channel()
@@ -87,7 +75,7 @@ def consume_order_queue():
 
     def callback(ch, method, properties, body):
         payload = json.loads(body)
-        print(body)
+        # print(body)
         asyncio.run(order_service.create_in_db(payload))
 
     channel.basic_consume(queue='create_order_queue', on_message_callback=callback, auto_ack=True)

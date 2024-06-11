@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from pydantic import BaseModel
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
-from prismaClient import prismaClient
+from backend.storage.prismaClient import prismaClient
 import threading
 import pika
 import os
@@ -36,16 +36,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# class Message(BaseModel):
-#     date: datetime = None
-#     msg: str
-
-
-
-# @app.get("/messages")
-# async def get_messages():
-#     return banco_em_memoria
 
 # Executa a aplicação com a informação de HOST e PORTA enviados por argumentos
 if __name__ == "__main__":

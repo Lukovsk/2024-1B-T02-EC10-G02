@@ -1,7 +1,7 @@
 import asyncio
 from prisma import Prisma
 from prisma.models import Feedback, Request
-from prismaClient import prismaClient
+from backend.storage.prismaClient import prismaClient
 
 class FeedbackService():
     @staticmethod

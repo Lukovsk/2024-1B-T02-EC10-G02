@@ -1,6 +1,5 @@
 from fastapi import HTTPException
-from prisma import errors
-from services.medication import MedicationService
+from backend.services.medication import MedicationService
 
 async def controller_get_all_medications() -> dict:
     medication = MedicationService()
@@ -20,10 +19,6 @@ async def controller_get_medication(id: str) -> dict:
     try:
         medications = await medication.get_medication_by_id(id)
         return {"medications": medications}
-
-    except errors.RecordNotFoundError:
-        raise HTTPException(status_code=404, detail="User not found")
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

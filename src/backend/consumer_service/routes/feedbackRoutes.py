@@ -1,6 +1,6 @@
 from fastapi import Depends, APIRouter
 from prisma.models import Feedback, Request
-from services.feedback import FeedbackService
+from backend.storage.services.feedback import FeedbackService
 
 feedback_routes = APIRouter()
 
