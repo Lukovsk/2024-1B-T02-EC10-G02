@@ -37,6 +37,6 @@ class OrderService:
     async def get_canceled_orders():
         pass  
 
-    async def wtf():
+    async def war():
         pass
 

@@ -10,13 +10,5 @@ async def create_order_endpoint(request: CreateOrder = Body()):
     await handle_create_order(payload)
     return {"message":"Order queued succesfully"}
 
-@router.post("/updatestatus")
-async def update_order_endpoint(request: UpdateOrder = Body()):
-    payload = request.dict()
-    return await update_order_queue(payload)
 
-@router.post("/cancel")
-async def cancel_order_endpoint(request: UpdateOrder = Body()):
-    payload = request.dict()
-    return await cancel_order_queue()
 

@@ -1,28 +1,13 @@
 # Serviço 2 - recebe as mensagens via RabbitMQ e as armazena em um banco de dados em memória
-
-from fastapi import FastAPI
-from contextlib import asynccontextmanager
-from pydantic import BaseModel
-from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
-from backend.storage.prismaClient import prismaClient
+from fastapi import FastAPI
+from services.queue import consume_order_queue
 import threading
-import pika
-import os
-from services.queueConfig import consume_order_queue
-# Ajuste para tentar reconectar ao RabbitMQ
+
 from pika.connection import Parameters
 Parameters.DEFAULT_CONNECTION_ATTEMPTS = 10
 
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await prismaClient.connect()
-    yield
-    await prismaClient.disconnect()
-
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 origins = [
     "http://localhost:3001",
@@ -41,8 +26,8 @@ app.add_middleware(
 if __name__ == "__main__":
     import uvicorn
     import os
-    #if "RABBITMQ_HOST" in os.environ:
-    try:    
+    # if "RABBITMQ_HOST" in os.environ:
+    try:
         # Cria uma thread para receber as mensagens do RabbitMQ
         thread = threading.Thread(target=consume_order_queue)
         thread.start()
@@ -52,4 +37,3 @@ if __name__ == "__main__":
         thread.stop()
 else:
     raise Exception("HOST and PORT must be defined in environment variables")
-
