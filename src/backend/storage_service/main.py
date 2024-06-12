@@ -5,9 +5,8 @@ from routes import (
     user_router,
     order_router,
     itens_router,
-    pyxis_router
-    
-)  # , medication_router #, order_router, queue_router
+    pyxis_router,
+)
 
 
 @asynccontextmanager
