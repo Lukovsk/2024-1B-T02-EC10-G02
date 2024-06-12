@@ -1,12 +1,12 @@
 from fastapi import HTTPException
-from services.medication import ItemService
+from services.item import ItemService
 
 
 async def controller_get_all_medications() -> dict:
-    medication = ItemService()
+    item = ItemService()
     try:
-        all_medications = await medication.get_all_Item()
-        return {"Item": all_medications}
+        all_itens = await item.get_all_Item()
+        return {"Item": all_itens}
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=str(e))
     except Exception as e:
@@ -14,35 +14,28 @@ async def controller_get_all_medications() -> dict:
 
 
 async def controller_get_medication(id: str) -> dict:
-    medication = ItemService(id=id)
+    item = ItemService(id=id)
     if id == "":
         raise HTTPException(status_code=400, detail="Invalid parameters")
     try:
-        medications = await medication.get_medication_by_id(id)
+        medications = await item.get_medication_by_id(id)
         return {"medications": medications}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 async def controller_create_medication(
-    area: None, name: str, description: None, lot: None, medClass:None, isMedication: None, id: str
+    name: str, area: str = None, description: str = None, lot: int = None, medClass:str = None
 ) -> dict:
-    medication = ItemService(
-        area=area, name=name, description=description, lot=lot, medClass=medClass, id=id, isMedication=isMedication
+    item = ItemService(
+        area=area, name=name, description=description, lot=lot, medClass=medClass
     )
     try:
-        new_medication = await medication.create_medication()
-        if new_medication:
-            return {
-                "message": "Medication created successfully",
-                "medication": new_medication,
-            }
-        else:
-            new_item = await medication.create_item()
-            return {
-                "message": "Item created successfully",
-                "Itm": new_item,
-            }
+        new_medication = await item.create_medication()
+        return {
+            "message": "Medication created successfully",
+            "medication": new_medication,
+        }
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=str(e))
     except Exception as e:
@@ -50,10 +43,10 @@ async def controller_create_medication(
 
 
 async def controller_create_item(
-    area: None, name: str, description: None, lot: None, medClass:None, isMedication: None, id: str
+    name: str, area: str = None, description: str = None
 ) -> dict:
     medication = ItemService(
-        area=area, name=name, description=description, lot=lot, medClass=medClass, id=id, isMedication=isMedication
+        area=area, name=name, description=description
     )
     try:
         new_item = await medication.create_item()

@@ -4,7 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes import (
     user_router,
     order_router,
-    itens_routes
+    itens_router,
+    pyxis_router
+    
 )  # , medication_router #, order_router, queue_router
 
 
@@ -35,7 +37,8 @@ app.add_middleware(
 
 app.include_router(user_router)
 app.include_router(order_router)
-app.include_router(itens_routes)
+app.include_router(itens_router)
+app.include_router(pyxis_router)
 # app.include_router(queue_router)
 
 if __name__ == "__main__":

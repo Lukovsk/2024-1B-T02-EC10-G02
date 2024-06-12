@@ -6,13 +6,13 @@ from __init__ import db
 
 
 class ItemService():
-    def __init__(self, area="", name="", description="", lot=None, medClass="", id="",isMedication=""):
-        self.area = area
+    def __init__(self, id=None, area=None, name=None, description=None, lot=None, medClass=None, isMedication=None):
+        self.id = id
         self.name = name
         self.description = description
+        self.area = area
         self.lot = lot
         self.medClass = medClass
-        self.id = id
         self.isMedication = isMedication
 
     @asynccontextmanager
@@ -27,54 +27,35 @@ class ItemService():
     async def create_medication(self) -> Prisma.item:
         async with self.database_connection():
             try:
-                medication = await db.item.find_first_or_raise(
-                    where={
-                        "id": self.id,
-                    },
-                )
-                raise NameError("Medication already exists")
-            except errors.RecordNotFoundError:
-                if self.isMedication:
-                    medication = await db.item.create(
-                        data={
-                            "area": self.area,
-                            "name": self.name,
-                            "description": self.description,
-                            "lot": self.lot,
-                            "medClass": self.medClass,
-                            "isMedication": self.isMedication
+                medication = await self.db.item.create(
+                    data={
+                        "name": self.name,
+                        "area": self.area,
+                        "description": self.description,
+                        "lot": self.lot,
+                        "medClass": self.medClass,
+                        "isMedication": True
 
-                        }
-                    )
-                    return medication
-                else:
-                    raise NameError("Medication is not a medication")
-    
+                    }
+                )
+                return medication
+            except Exception as e:
+                raise e
+
     async def create_item(self) -> Prisma.item:
         async with self.database_connection():
             try:
-                medication = await db.item.find_first_or_raise(
-                    where={
-                        "id": self.id,
-                    },
+                medication = await db.item.create(
+                    data={
+                        "name": self.name,
+                        "description": self.description,
+                        "area": self.area,
+                        "isMedication": False
+                    }
                 )
-                raise NameError("Item already exists")
-            except errors.RecordNotFoundError:
-                if not self.isMedication:
-                    medication = await db.item.create(
-                        data={
-                            "area": self.area,
-                            "name": self.name,
-                            "description": self.description,
-                            "lot": self.lot,
-                            "medClass": self.medClass,
-                            "isMedication": self.isMedication
-
-                        }
-                    )
-                    return medication
-                else:
-                    raise NameError("Item is not a item")
+                return medication
+            except Exception as e:
+                raise e
 
     async def get_all_Item(self):
         async with self.database_connection():
