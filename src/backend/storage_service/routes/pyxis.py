@@ -2,7 +2,10 @@ from fastapi import APIRouter
 from schemas.pyxis import CreatePyxiSchema
 from controllers.pyxis import (
     controller_create_pyxi,
-    controller_relate_item
+    controller_relate_item,
+    controller_get_all,
+    controller_get_by_id,
+    controller_update_pyxi
 )
 
 router = APIRouter(prefix="/pyxis", tags=["pyxis"])
@@ -37,9 +40,9 @@ async def create_pyxi(data: CreatePyxiSchema):
 # Relate an item to a pyxi
 
 
-@router.put("/item")
-async def relate_item(data: CreatePyxiSchema):
-    return await controller_relate_item(data)
+@router.put("/item/{pyxi_id}")
+async def relate_items(pyxi_id: str, items: list[str]):
+    return await controller_relate_item(pyxi_id=pyxi_id, items=items)
 
 # Change pyxi details
 

@@ -22,10 +22,37 @@ class PyxisService():
         finally:
             await self.db.disconnect()
 
+    async def get_by_id(self):
+        async with self.database_connection():
+            try:
+                pyxi = await self.db.pyxis.find_unique_or_raise(
+                    where={
+                        "id": self.id,
+                    },
+                    include={
+                        "items": True,
+                        "order": True,
+                    }
+                )
+                return pyxi
+            except Exception as e:
+                raise e
+
+    async def get_all(self):
+        async with self.database_connection():
+            try:
+                pyxies = await self.db.pyxis.find_many(
+                    where={
+                        "deleted": False,
+                    }
+                )
+                return pyxies
+            except Exception as e:
+                raise e
+
     async def create(self):
         async with self.database_connection():
             try:
-
                 pyxis = await self.db.pyxis.create(
                     data={
                         "name": self.name,
@@ -39,21 +66,39 @@ class PyxisService():
                             } for itemId in self.items]
                         }
                     }
+                ) if self.items else await self.db.pyxis.create(
+                    data={
+                        "name": self.name,
+                        "reference": self.reference,
+                        "sector": self.sector,
+                        "ala": self.ala,
+                        "floor": self.floor,
+                    }
                 )
                 return pyxis
             except Exception as e:
                 raise e
 
-    async def relate_item(self):
-        async with self.database_connection():
-            pass
-
-    async def update_item(self):
+    async def relate_items(self):
         async with self.database_connection():
             try:
-                pyxi - await self.db.pyxis.find_unique_or_raise(
-
+                pyxi = await self.db.pyxis.update(
+                    where={
+                        "id": self.id,
+                    },
+                    data={
+                        "items": {
+                            "connect": [{"id": itemId} for itemId in self.items]
+                        },
+                    },
                 )
+                return pyxi
+            except Exception as e:
+                raise e
+
+    async def update(self):
+        async with self.database_connection():
+            try:
                 pyxi = await self.db.pyxis.update(
                     where={
                         "id": self.id,
@@ -64,7 +109,6 @@ class PyxisService():
                         "sector": self.sector,
                         "ala": self.ala,
                         "floor": self.floor,
-                        "item": self.items
                     }
                 )
                 return pyxi

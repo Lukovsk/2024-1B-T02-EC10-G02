@@ -3,6 +3,25 @@ from services.pyxis import PyxisService
 from schemas.pyxis import CreatePyxiSchema
 
 
+async def controller_get_all():
+    pyxiService = PyxisService()
+    try:
+        pixyies = await pyxiService.get_all()
+
+        return {"pyxis": pixyies}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+async def controller_get_by_id(pyxy_id: str):
+    pyxiService = PyxisService(id=pyxy_id)
+    try:
+        pyxi = await pyxiService.get_by_id()
+        return {"pyxi": pyxi}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 async def controller_create_pyxi(name: str, reference: str = None, sector: str = None, ala: str = None, floor: str = None, items: list[str] = None):
     pyxiService = PyxisService(
         name=name,
@@ -22,24 +41,29 @@ async def controller_create_pyxi(name: str, reference: str = None, sector: str =
             status_code=500, detail=f"O erro tá aqui: {str(e)}")
 
 
-async def controller_relate_item(data: CreatePyxiSchema):
+async def controller_relate_item(pyxi_id: str, items: list[str]) -> dict:
+
+    pyxiService = PyxisService(id=pyxi_id, items=items)
     try:
-        pyxiService = PyxisService()
-        await pyxiService.relate_item()
+        pyxi = await pyxiService.relate_items()
+
+        return {"pyxis": pyxi}
     except Exception as e:
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-async def controller_update_pyxi(data: CreatePyxiSchema):
+async def controller_update_pyxi(pyxi_id: str, data: CreatePyxiSchema):
+    pyxiService = PyxisService(
+        id=pyxi_id,
+        name=data.name,
+        reference=data.reference,
+        sector=data.sector,
+        ala=data.ala,
+        floor=data.floor,
+    )
     try:
-        pyxiService = PyxisService(
-            name=data.name,
-            reference=data.reference,
-            sector=data.sector,
-            ala=data.ala,
-            floor=data.floor,
-            items=data.items,
-        )
-        await pyxiService.update_item_item()
+        pyxi = await pyxiService.update()
+
+        return {"pyxi": pyxi}
     except Exception as e:
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
