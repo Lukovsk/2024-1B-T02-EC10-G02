@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from controllers.user import (
     controller_get_all_users,
+    controller_get_user_by_id,
     controller_change_role,
     controller_login,
     controller_create_user,
@@ -17,6 +18,11 @@ async def list_():
     return await controller_get_all_users()
 
 
+@router.get("/{id}")
+async def get_user_detail(id: str):
+    return await controller_get_user_by_id(id)
+
+
 @router.post("/")
 async def create(data: CreateUserRequest):
     return await controller_create_user(data)
@@ -30,11 +36,6 @@ async def login(data: LoginUserRequest):
 @router.put("/status/{id}")
 async def update_aux(id: str):
     return await update_aux_status(id)
-
-
-# @router.put("/{id}")
-# async def update_by_id(id: str, update_data: UpdateUserRequest):
-#     return await controller_update_user(update_data, id)
 
 
 @router.put("/change_role/{id}")

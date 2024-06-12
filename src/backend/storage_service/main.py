@@ -39,7 +39,6 @@ app.include_router(user_router)
 app.include_router(order_router)
 app.include_router(itens_router)
 app.include_router(pyxis_router)
-# app.include_router(queue_router)
 
 if __name__ == "__main__":
     import uvicorn

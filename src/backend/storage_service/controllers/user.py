@@ -31,10 +31,7 @@ async def controller_get_all_users() -> dict:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-async def controller_get_user_by_id(id: int) -> dict:
-    if id == "":
-        raise HTTPException(status_code=400, detail="Invalid parameters")
-
+async def controller_get_user_by_id(id: str) -> dict:
     userService = UserService(id=id)
     try:
         user = await userService.get_user_by_id()

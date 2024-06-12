@@ -87,6 +87,13 @@ class UserService:
         async with self.database_connection():
             user = await self.db.user.find_unique_or_raise(
                 where={"id": self.id},
+                include={
+                    "order_sent": True,
+                    "order_received": True,
+                    "order_canceled": True,
+                    "feedback_received": True,
+                    "feedback_sent": True,
+                },
             )
             return user
 
