@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 
-RUN prisma db push --schema app/prisma/schema.prisma
+RUN prisma generate
 
 EXPOSE 3000
 
