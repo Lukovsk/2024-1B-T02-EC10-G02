@@ -1,17 +1,14 @@
 from fastapi import APIRouter
-# from logs.logger import setup_logger
-from controllers.pyxis import (
-    controller_login,
-    update_aux_status
-)
-from schemas.user import LoginUserRequest
+from controllers.pyxis import controller_get_all_pyxis, controller_get_pyxis_detail
 
-router = APIRouter(prefix="/user", tags=["user"])
+router = APIRouter(prefix="/pyxis", tags=["pyxis"])
 
-@router.post("/login")
-async def login(data: LoginUserRequest):
-    return await controller_login(data.email, data.password)
 
-@router.put("/status/{id}")
-async def update_order_route(id: str):
-    return await update_aux_status(id)
+@router.get("/")
+async def get_all():
+    return await controller_get_all_pyxis()
+
+
+@router.get("/{id}")
+async def get_pyxi_detail(id: str):
+    return await controller_get_pyxis_detail(id)
