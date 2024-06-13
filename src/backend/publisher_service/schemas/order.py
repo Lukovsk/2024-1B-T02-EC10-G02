@@ -1,33 +1,38 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
 from enum import Enum
 
-class Status(str, Enum):
-    PENDING = "PENDING"
-    ACCEPTED = "ACCEPTED"
-    REJECTED = "REJECTED"
-    DONE = "DONE"
-    CANCELED = "CANCELED"
+
+class Command(str, Enum):
+    create = "create"
+    accept = "accept"
+    reject = "reject"
+    done = "done"
+    cancel = "cancel"
+
 
 class CreateOrder(BaseModel):
-    medicationId: Optional[str] = None
-    sender_userId: str 
-    status: Optional[List[Status]] = None
+    sender_userId: str
+    pyxiId: str
+    problem: str
+    description: Optional[str] = None
+    itemId: Optional[str] = None
 
 
-class UpdateOrder(BaseModel):
-    id: str
-    medicationId: Optional[str] = None
-    sender_userId: Optional[str] = None
-    receiver_userId: Optional[str] = None
-    feedbackId: Optional[str] = None
-    canceled_reason: Optional[str] = None
-    canceled_userId: Optional[str] = None
-    status: Optional[List[Status]] = None
-    
+class AcceptOrder(BaseModel):
+    receiver_userId: str
+    order_id: str
 
 
-class CancelateOrder(BaseModel):
-    id: str
-    reason: str
-    userId: str
+class DoneOrder(BaseModel):
+    order_id: str
+
+
+class CancelOrder(BaseModel):
+    order_id: str
+    canceled_reason: str
+    canceled_userId: str
+
+
+class RejectOrder(BaseModel):
+    order_id: str
