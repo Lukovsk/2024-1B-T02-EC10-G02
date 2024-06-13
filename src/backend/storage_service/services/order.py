@@ -49,7 +49,7 @@ class OrderService:
         finally:
             await self.db.disconnect()
 
-    ## Eu quero todos os pedidos
+    # Eu quero todos os pedidos
     async def get_all(self):
         async with self.database_connection():
             try:
@@ -62,7 +62,7 @@ class OrderService:
             except Exception as e:
                 raise e
 
-    async def get_closed_orders(self):
+    async def get_user_orders(self):
         async with self.database_connection():
             try:
                 orders = (
@@ -70,16 +70,20 @@ class OrderService:
                         where={
                             "deleted": False,
                             "sender_userId": self.sender_userId,
-                            "status": "DONE",
-                        }
+                        },
+                        order={
+                            "createdAt": "desc",
+                        },
                     )
                     if self.sender_userId
                     else await self.db.order.find_many(
                         where={
                             "deleted": False,
                             "receiver_userId": self.receiver_userId,
-                            "status": "DONE",
-                        }
+                        },
+                        order={
+                            "createdAt": "desc",
+                        },
                     )
                 )
                 return orders
@@ -118,7 +122,7 @@ class OrderService:
             except Exception as e:
                 raise e
 
-    ## Quero meus pedidos em aberto
+    # Quero meus pedidos em aberto
     async def get_open_orders(self):
         async with self.database_connection():
             try:
@@ -131,7 +135,7 @@ class OrderService:
             except Exception as e:
                 raise e
 
-    ## Eu quero um pedido
+    # Eu quero um pedido
     async def get_by_id(self):
         async with self.database_connection():
             try:
@@ -239,7 +243,7 @@ class OrderService:
             except Exception as e:
                 raise e
 
-    ## Quero deletar um pedido
+    # Quero deletar um pedido
     async def delete(self) -> bool:
         """update the order with deleted true, returns true if the order was 'deleted' successfully
 

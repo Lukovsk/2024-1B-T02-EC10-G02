@@ -8,7 +8,7 @@ from fastapi import HTTPException
 async def controller_get_sender_orders(senderId: str):
     orderService = OrderService(sender_userId=senderId)
     try:
-        orders = await orderService.get_closed_orders()
+        orders = await orderService.get_user_orders()
 
         return orders
     except Exception as e:
@@ -18,7 +18,7 @@ async def controller_get_sender_orders(senderId: str):
 async def controller_get_receiver_orders(receiverId: str):
     orderService = OrderService(receiver_userId=receiverId)
     try:
-        orders = await orderService.get_closed_orders()
+        orders = await orderService.get_user_orders()
 
         return orders
     except Exception as e:

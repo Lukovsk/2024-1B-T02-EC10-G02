@@ -1,8 +1,12 @@
 from fastapi import HTTPException
 from services.queueConfig import create_order_queue, update_order_queue
 
-async def controller_create_order(payload):
+async def controller_create_order(data):
     try:
+        payload = {
+            "order_status": "create",
+            "data": data
+        }
         order = create_order_queue(payload)
         return {"message": "Order created successfully", "order": order}
     except Exception as e:

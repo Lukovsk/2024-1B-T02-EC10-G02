@@ -1,11 +1,10 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from prismaClient import prismaClient
 from routes import order_pub_router
 import os
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 
 origins = [

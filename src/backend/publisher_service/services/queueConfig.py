@@ -46,7 +46,7 @@ def publish_order(queue_name, message):
 
 
 def create_order_queue(payload):
-    publish_order('create_order_queue', payload)
+    publish_order('order_queue', payload)
 
 def publish_update(queue_name, message):
     connection = get_connection()

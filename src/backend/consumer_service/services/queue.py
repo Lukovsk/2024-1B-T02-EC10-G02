@@ -5,7 +5,7 @@ import os
 import pika
 # from controllers.queue import handle_create_order, handle_update_order, handle_cancel_order
 import json
-from ..services.order import OrderService
+from services.order import OrderService
 import asyncio
 
 
@@ -73,8 +73,8 @@ def callback(ch, method, properties, body):
 def consume_order_queue():
     connection = get_connection()
     channel = connection.channel()
-    channel.queue_declare(queue='create_order_queue', durable=True)
+    channel.queue_declare(queue='order_queue', durable=True)
 
-    channel.basic_consume(queue='create_order_queue',
+    channel.basic_consume(queue='order_queue',
                           on_message_callback=callback, auto_ack=True)
     channel.start_consuming()

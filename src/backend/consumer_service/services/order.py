@@ -1,42 +1,90 @@
 
-from datetime import datetime
-from schemas.order import Status
+from fastapi import HTTPException
+import requests
+
+
 class OrderService:
     def __init__(
         self,
+        user=None,
         id=None,
-        medicationId=None,
-        status=None,
-        sender_userId=None,
-        receiver_userId=None,
-        feedbackId=None,
-        createdAt=None,
-        canceledAt=None,
-        canceledBy=None,
-        canceled_reason=None,
     ):
         self.id = id
-        self.medicationId = medicationId
-        self.status = status
-        self.sender_userId = sender_userId
-        self.receiver_userId = receiver_userId
-        self.feedbackId = feedbackId
-        self.createdAt = createdAt
-        self.canceledAt = canceledAt
-        self.canceledBy = canceledBy
-        self.canceled_reason = canceled_reason
-    async def get_closed_orders():
-        pass
+        self.user = user
+        self.url = "http://localhost:3000"
+        self.prefix = "/orders"
 
-    async def get_all():
-        pass 
+    async def get_receiver_orders(self) -> list:
+        response = requests.get(self.url + self.prefix + "/receiver/" + self.user,
+                                headers={
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json"
+                                })
 
-    async def get_all_by_status(status: str):
-        pass
+        if response.status_code == 200:
+            data = response.json()
 
-    async def get_canceled_orders():
-        pass  
+            return data
+        else:
+            raise HTTPException(
+                status_code=response.status_code, detail="Errei fui mlk")
 
-    async def war():
-        pass
+    async def get_sender_orders(self):
+        response = requests.get(self.url + self.prefix + "/sender/" + self.user,
+                                headers={
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json"
+                                })
 
+        if response.status_code == 200:
+            data = response.json()
+
+            return data
+        else:
+            raise HTTPException(
+                status_code=response.status_code, detail="Errei fui mlk")
+
+    async def get_all_pendings(self):
+        response = requests.get(self.url + self.prefix + "/pending",
+                                headers={
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json"
+                                })
+
+        if response.status_code == 200:
+            data = response.json()
+
+            return data
+        else:
+            raise HTTPException(
+                status_code=response.status_code, detail="Errei fui mlk")
+
+    async def get_order_details(self):
+        response = requests.get(self.url + self.prefix + "/" + self.id,
+                                headers={
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json"
+                                })
+
+        if response.status_code == 200:
+            data = response.json()
+
+            return data
+        else:
+            raise HTTPException(
+                status_code=response.status_code, detail="Errei fui mlk")
+        
+
+    async def get_last_pending(self):
+        response = requests.get(self.url + self.prefix + "/last_pending", headers={
+            "Accept": "application/json",
+            "Content-Type":"application/json"
+        })
+
+        if response.status_code == 200:
+            data = response.json()
+
+            return data
+        else:
+            raise HTTPException(
+                status_code=response.status_code, detail="Errei fui mlk")
