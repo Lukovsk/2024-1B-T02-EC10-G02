@@ -56,5 +56,6 @@ node_modules
 venv
 
 ./prisma/db.db
+/app/prisma/migrations
 
 .vscode

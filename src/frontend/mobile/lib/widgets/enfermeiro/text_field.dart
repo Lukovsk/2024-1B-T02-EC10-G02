@@ -1,13 +1,16 @@
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 
 class AutoCompleteTextFieldWidget extends StatefulWidget {
   final List<String> suggestions;
-  final String labelText; // Adicionando labelText como parâmetro
+  final String labelText;
+  final TextEditingController controller;
+  final void Function(String) onSelected;
 
   AutoCompleteTextFieldWidget({
     required this.suggestions,
-    required this.labelText, // Definindo labelText como obrigatório
+    required this.labelText,
+    required this.controller,
+    required this.onSelected,
   });
 
   @override
@@ -17,51 +20,35 @@ class AutoCompleteTextFieldWidget extends StatefulWidget {
 
 class _AutoCompleteTextFieldWidgetState
     extends State<AutoCompleteTextFieldWidget> {
-  List<String> added = [];
-  String currentText = "";
-  GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
-  SimpleAutoCompleteTextField? textField;
-
-  @override
-  void initState() {
-    super.initState();
-    textField = SimpleAutoCompleteTextField(
-      key: key,
-      decoration: InputDecoration(
-        labelText: widget.labelText, // Usando o labelText fornecido como parâmetro
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      controller: TextEditingController(text: ""),
-      suggestions: widget.suggestions,
-      textChanged: (text) => currentText = text,
-      clearOnSubmit: true,
-      textSubmitted: (text) => setState(() {
-        if (text.isNotEmpty) {
-          added.add(text);
-          currentText = text;
-          textField!.updateDecoration(
-            decoration: InputDecoration(
-              labelText: text,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          );
-        }
-      }),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          title: textField,
-        ),
-      ],
+    return Autocomplete<String>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text.isEmpty) {
+          return const Iterable<String>.empty();
+        }
+        return widget.suggestions.where((String option) {
+          return option.contains(textEditingValue.text.toLowerCase());
+        });
+      },
+      onSelected: (String selection) {
+        widget.controller.text = selection;
+        widget.onSelected(selection);
+      },
+      fieldViewBuilder: (BuildContext context, TextEditingController fieldTextEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+        fieldTextEditingController.value = widget.controller.value;
+        return TextField(
+          controller: fieldTextEditingController,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            labelText: widget.labelText,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+        );
+      },
     );
   }
 }

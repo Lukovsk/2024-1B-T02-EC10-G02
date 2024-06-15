@@ -4,7 +4,6 @@ from enum import Enum
 
 class Status(str, Enum):
     PENDING = "PENDING"
-    ACCEPTED = "ACCEPTED"
     REJECTED = "REJECTED"
     DONE = "DONE"
     CANCELED = "CANCELED"
