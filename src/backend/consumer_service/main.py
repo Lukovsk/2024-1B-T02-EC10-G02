@@ -1,10 +1,9 @@
 # Serviço 2 - recebe as mensagens via RabbitMQ e as armazena em um banco de dados em memória
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
-from services.queue import consume_order_queue
-import threading
 from routes import user_router, order_router, pyxis_router
 from pika.connection import Parameters
+
 Parameters.DEFAULT_CONNECTION_ATTEMPTS = 10
 
 app = FastAPI()
@@ -30,14 +29,11 @@ app.include_router(pyxis_router)
 if __name__ == "__main__":
     import uvicorn
     import os
-    # if "RABBITMQ_HOST" in os.environ:
+
     try:
-        # Cria uma thread para receber as mensagens do RabbitMQ
-        thread = threading.Thread(target=consume_order_queue)
-        thread.start()
-        uvicorn.run(app, host="0.0.0.0", port=3001)
+        uvicorn.run(app, host="0.0.0.0", port=3002)
     except Exception as e:
-        print(f"Finalizando a execução da thread: {e}")
-        thread.stop()
+        print("Fatal error: {e}")
+
 else:
     raise Exception("HOST and PORT must be defined in environment variables")

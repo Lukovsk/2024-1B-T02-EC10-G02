@@ -168,7 +168,6 @@ class OrderService:
                         "sender_userId": self.sender_userId,
                     }
                 )
-
                 return order
             except Exception as e:
                 raise e
@@ -203,6 +202,10 @@ class OrderService:
                         "receiver_userId": self.receiver_userId,
                     },
                 )
+
+                if order == None:
+                    raise Exception("Order not found")
+
                 return order
             except Exception as e:
                 raise e
@@ -219,6 +222,10 @@ class OrderService:
                         "status": "DONE",
                     },
                 )
+
+                if order == None:
+                    raise Exception("Order not found")
+
                 return order
             except Exception as e:
                 raise e
@@ -239,6 +246,10 @@ class OrderService:
                         "canceledAt": datetime.now(),
                     },
                 )
+
+                if order == None:
+                    raise Exception("Order not found")
+
                 return order
             except Exception as e:
                 raise e
@@ -261,6 +272,7 @@ class OrderService:
                     },
                     data={"deleted": True},
                 )
+
                 return True
             except Exception as e:
                 raise e
