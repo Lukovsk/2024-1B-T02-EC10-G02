@@ -3,9 +3,11 @@ from pydantic import BaseModel
 import datetime
 import uvicorn
 from elasticsearch import Elasticsearch, exceptions
+import os
 
 app = FastAPI()
-es = Elasticsearch(["http://localhost:9200"])
+es_host = os.getenv("ES_HOST", "http://localhost:9200")
+es = Elasticsearch([f"{es_host}"])
 
 class LogEntry(BaseModel):
     service: str
@@ -46,4 +48,6 @@ async def get_logs():
         raise HTTPException(status_code=500, detail="Elasticsearch connection error")
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8003)
+    app_host = os.getenv("APP_HOST", "0.0.0.0")
+    app_port = int(os.getenv("APP_PORT", "8000"))
+    uvicorn.run(app, host=app_host, port=app_port)
