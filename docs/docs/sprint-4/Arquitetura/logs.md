@@ -140,4 +140,4 @@ Para verificar e monitorar os logs indexados:
 2. **Criar um Padrão de Índice:** Navegue até Stack Management > Index Patterns e crie um novo padrão de índice para log*.
 3. **Explorar Dados:** Use a aba Discover para explorar os logs armazenados no Elasticsearch.
 
-![logs Kibana](/static/img/sprint-4/Kibana.png)
+![logs Kibana](/img/sprint-4/Kibana.png)
