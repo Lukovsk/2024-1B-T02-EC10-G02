@@ -1,5 +1,6 @@
 
 from pydantic import BaseModel
+from typing import Optional
 
 class MedSchema(BaseModel):
     #id: str

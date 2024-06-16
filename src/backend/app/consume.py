@@ -51,15 +51,15 @@ app.add_middleware(
 if __name__ == "__main__":
     import uvicorn
     import os
-    if "RABBITMQ_HOST" in os.environ:
-        try:    
-            # Cria uma thread para receber as mensagens do RabbitMQ
-            thread = threading.Thread(target=consume_order_queue)
-            thread.start()
-            uvicorn.run(app, host="0.0.0.0", port=3001)
-        except Exception as e:
-            print(f"Finalizando a execução da thread: {e}")
-            thread.stop()
-    else:
-        raise Exception("HOST and PORT must be defined in environment variables")
+    #if "RABBITMQ_HOST" in os.environ:
+    try:    
+        # Cria uma thread para receber as mensagens do RabbitMQ
+        thread = threading.Thread(target=consume_order_queue)
+        thread.start()
+        uvicorn.run(app, host="0.0.0.0", port=3001)
+    except Exception as e:
+        print(f"Finalizando a execução da thread: {e}")
+        thread.stop()
+else:
+    raise Exception("HOST and PORT must be defined in environment variables")
 

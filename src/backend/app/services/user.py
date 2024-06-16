@@ -25,6 +25,24 @@ class UserService():
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
         return hashed_password.decode('utf-8')
+    
+    def verify_password(self, password: str, hashed_password) -> bool:
+        return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+    
+    async def login(self):
+        async with self.database_connection():
+            user = await self.db.user.find_first_or_raise(
+                where={
+                    "email": self.email,
+                }
+            )
+            
+            is_valid = self.verify_password(self.password, user.password)
+            
+            if is_valid:
+                return user
+            else:
+                raise ValueError("Invalid password")
 
     async def create_user(self) -> Prisma.user:
         async with self.database_connection():
@@ -91,14 +109,38 @@ class UserService():
                 # Check if the user exists before deleting
                 await self.db.user.find_unique_or_raise(
                     where={
-                        "id": self.id
+                        "id": id
                     }
                 )
                 # Perform the delete operation
                 await self.db.user.delete(
                     where={
-                        "id": self.id
+                        "id": id
                     }
                 )
+            except errors.RecordNotFoundError:
+                raise ValueError("User not found")
+            
+    async def update_status(self, id:str):
+        async with self.database_connection():
+            try:
+                # Check if the user exists before updating
+                user = await self.db.user.find_unique_or_raise(
+                    where={
+                        "id": id
+                    }
+                )
+                new_status = not user.disponibility
+                
+                # Perform the update operation
+                updated_user = await self.db.user.update(
+                    where={
+                        "id": id
+                    },
+                data={"disponibility": new_status}
+                )
+
+                return updated_user
+
             except errors.RecordNotFoundError:
                 raise ValueError("User not found")

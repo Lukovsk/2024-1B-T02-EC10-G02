@@ -53,16 +53,11 @@ async def controller_update_user(update_data: dict, id) -> dict:
    except Exception as e:
       raise HTTPException(status_code=500, detail=str(e))
    
-async def controller_delete_user(data):
-   checked_data = {k: v for k, v in data.items() if v is not None}
-
-   if checked_data == {}:
-      raise HTTPException(status_code=400, detail="Invalid parameters")
-   
+async def controller_delete_user(id: str) -> dict:
    userService = UserService()
    try:
-      deleted_user = await userService.delete_user(checked_data)
-      return {"message": f"User {deleted_user.name} deleted successfully"}
+      await userService.delete_user(id)
+      return {"message": f"User with id {id} deleted successfully"}
 
    except HTTPException:
        raise HTTPException(status_code=400, detail="Invalid parameters")
@@ -72,3 +67,22 @@ async def controller_delete_user(data):
    
    except Exception as e:
       raise HTTPException(status_code=500, detail=str(e))
+   
+async def update_aux_status(id: str) -> dict:
+   userService = UserService(id=id)
+   try: 
+      updated_user = await userService.update_status(id)
+      return {"message": f"User {updated_user.name} updated successfully"}
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=str(e))
+
+
+async def controller_login(email: str, password: str):
+   userSerivce = UserService(email=email, password=password)
+   try:
+      user = await userSerivce.login()
+      return {"user": user}
+   except ValueError as wrong:
+      raise HTTPException(status_code=401, detail=f"{str(wrong)}")
+   except Exception as e:
+      raise HTTPException(status_code=500, detail=f"Error while logging in: ${str(e)}")

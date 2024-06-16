@@ -3,14 +3,15 @@ from prisma import errors
 from services.medication import MedicationService
 
 async def controller_get_all_medications() -> dict:
-    medications =  MedicationService()
+    medication = MedicationService()
     try:
-        all_medications = await medications.get_all_medications()
+        all_medications = await medication.get_all_medications()
         return {"medications": all_medications}
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 async def controller_get_medication(id: str) -> dict:
     medication = MedicationService(id=id)

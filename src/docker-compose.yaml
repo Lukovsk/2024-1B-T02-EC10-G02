@@ -2,28 +2,27 @@ version: '3.8'
 
 services:
 
-  db:
-    image: postgres:16.2
-    ports:
-      - "5432:5432"  
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: grupo02
-      POSTGRES_DB:  postgres
-    volumes:
-      - ./scripts/000_setup.sql:/docker-entrypoint-initdb.d/000_setup.sql:ro
+#  db:
+ #    image: postgres:16.2
+ #    ports:
+  #     - "5432:5432"  
+#     environment:
+ #      POSTGRES_USER: postgres
+ #      POSTGRES_PASSWORD: grupo02
+ #      POSTGRES_DB:  postgres
+ #    volumes:
+ #      - ./scripts/000_setup.sql:/docker-entrypoint-initdb.d/000_setup.sql:ro
 
-  # app:
-  #   build: 
-  #     context: ./backend
-  #   ports:
-  #     - "3000:3000"
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - db
-  #     - rabbitmq
-
+#  app:
+#     build: 
+#       context: ./backend
+#     ports:
+#       - "3000:3000"
+#     env_file:
+#       - .env
+#     depends_on:
+#       - db
+#       - rabbitmq
 
   rabbitmq:
     image: rabbitmq:3.12.14-management-alpine
@@ -31,5 +30,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_USER=inteli   
+      - RABBITMQ_DEFAULT_PASS=inteli_secret
+
+#${RABBITMQ_DEFAULT_USER}
+#${RABBITMQ_DEFAULT_PASS}

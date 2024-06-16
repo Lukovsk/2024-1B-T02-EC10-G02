@@ -161,7 +161,11 @@ class LoginButton extends StatelessWidget {
         color: Color.fromARGB(255, 220, 217, 217),
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: onTap,
+          onTap: (){
+              Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),);
+          },
           borderRadius: BorderRadius.circular(8),
           child: Container(
             padding: EdgeInsets.all(20),

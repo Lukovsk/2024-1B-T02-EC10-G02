@@ -19,3 +19,4 @@ async def update_order_endpoint(request: UpdateOrder = Body()):
 async def cancel_order_endpoint(request: UpdateOrder = Body()):
     payload = request.dict()
     return await cancel_order_queue()
+
