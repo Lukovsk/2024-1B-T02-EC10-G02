@@ -2,13 +2,13 @@ from routes.consumer import callback
 
 import pika
 
+import os
 
 def get_connection():
-    rabbitmq_host = "50.19.149.200"  # os.getenv('RABBITMQ_HOST', 'localhost')
-    rabbitmq_port = 5672  # int(os.getenv('RABBITMQ_PORT', 5672))
-    rabbitmq_user = "inteli"  # os.getenv('RABBITMQ_DEFAULT_USER', 'inteli')
-    # os.getenv('RABBITMQ_DEFAULT_PASS', 'inteli_secret')
-    rabbitmq_pass = "inteli_secret"
+    rabbitmq_host = os.getenv('RABBITMQ_HOST', 'localhost')
+    rabbitmq_port =  int(os.getenv('RABBITMQ_PORT', 5672))
+    rabbitmq_user =  os.getenv('RABBITMQ_DEFAULT_USER', 'inteli')
+    rabbitmq_pass = os.getenv('RABBITMQ_DEFAULT_PASS', 'inteli_secret')
 
     credentials = pika.PlainCredentials(rabbitmq_user, rabbitmq_pass)
     parameters = pika.ConnectionParameters(

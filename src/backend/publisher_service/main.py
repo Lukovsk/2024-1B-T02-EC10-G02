@@ -4,11 +4,6 @@ from routes import order_pub_router
 
 app = FastAPI()
 
-
-origins = [
-    "http://localhost:3001",
-]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
