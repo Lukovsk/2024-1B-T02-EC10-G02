@@ -8,10 +8,6 @@ Parameters.DEFAULT_CONNECTION_ATTEMPTS = 10
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3001",
-]
-
 # Middleware de CORS (caso necessário)
 app.add_middleware(
     CORSMiddleware,
