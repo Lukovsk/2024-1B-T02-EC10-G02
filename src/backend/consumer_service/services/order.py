@@ -17,7 +17,7 @@ class OrderService:
     ):
         self.id = id
         self.user = user
-        self.url = f"{os.getenv("AWS_HOST", "http://localhost")}:3000"
+        self.url = f'{os.getenv("AWS_HOST", "http://localhost")}:3000'
         self.prefix = "/orders"
 
         self.pyxiId = pyxiId

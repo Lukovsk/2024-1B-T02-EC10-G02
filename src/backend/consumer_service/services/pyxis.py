@@ -8,7 +8,7 @@ class PyxisService:
         id=None,
     ):
         self.id = id
-        self.url = f"{os.getenv("AWS_HOST", "http://localhost")}:3000"
+        self.url = f'{os.getenv("AWS_HOST", "http://localhost")}:3000'
         self.prefix = "/pyxis"
 
     async def get_all(self) -> dict:
