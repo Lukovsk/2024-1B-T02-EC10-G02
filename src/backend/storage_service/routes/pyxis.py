@@ -38,10 +38,10 @@ async def create_pyxi(data: CreatePyxiSchema):
         items=data.items)
 
 # Relate an item to a pyxi
-
+from typing import List
 
 @router.put("/item/{pyxi_id}")
-async def relate_items(pyxi_id: str, items: list[str]):
+async def relate_items(pyxi_id: str, items: List[str]):
     return await controller_relate_item(pyxi_id=pyxi_id, items=items)
 
 # Change pyxi details

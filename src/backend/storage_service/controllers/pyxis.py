@@ -21,8 +21,8 @@ async def controller_get_by_id(pyxy_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-async def controller_create_pyxi(name: str, reference: str = None, sector: str = None, ala: str = None, floor: str = None, items: list[str] = None):
+from typing import List
+async def controller_create_pyxi(name: str, reference: str = None, sector: str = None, ala: str = None, floor: str = None, items: List[str] = None):
     pyxiService = PyxisService(
         name=name,
         reference=reference,
@@ -41,7 +41,7 @@ async def controller_create_pyxi(name: str, reference: str = None, sector: str =
             status_code=500, detail=f"O erro tá aqui: {str(e)}")
 
 
-async def controller_relate_item(pyxi_id: str, items: list[str]) -> dict:
+async def controller_relate_item(pyxi_id: str, items: List[str]) -> dict:
 
     pyxiService = PyxisService(id=pyxi_id, items=items)
     try:
