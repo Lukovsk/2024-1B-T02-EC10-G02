@@ -1,6 +1,16 @@
 version: "3.8"
 
 services:
+
+  rabbitmq:
+    image: "rabbitmq:3.12.14-management-alpine"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "inteli"
+      RABBITMQ_DEFAULT_PASS: "inteli_secret"
+
   storage_service:
     build:
       context: ./backend/storage_service
@@ -31,6 +41,7 @@ services:
       - .env
     depends_on:
       - rabbitmq
+      - publisher
       - storage_service
 
   publisher:
@@ -42,12 +53,3 @@ services:
       - .env
     depends_on:
       - rabbitmq
-
-  rabbitmq:
-    image: "rabbitmq:3.12.14-management-alpine"
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: "inteli"
-      RABBITMQ_DEFAULT_PASS: "inteli_secret"
