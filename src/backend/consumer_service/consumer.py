@@ -10,7 +10,7 @@ load_dotenv()
 def get_connection():
     try:
 
-        rabbitmq_host = os.getenv("RABBITMQ_HOST", "localhost")
+        rabbitmq_host = os.getenv("RABBITMQ_HOST", "50.19.149.200")
         rabbitmq_port = int(os.getenv("RABBITMQ_PORT", 5672))
         rabbitmq_user = os.getenv("RABBITMQ_DEFAULT_USER", "inteli")
         rabbitmq_pass = os.getenv("RABBITMQ_DEFAULT_PASS", "inteli_secret")
