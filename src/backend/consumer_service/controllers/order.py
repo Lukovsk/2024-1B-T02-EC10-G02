@@ -1,47 +1,82 @@
+import json
 from services.order import OrderService
 from fastapi import HTTPException
+from services.redis import redis_client
 
 # from prisma import errors
 
 
 # Eu quero todos os meus pedidos
 async def controller_get_sender_orders(senderId: str):
+    redis_id = f"sender:{senderId}"
+    result = redis_client.get(redis_id)
+
+    if result:
+        return json.loads(result.decode())
+
     orderService = OrderService(user=senderId)
     try:
         orders = await orderService.get_sender_orders()
 
+        redis_client.setex(redis_id, 120, json.dumps(orders).encode())
+
         return orders
     except Exception as e:
+        redis_client.setex(redis_id, 5, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
 async def controller_get_receiver_orders(receiverId: str):
+    redis_id = f"receiver:{receiverId}"
+    result = redis_client.get(redis_id)
+    if result:
+        return json.loads(result.decode())
+
     orderService = OrderService(user=receiverId)
     try:
         orders = await orderService.get_receiver_orders()
 
+        redis_client.setex(redis_id, 120, json.dumps(orders).encode())
+
         return orders
     except Exception as e:
+        redis_client.setex(redis_id, 5, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
 async def controller_get_order_details(id: str):
+    redis_id = f"orderdetail:{id}"
+    result = redis_client.get(redis_id)
+    if result:
+        return json.loads(result.decode())
+
     orderService = OrderService(id=id)
     try:
         order = await orderService.get_order_details()
 
+        redis_client.setex(redis_id, 120, json.dumps(order).encode())
+
         return order
     except Exception as e:
+        redis_client.setex(redis_id, 10, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
 async def controller_get_pending_orders():
+    redis_id = "pendingorders"
+    result = redis_client.get(redis_id)
+    if result:
+        return json.loads(result.decode())
+
     orderService = OrderService()
     try:
         orders = await orderService.get_all_pendings()
 
+        redis_client.setex(redis_id, 120, json.dumps(orders).encode())
+
         return orders
     except Exception as e:
+        redis_client.setex(redis_id, 10, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -49,12 +84,20 @@ async def controller_get_pending_orders():
 
 
 async def get_all_orders():
+    redis_id = "allorders"
+    result = redis_client.get(redis_id)
+    if result:
+        return json.loads(result.decode())
+
     orderService = OrderService()
     try:
         orders = await orderService.get_all()
 
+        redis_client.setex(redis_id, 60, json.dumps(orders).encode())
+
         return orders
     except Exception as e:
+        redis_client.setex(redis_id, 10, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
