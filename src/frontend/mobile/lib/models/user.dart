@@ -19,7 +19,7 @@ class User {
       disponibility: json["disponibility"],
       name: json["name"],
       email: json["email"],
-      role: json["role"][0],
+      role: json["role"],
     );
   }
 }

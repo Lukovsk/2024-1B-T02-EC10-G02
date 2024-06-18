@@ -94,17 +94,20 @@ class LoginPage extends StatelessWidget {
           content: Text('Falha no login!'),
         ),
       );
-    } else if (user["role"][0] == "ADMIN") {
+      return;
+    }
+    String role = user["role"];
+    if (role == "ADMIN") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AdminHome()),
       );
-    } else if (user["role"][0] == "ASSISTANT") {
+    } else if (role == "ASSISTANT") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AuxHome()),
       );
-    } else if (user["role"][0] == "NURSE") {
+    } else if (role == "NURSE") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Home()),

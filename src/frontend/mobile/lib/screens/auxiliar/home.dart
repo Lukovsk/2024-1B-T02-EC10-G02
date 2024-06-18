@@ -41,13 +41,13 @@ class _HomeState extends State<AuxHome> {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AuxHome()),
+          MaterialPageRoute(builder: (context) => const AuxHome()),
         );
         break;
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AuxOrders()),
+          MaterialPageRoute(builder: (context) => const AuxOrders()),
         );
         break;
       default:
@@ -175,7 +175,7 @@ class _HomeState extends State<AuxHome> {
                   child: Text(
                     _notificationAllowed
                         ? "Nenhum pedido solicitado. Para ficar indisponível basta clicar no botão"
-                        : "No momento você não está recebendo alertas de atendimento. para ficar disponivel basta clicar no botão",
+                        : "No momento você não está recebendo alertas de atendimento. Para ficar disponivel basta clicar no botão",
                     textAlign: TextAlign.center,
                     style: const TextStyle(),
                   ),
