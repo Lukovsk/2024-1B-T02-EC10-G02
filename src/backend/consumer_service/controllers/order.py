@@ -22,7 +22,6 @@ async def controller_get_sender_orders(senderId: str):
 
         return orders
     except Exception as e:
-        redis_client.setex(redis_id, 5, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -40,7 +39,6 @@ async def controller_get_receiver_orders(receiverId: str):
 
         return orders
     except Exception as e:
-        redis_client.setex(redis_id, 5, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -58,7 +56,6 @@ async def controller_get_order_details(id: str):
 
         return order
     except Exception as e:
-        redis_client.setex(redis_id, 10, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -76,7 +73,6 @@ async def controller_get_pending_orders():
 
         return orders
     except Exception as e:
-        redis_client.setex(redis_id, 10, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -97,7 +93,6 @@ async def get_all_orders():
 
         return orders
     except Exception as e:
-        redis_client.setex(redis_id, 10, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 

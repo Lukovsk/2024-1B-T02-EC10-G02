@@ -29,10 +29,8 @@ async def controller_login(data: LoginUserRequest):
 
         return {"user": user}
     except ValueError as wrong:
-        redis_client.setex(redis_id, 20, str(wrong))
         raise HTTPException(status_code=401, detail=f"{str(wrong)}")
     except Exception as e:
-        redis_client.setex(name=redis_id, value=str(e), time=20)
         raise HTTPException(
             status_code=500, detail=f"Error while logging in: ${str(e)}"
         )

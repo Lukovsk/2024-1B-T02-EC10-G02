@@ -18,7 +18,6 @@ async def controller_get_pyxis_detail(id: str):
 
         return {"pyxis": pyxis}
     except Exception as e:
-        redis_client.setex(redis_id, 10, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -36,5 +35,4 @@ async def controller_get_all_pyxis():
 
         return {"pyxis": pyxis}
     except Exception as e:
-        redis_client.setex(redis_id, 10, str(e))
         raise HTTPException(status_code=500, detail=str(e))
