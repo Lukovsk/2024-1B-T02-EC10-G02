@@ -5,3 +5,4 @@ pydantic_core==2.18.2
 uvicorn==0.29.0
 python-dotenv==1.0.1
 pika==1.2.0
+redis==5.0.4
