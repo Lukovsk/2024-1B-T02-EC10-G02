@@ -1,22 +1,29 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:flutter/material.dart';
+import 'package:PharmaControl/api/order.dart';
+import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
-import 'package:PharmaControl/screens/enfermeiro/order_state.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
-import 'package:provider/provider.dart';
-import 'package:PharmaControl/screens/auxiliar/pharma_control_card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class AuxOrders extends StatefulWidget {
   const AuxOrders({super.key});
 
   @override
-  State<AuxOrders> createState() => _AuxOrdersState();
+  State<AuxOrders> createState() => AuxOrdersState();
 }
 
-class _AuxOrdersState extends State<AuxOrders> {
+class AuxOrdersState extends State<AuxOrders> {
   int _currentIndex = 1;
+  List<Order> orderList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchOrders();
+  }
 
   void _bottomNavOnTap(int index) {
     setState(() {
@@ -43,8 +50,6 @@ class _AuxOrdersState extends State<AuxOrders> {
 
   @override
   Widget build(BuildContext context) {
-    var orders = context.watch<OrderState>().orders;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(),
@@ -63,25 +68,19 @@ class _AuxOrdersState extends State<AuxOrders> {
             ),
             SizedBox(height: 16),
             Expanded(
-              child: ListView.builder(
-                itemCount: orders.length,
-                itemBuilder: (context, index) {
-                  var order = orders[index];
-                  return PharmaControlCard(
-                    title: order.material.isNotEmpty ? order.material : order.problema,
-                    idMedicamento: "1234543",  // substitua com os dados reais
-                    quantidade: "20 unidades",  // substitua com os dados reais
-                    pontoReferencia: "Ala-pediátrica",  // substitua com os dados reais
-                    onAccepted: () {
-                      // lógica de aceitação
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pedido aceito')));
-                    },
-                    onDeclined: () {
-                      // lógica de recusa
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pedido recusado')));
-                    },
-                  );
-                },
+              child: ListView(
+                children: [
+                  for (Order order in orderList.reversed)
+                    OrderCard(
+                      title: order.medicine ?? "",
+                      status: order.status ?? false,
+                      date: order.createdAt ?? DateTime.now().toString(),
+                      canceled: order.canceled ?? true,
+                      pyxis: order.pyxis ?? 12,
+                      sector: order.sector ?? "B",
+                      rating: ((order.rating ?? 10) % 10),
+                    ),
+                ],
               ),
             ),
           ],
@@ -90,6 +89,111 @@ class _AuxOrdersState extends State<AuxOrders> {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _bottomNavOnTap,
+      ),
+    );
+  }
+
+  void fetchOrders() async {
+    final orders = await getOrders();
+    setState(() {
+      orderList = orders;
+    });
+  }
+}
+
+class OrderCard extends StatelessWidget {
+  final String title;
+  final bool status;
+  final bool canceled;
+  final String date;
+  final int pyxis;
+  final String sector;
+  final int rating;
+
+  const OrderCard({
+    super.key,
+    required this.title,
+    required this.status,
+    required this.canceled,
+    required this.date,
+    required this.pyxis,
+    required this.sector,
+    required this.rating,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String statusMessage = canceled
+        ? "Pedido Cancelado"
+        : status
+            ? "Pedido Concluído"
+            : "Pedido em andamento";
+
+    Color statusColor = canceled
+        ? Colors.red
+        : status
+            ? Colors.green
+            : Colors.deepOrange;
+
+    IconData statusIcon = canceled
+        ? Icons.cancel
+        : status
+            ? Icons.check_circle
+            : Icons.pending;
+
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      statusMessage,
+                      style: TextStyle(color: statusColor),
+                    ),
+                    SizedBox(width: 4),
+                    Icon(statusIcon, color: statusColor),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Data: $date'),
+                Text('Pyxis: $pyxis'),
+                Text('Setor: $sector'),
+              ],
+            ),
+            Divider(),
+            Text('Avaliação'),
+            RatingBar.builder(
+              initialRating: rating.toDouble(),
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              onRatingUpdate: (rating) {},
+              itemSize: 24,
+              ignoreGestures: true,
+            ),
+          ],
+        ),
       ),
     );
   }

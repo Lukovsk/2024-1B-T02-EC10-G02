@@ -88,17 +88,26 @@ class LoginPage extends StatelessWidget {
     Map<dynamic, dynamic> user =
         await login(userController.text, passwordController.text);
 
-    if (user["name"] == "Administrador") {
+    if (user["user"] == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no login!'),
+        ),
+      );
+      return;
+    }
+    String role = user["role"];
+    if (role == "ADMIN") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AdminHome()),
       );
-    } else if (user["name"] == "Auxiliar") {
+    } else if (role == "ASSISTANT") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AuxHome()),
       );
-    } else if (user["name"] == "Enfermeiro") {
+    } else if (role == "NURSE") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Home()),
@@ -161,11 +170,7 @@ class LoginButton extends StatelessWidget {
         color: Color.fromARGB(255, 220, 217, 217),
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: (){
-              Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => Home()),);
-          },
+          onTap: onTap,
           borderRadius: BorderRadius.circular(8),
           child: Container(
             padding: EdgeInsets.all(20),
