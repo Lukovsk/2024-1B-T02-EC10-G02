@@ -162,7 +162,7 @@ class _OrderState extends State<OrderDetail> {
                         onPressed: _cancelOnTap,
                         style: const ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll<Color>(hsRedColor),
+                              MaterialStatePropertyAll<Color>(tdRed),
                           fixedSize:
                               MaterialStatePropertyAll<Size>(Size(100, 0)),
                         ),
