@@ -1,0 +1,134 @@
+generator client {
+    provider             = "prisma-client-py"
+    interface            = "asyncio"
+    recursive_type_depth = 5
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DATABASE_DIRECT_URL")
+}
+
+enum Role {
+    NURSE
+    ASSISTANT
+    ADMIN
+}
+
+enum Status {
+    PENDING
+    ACCEPTED
+    DONE
+    CANCELED
+}
+
+enum Problem {
+    STOCK
+    TECHNICAL
+}
+
+model User {
+    id            String    @id @default(uuid())
+    name          String
+    email         String
+    password      String
+    role          Role      @default(NURSE)
+    disponibility Boolean   @default(false)
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    deletedAt     DateTime?
+    deleted       Boolean   @default(false)
+
+    feedback_sent     Feedback[] @relation("feedbacks_sent")
+    feedback_received Feedback[] @relation("feedbacks_received")
+    order_sent        Order[]    @relation("order_sent")
+    order_received    Order[]    @relation("order_received")
+    order_canceled    Order[]    @relation("order_canceled")
+}
+
+model Feedback {
+    id           String  @id @default(uuid())
+    message_user String?
+    message_app  String?
+    rate_user    Int
+    rate_app     Int?
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    deleted Boolean @default(false)
+
+    Order           Order[]
+    sender_user     User    @relation("feedbacks_sent", fields: [sender_userId], references: [id])
+    sender_userId   String
+    receiver_user   User    @relation("feedbacks_received", fields: [receiver_userId], references: [id])
+    receiver_userId String
+}
+
+model Order {
+    id      String  @id @default(uuid())
+    status  Status  @default(PENDING)
+    problem Problem
+    pyxis   Pyxis   @relation(fields: [pyxiId], references: [id])
+    pyxiId  String
+
+    description String?
+
+    item   Item?   @relation(fields: [itemId], references: [id])
+    itemId String?
+
+    sender_user     User?   @relation("order_sent", fields: [sender_userId], references: [id])
+    sender_userId   String?
+    receiver_user   User?   @relation("order_received", fields: [receiver_userId], references: [id])
+    receiver_userId String?
+
+    feedback   Feedback? @relation(fields: [feedbackId], references: [id])
+    feedbackId String?
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+
+    canceledAt      DateTime?
+    canceledBy      User?     @relation("order_canceled", fields: [canceled_userId], references: [id])
+    canceled_userId String?
+    canceled_reason String?
+    canceled        Boolean   @default(false)
+
+    deleted Boolean @default(false)
+}
+
+model Item {
+    id           String  @id @default(uuid())
+    name         String
+    isMedication Boolean @default(false)
+    area         String?
+    description  String?
+    lot          Int?
+    medClass     String?
+    order        Order[]
+    pyxis        Pyxis[]
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime?
+    deleted   Boolean   @default(false)
+}
+
+model Pyxis {
+    id        String  @id @default(uuid())
+    name      String
+    reference String?
+    sector    String?
+    ala       String?
+    floor     String?
+    items     Item[]
+
+    order Order[]
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime?
+    deleted   Boolean   @default(false)
+}
