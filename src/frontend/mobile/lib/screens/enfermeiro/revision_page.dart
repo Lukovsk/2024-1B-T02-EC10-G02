@@ -1,12 +1,24 @@
-import 'package:PharmaControl/screens/enfermeiro/check_page.dart';
-import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
-import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
-import 'package:PharmaControl/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:PharmaControl/screens/enfermeiro/check_page.dart';
+import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
+import 'package:PharmaControl/screens/enfermeiro/order_state.dart';
+import 'package:PharmaControl/widgets/custom_app_bar.dart';
 import 'package:PharmaControl/constants/colors.dart';
 
-
 class NovaSolicitacao extends StatelessWidget {
+  final String problema;
+  final String pyxis;
+  final String material;
+  final String problemSelected;
+
+  NovaSolicitacao({
+    required this.problema,
+    required this.pyxis,
+    required this.material,
+    required this.problemSelected,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +34,7 @@ class NovaSolicitacao extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: hsBlackColor
+                color: hsBlackColor,
               ),
               textAlign: TextAlign.center,
             ),
@@ -32,7 +44,7 @@ class NovaSolicitacao extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Material faltando',
+              problema,
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
             SizedBox(height: 16),
@@ -41,41 +53,50 @@ class NovaSolicitacao extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Pyxis 2',
+              pyxis,
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
             SizedBox(height: 16),
             Text(
-              'Qual o material?',
+              problemSelected,
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Esparadrapo',
+              material,
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
             SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
+                var newOrder = Order(
+                  problema: problema,
+                  pyxis: pyxis,
+                  material: material,
+                  status: 'Pedido Pendente',
+                  date: DateTime.now().toString(),
+                  rating: 0,
+                );
+                context.read<OrderState>().addOrder(newOrder);
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => CheckPage()),
-                  );
+                  context,
+                  MaterialPageRoute(builder: (context) => CheckPage()),
+                );
               },
               child: Text('Fazer pedido'),
-               style: ElevatedButton.styleFrom(
+              style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 textStyle: TextStyle(fontSize: 18),
                 foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF0D47A1), 
+                backgroundColor: Color(0xFF0D47A1),
               ),
             ),
             SizedBox(height: 16),
             TextButton(
               onPressed: () {
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => RequestPage()),
-                  );
+                  context,
+                  MaterialPageRoute(builder: (context) => RequestPage()),
+                );
               },
               child: Text(
                 'Alterar pedido',

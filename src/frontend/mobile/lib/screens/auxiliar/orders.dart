@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:PharmaControl/api/order.dart';
 import 'package:PharmaControl/models/order.dart';
@@ -87,7 +87,9 @@ class AuxOrdersState extends State<AuxOrders> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: _currentIndex, onTap: _bottomNavOnTap),
+        currentIndex: _currentIndex,
+        onTap: _bottomNavOnTap,
+      ),
     );
   }
 
