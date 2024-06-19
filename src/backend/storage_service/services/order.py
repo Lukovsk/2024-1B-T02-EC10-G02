@@ -101,6 +101,10 @@ class OrderService:
                     order={
                         "createdAt": "desc",
                     },
+                    include={
+                        "item": True,
+                        "pyxis": True,
+                    }
                 )
 
                 return orders
