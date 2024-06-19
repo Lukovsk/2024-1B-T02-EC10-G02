@@ -1,6 +1,6 @@
 // import 'dart:ffi';
 
-import 'package:PharmaControl/api/user.dart';
+import 'package:PharmaControl/api/order.dart' as orderApi;
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/order.dart';
 import 'package:PharmaControl/screens/auxiliar/orders.dart';
@@ -21,7 +21,7 @@ class _HomeState extends State<AuxHome> {
   // ? Será que não é melhor colocar isso buildin no bottom navigation bar?
   int _currentIndex = 0;
 
-  bool _notificationAllowed = false;
+  bool _notificationAllowed = true;
   bool _hasNotification = false;
 
   // TODO: deve haver um push notification que altera automaticamente para "requisição recebida"
@@ -56,15 +56,16 @@ class _HomeState extends State<AuxHome> {
   }
 
   // TODO: #92 integrando, deve alterar o estado do auxiliar (faz uma requisição ao controller para alterar o estado dele)
-  void changeAllowNotification() async {
-    if (await changeDisponibilty(globals.user!.id!)) {
+  void fetchLastOrder() async {
+    final data = await orderApi.fetchLastOrder();
+    if (data != null) {
       setState(() {
         _notificationAllowed = !_notificationAllowed;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Falha em se tornar disponível!'),
+          content: Text('Há nenhum pedido novo!'),
         ),
       );
     }
@@ -198,7 +199,7 @@ class _HomeState extends State<AuxHome> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: ElevatedButton(
-                    onPressed: changeAllowNotification,
+                    onPressed: fetchLastOrder,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: hsNiceBlueColor,
                       minimumSize: const Size(60, 80),
@@ -206,8 +207,8 @@ class _HomeState extends State<AuxHome> {
                     ),
                     child: Icon(
                       _notificationAllowed
-                          ? Icons.notifications_off_rounded
-                          : Icons.notifications_on_rounded,
+                          ? Icons.replay_outlined
+                          : Icons.replay_outlined,
                       size: 40,
                       color: Colors.white,
                     ),
