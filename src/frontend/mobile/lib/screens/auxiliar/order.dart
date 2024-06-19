@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'dart:math';
-
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
@@ -28,7 +24,7 @@ class _OrderState extends State<OrderDetail> {
   void _cancelOnTap() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => AuxHome()),
+      MaterialPageRoute(builder: (context) => const AuxHome()),
     );
   }
 
@@ -46,10 +42,10 @@ class _OrderState extends State<OrderDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: Column(
@@ -59,8 +55,8 @@ class _OrderState extends State<OrderDetail> {
             Column(
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: const Text(
                     "Atendimento em andamento",
                     style: TextStyle(
                       fontSize: 26,
@@ -68,7 +64,7 @@ class _OrderState extends State<OrderDetail> {
                     ),
                   ),
                 ),
-                Divider(
+                const Divider(
                   color: hsNiceBlueColor,
                   thickness: 6,
                 ),
@@ -76,21 +72,21 @@ class _OrderState extends State<OrderDetail> {
             ),
             // card
             Container(
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 vertical: 40,
                 horizontal: 20,
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
-                border: Border(
+                border: const Border(
                   top: BorderSide(
                     color: hsGreenColor,
                     width: 30,
                   ),
                 ),
                 boxShadow: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Colors.black38,
                     spreadRadius: 1,
                     blurRadius: 5,
@@ -98,7 +94,7 @@ class _OrderState extends State<OrderDetail> {
                   )
                 ],
               ),
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: 12,
                 bottom: 20,
                 left: 10,
@@ -111,13 +107,13 @@ class _OrderState extends State<OrderDetail> {
                   // * Título
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(
+                    margin: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 15,
                     ),
                     child: Text(
-                      "Atendimento: Pyxi - ${widget.order.pyxi}",
-                      style: TextStyle(
+                      "Atendimento: Pyxispyxis - ${widget.order.pyxis}",
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                       ),
@@ -126,7 +122,7 @@ class _OrderState extends State<OrderDetail> {
 
                   // * From To Container
                   Container(
-                    margin: EdgeInsets.symmetric(
+                    margin: const EdgeInsets.symmetric(
                       horizontal: 25,
                       vertical: 15,
                     ),
@@ -134,13 +130,13 @@ class _OrderState extends State<OrderDetail> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        PointsWithLine(),
-                        PointsInfo(pointTo: widget.order.pyxi)
+                        const PointsWithLine(),
+                        PointsInfo(pointTo: widget.order.pyxis ?? 1)
                       ],
                     ),
                   ),
                   // * Info adicional
-                  AditionalInfo(info: widget.order.aditionalInfo),
+                  AditionalInfo(info: widget.order.aditionalInfo ?? {}),
 
                   // * Botões
                   Row(
@@ -148,13 +144,13 @@ class _OrderState extends State<OrderDetail> {
                     children: [
                       TextButton(
                         onPressed: _concludeOnTap,
-                        style: ButtonStyle(
+                        style: const ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll<Color>(hsNiceBlueColor),
                           fixedSize:
                               MaterialStatePropertyAll<Size>(Size(180, 0)),
                         ),
-                        child: Text(
+                        child: const Text(
                           "Finalizar",
                           style: TextStyle(
                             fontSize: 16,
@@ -164,13 +160,13 @@ class _OrderState extends State<OrderDetail> {
                       ),
                       TextButton(
                         onPressed: _cancelOnTap,
-                        style: ButtonStyle(
+                        style: const ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll<Color>(hsRedColor),
+                              MaterialStatePropertyAll<Color>(tdRed),
                           fixedSize:
                               MaterialStatePropertyAll<Size>(Size(100, 0)),
                         ),
-                        child: Text(
+                        child: const Text(
                           "Cancelar",
                           style: TextStyle(
                             fontSize: 14,
@@ -201,12 +197,12 @@ class AditionalInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 30),
+      margin: const EdgeInsets.only(bottom: 30),
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Text(
+            margin: const EdgeInsets.only(bottom: 20),
+            child: const Text(
               "Informações adicionais",
               style: TextStyle(
                 fontSize: 20,
@@ -214,7 +210,7 @@ class AditionalInfo extends StatelessWidget {
               ),
             ),
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -274,7 +270,7 @@ class AditionalInfo extends StatelessWidget {
 }
 
 class PointsInfo extends StatelessWidget {
-  final String pointTo;
+  final int pointTo;
   const PointsInfo({
     super.key,
     required this.pointTo,
@@ -283,7 +279,7 @@ class PointsInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 25,
         horizontal: 30,
       ),
@@ -291,7 +287,7 @@ class PointsInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text("Ponto 1: ",
@@ -302,10 +298,11 @@ class PointsInfo extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("Ponto 2: ",
+              const Text("Ponto 2: ",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text("Pyxi $pointTo",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+              Text("Pyxispyxis $pointTo",
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w400)),
             ],
           ),
         ],
@@ -326,7 +323,7 @@ class PointsWithLine extends StatelessWidget {
       children: [
         //bolinhas
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
             horizontal: 14,
           ),
@@ -334,7 +331,7 @@ class PointsWithLine extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             color: hsDarkBlueColor,
           ),
-          child: Text(
+          child: const Text(
             "1",
             style: TextStyle(
               color: Colors.white,
@@ -343,14 +340,14 @@ class PointsWithLine extends StatelessWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 80,
             vertical: 2,
           ),
           color: hsDarkBlueColor,
         ),
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
             horizontal: 14,
           ),
@@ -358,7 +355,7 @@ class PointsWithLine extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             color: hsDarkBlueColor,
           ),
-          child: Text(
+          child: const Text(
             "2",
             style: TextStyle(
               color: Colors.white,
