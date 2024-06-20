@@ -325,7 +325,7 @@ class AuxRequestedOrder extends StatelessWidget {
                     Text(
                       order.problem == "estoque"
                           ? "${order.item?.name}"
-                          : "${order.item?.description}",
+                          : "${order.description}",
                       style: TextStyle(
                         fontSize: 10,
                         color: hsBlackColor,

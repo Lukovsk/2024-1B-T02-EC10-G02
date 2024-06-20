@@ -72,7 +72,8 @@ class AuxOrdersState extends State<AuxOrders> {
                 children: [
                   for (Order order in orderList.reversed)
                     OrderCard(
-                      title: order.problem!,
+                      title:
+                          "${order.problem == "estoque" ? order.item!.name : order.description!} - ${order.problem}",
                       status: order.status!,
                       date: order.createdAt!,
                       canceled: order.canceled!,

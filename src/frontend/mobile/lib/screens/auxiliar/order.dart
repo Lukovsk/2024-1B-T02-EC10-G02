@@ -167,7 +167,7 @@ class _OrderState extends State<OrderDetail> {
                       vertical: 15,
                     ),
                     child: Text(
-                      "Atendimento: Pyxispyxis - ${widget.order.pyxis}",
+                      "Atendimento: Pyxis ${widget.order.pyxis?.name} \n Problema: ${widget.order.problem}",
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
