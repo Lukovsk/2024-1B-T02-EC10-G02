@@ -56,12 +56,13 @@ A organização operacional do projeto deu-se a partir dos pilares postulados pe
 
 ### Sprint 4:  Aprimoramento do Backend e CI/CD e Monitoramento da aplicação
 
-- Aprimoramos o fluxo principal do backend.
-- Aprimoramos o fluxo principal do aplicativo mobile;
-- Evoluímos a arquitetura da solução de monolito para microserviços;
-- Criamos um microserviço de monitoramento de logs.
+- Aprimoramento do backend em relação aos micro serviços 
+- Desenvolvimento do serviço de logs 
+- Finalização do froentend 
+- Finalização da arquitetura
+- Deploy do backend na AWS
 
-#### **Apresentação da terceira sprint review**
+#### **Apresentação da quarta sprint review**
 
 [Acesse a apresentação aqui!!](../static/reviews/SPRINT%2004%20-%20GRUPO%202%20-%20M10.pdf)
 

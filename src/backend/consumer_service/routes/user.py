@@ -10,7 +10,7 @@ router = APIRouter(prefix="/user", tags=["user"])
 
 @router.post("/login")
 async def login(data: LoginUserRequest):
-    return await controller_login(data.email, data.password)
+    return await controller_login(data)
 
 @router.put("/status/{id}")
 async def update_order_route(id: str):
