@@ -43,6 +43,8 @@ services:
       - rabbitmq
       - publisher
       - storage_service
+    restart: 
+      - always
 
   publisher:
     build:

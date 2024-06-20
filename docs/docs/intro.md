@@ -54,18 +54,24 @@ A organização operacional do projeto deu-se a partir dos pilares postulados pe
 
 [Ou aqui para o link direto ao Canva](https://www.canva.com/design/DAGGI_A8M3E/qo1E8Go0sUXf6uJoRcro-A/view?utm_content=DAGGI_A8M3E&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 
-### Sprint 4
+### Sprint 4:  Aprimoramento do Backend e CI/CD e Monitoramento da aplicação
+
 - Aprimoramento do backend em relação aos micro serviços 
 - Desenvolvimento do serviço de logs 
 - Finalização do froentend 
 - Finalização da arquitetura
 - Deploy do backend na AWS
+
 #### **Apresentação da quarta sprint review**
 
 [Acesse a apresentação aqui!!](../static/reviews/SPRINT%2004%20-%20GRUPO%202%20-%20M10.pdf)
 
 [Ou aqui para o link direto ao Canva](https://www.canva.com/design/DAGHc3aPOxo/f3lxHKV3tBaBIeXzomLYPQ/edit?utm_content=DAGHc3aPOxo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-### Sprint 5
+### Sprint 5: Ajustes finais e Plano de Comunicação
 
-<img src="https://i.redd.it/q0dd3k02unqb1.gif" alt="Boot process" style={{ display: 'block', marginLeft: 'auto', maxHeight: '30vh', marginRight: 'auto' }} />
+- Aprimoramento do sistema final;
+- Integração na Cloud;
+- Desenvolvimento do Plano de Comunicação. 
+
+#### **Apresentação da terceira sprint review**
