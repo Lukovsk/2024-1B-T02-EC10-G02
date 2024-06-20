@@ -1,16 +1,17 @@
+import 'package:PharmaControl/models/order.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:PharmaControl/screens/enfermeiro/revision_page.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/widgets/enfermeiro/text_field.dart';
 import 'package:PharmaControl/screens/enfermeiro/home.dart';
 import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
-import 'package:PharmaControl/screens/enfermeiro/order_state.dart';
+import 'package:PharmaControl/api/order.dart' as api_order;
 
 class RequestPage extends StatefulWidget {
+  const RequestPage({super.key});
+
   @override
   _RequestPageState createState() => _RequestPageState();
 }
@@ -18,13 +19,19 @@ class RequestPage extends StatefulWidget {
 class _RequestPageState extends State<RequestPage> {
   TextEditingController problemController = TextEditingController();
   TextEditingController pyxisController = TextEditingController();
-  TextEditingController materialController = TextEditingController();
-  TextEditingController medicineController = TextEditingController();
   TextEditingController mainController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   String thirdInputLabel = 'Qual o material?';
   List<String> thirdInputOptions = [];
-  bool showThirdInput = true;
+  bool isStockProblem = false;
+  List<Pyxis> allPyxis = [];
+
+  late Pyxis _selectedPyxi;
+
+  late String _problem;
+
+  late Item? _selectedItem;
 
   void _onTap(int index) {
     context.read<PageState>().setIndex(index);
@@ -38,7 +45,7 @@ class _RequestPageState extends State<RequestPage> {
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => RequestPage()),
+          MaterialPageRoute(builder: (context) => const RequestPage()),
         );
         break;
       case 2:
@@ -49,117 +56,80 @@ class _RequestPageState extends State<RequestPage> {
     }
   }
 
+  void fetchPyxis() async {
+    List<Pyxis>? data = await api_order.getPyxis();
+    if (data != null) {
+      setState(() {
+        allPyxis = data;
+      });
+    } else {}
+  }
+
   void _updateThirdInputLabel(String selectedProblem) {
     setState(() {
       if (selectedProblem == "Medicamento acabou") {
         thirdInputLabel = "Qual medicamento está em falta?";
-        thirdInputOptions = [
-          'Dipirona',
-          'Paracetamol',
-          'Ibuprofeno',
-          'Dorflex',
-          'Buscopan',
-          'Omeprazol',
-          'Dexametasona',
-          'Prednisona',
-          'Amoxicilina',
-          'Azitromicina',
-        ];
-        mainController = medicineController;
-        showThirdInput = true;
+        thirdInputOptions = (_selectedPyxi.items!)
+            .where((item) => item.isMedication!)
+            .map((item) => item.name)
+            .toList();
+
+        _problem = "stock";
+        isStockProblem = true;
       } else if (selectedProblem == "Material em falta") {
         thirdInputLabel = "Qual material está em falta?";
-        thirdInputOptions = [
-          'Esparadrapo',
-          'Gaze',
-          'Luva',
-          'Máscara',
-          'Seringa',
-          'Agulha',
-          'Avental',
-          'Touca',
-          'Álcool em gel',
-          'Fita adesiva',
-          'Soro fisiológico',
-        ];
-        mainController = materialController;
-        showThirdInput = true;
+        thirdInputOptions = (_selectedPyxi.items!)
+            .where((item) => !item.isMedication!)
+            .map((item) => item.name)
+            .toList();
+
+        _problem = "stock";
+        isStockProblem = true;
       } else if (selectedProblem == "Problemas técnicos com o pyxis") {
-        showThirdInput = false;
+        isStockProblem = false;
+        _selectedItem = null;
         thirdInputLabel = "Problemas técnicos com o pyxis";
-        pyxisController.text = "Pyxis 1";
-      } else {
-        thirdInputLabel = "Qual o material?";
-        thirdInputOptions = [];
-        showThirdInput = true;
+        _problem = "technical";
       }
     });
   }
 
-  Future<void> _submitRequest() async {
-  final order = Order(
-    id: 'unique_order_id',  // Você pode gerar um ID único aqui
-    problema: problemController.text,
-    pyxis: pyxisController.text,
-    material: mainController.text,
-    status: 'new',
-    date: DateTime.now().toIso8601String(),
-    rating: 0,
-    avaliacaoPreenchida: false,
-    aditionalInfo: '', 
-  );
-
-  context.read<Order>();
-
-  final url = Uri.parse('http://50.19.149.200:3001/order/');
-  final response = await http.post(
-    url,
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(order.toJson()),
-  );
-
-  if (response.statusCode == 200) {
+  void _submitRequest() async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => NovaSolicitacao(
-          problema: problemController.text,
-          pyxis: pyxisController.text,
-          material: mainController.text,
-          problemSelected: problemController.text,
+          problema: _problem,
+          pyxis: _selectedPyxi,
+          item: _selectedItem,
+          description: descriptionController.text,
         ),
       ),
     );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Falha ao enviar solicitação')),
-    );
   }
-}
 
+  @override
+  void initState() {
+    super.initState();
+    fetchPyxis();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<String> problem = [
+    List<String> problemOptions = [
       "Medicamento acabou",
       "Material em falta",
       "Problemas técnicos com o pyxis",
     ];
 
-    int _currentIndex = context.watch<PageState>().currentIndex;
+    int currentIndex = context.watch<PageState>().currentIndex;
 
-    List<String> pyxisOptions = [
-      'Pyxis 1',
-      'Pyxis 2',
-      'Pyxis 3',
-    ];
+    List<String> pyxisOptions = allPyxis.map((item) => item.name).toList();
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -168,7 +138,7 @@ class _RequestPageState extends State<RequestPage> {
           'Nova solicitação',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Color(0xFF2563AF),
+        backgroundColor: const Color(0xFF2563AF),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -183,46 +153,34 @@ class _RequestPageState extends State<RequestPage> {
                   color: hsBlackColor,
                 ),
               ),
-              SizedBox(height: 16.0),
-              AutoCompleteTextFieldWidget(
-                suggestions: problem,
-                labelText: 'Qual o seu problema?',
-                controller: problemController,
-                onSelected: (selection) {
-                  setState(() {
-                    problemController.text = selection;
-                    _updateThirdInputLabel(selection);
-                  });
-                },
-              ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               AutoCompleteTextFieldWidget(
                 suggestions: pyxisOptions,
                 labelText: 'Qual o pyxis?',
                 controller: pyxisController,
-                onSelected: (selection) {
-                  setState(() {
-                    pyxisController.text = selection;
-                  });
-                },
+                onSelected: (selection) => _updatePyxisField(selection),
               ),
-              SizedBox(height: 16.0),
-              if (showThirdInput)
+              const SizedBox(height: 16.0),
+              AutoCompleteTextFieldWidget(
+                suggestions: problemOptions,
+                labelText: 'Qual o seu problema?',
+                controller: problemController,
+                onSelected: (selection) => _updateProblemField(selection),
+              ),
+              const SizedBox(height: 16.0),
+              if (isStockProblem)
                 AutoCompleteTextFieldWidget(
                   suggestions: thirdInputOptions,
                   labelText: thirdInputLabel,
                   controller: mainController,
-                  onSelected: (selection) {
-                    setState(() {
-                      mainController.text = selection;
-                    });
-                  },
+                  onSelected: (selection) => _updateItemField(selection),
                 ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
                   maxLines: 4,
+                  controller: descriptionController,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,
                     labelText: 'Alguma observação?',
@@ -234,22 +192,20 @@ class _RequestPageState extends State<RequestPage> {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    _submitRequest();
-                  },
-                  child: Text(
-                    'Revisar solicitação',
-                    style: TextStyle(fontSize: 20.0, color: Colors.white),
-                  ),
+                  onPressed: _submitRequest,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF2563AF),
-                    padding: EdgeInsets.symmetric(
+                    backgroundColor: const Color(0xFF2563AF),
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 32.0,
                       vertical: 12.0,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
+                  ),
+                  child: const Text(
+                    'Revisar solicitação',
+                    style: TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
                 ),
               ),
@@ -258,9 +214,31 @@ class _RequestPageState extends State<RequestPage> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: currentIndex,
         onTap: _onTap,
       ),
     );
+  }
+
+  void _updateItemField(String selection) {
+    return setState(() {
+      mainController.text = selection;
+      _selectedItem =
+          _selectedPyxi.items?.where((item) => item.name == selection).first;
+    });
+  }
+
+  void _updateProblemField(String selection) {
+    return setState(() {
+      problemController.text = selection;
+      _updateThirdInputLabel(selection);
+    });
+  }
+
+  void _updatePyxisField(String selection) {
+    return setState(() {
+      pyxisController.text = selection;
+      _selectedPyxi = allPyxis.where((item) => item.name == selection).first;
+    });
   }
 }

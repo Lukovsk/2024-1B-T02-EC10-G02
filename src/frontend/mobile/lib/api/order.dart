@@ -7,14 +7,34 @@ var baseurl = globals.baseurl;
 var pubUrl = globals.publisherUrl;
 
 Future<List<Order>?> getOrders() async {
+  String userUrl = globals.user!.role == "NURSE"
+      ? "sender/${globals.user!.id}"
+      : "receiver/${globals.user!.id}";
+
   var response = await http.get(
-    Uri.parse("$baseurl/orders/receiver/${globals.user!.id}"),
+    Uri.parse("$baseurl/orders/$userUrl"),
+    headers: <String, String>{'Content-Type': 'application/json;charset=utf-8'},
   );
 
   if (response.statusCode == 200) {
     final List<dynamic> data = json.decode(response.body);
 
     return data.map((d) => Order.fromJson(d)).toList();
+  } else {
+    return null;
+  }
+}
+
+Future<List<Pyxis>?> getPyxis() async {
+  var response = await http.get(
+    Uri.parse("$baseurl/pyxis/"),
+    headers: <String, String>{'Content-Type': 'application/json;charset=utf-8'},
+  );
+
+  if (response.statusCode == 200) {
+    final List<dynamic> data = json.decode(response.body)["pyxis"];
+
+    return data.map((d) => Pyxis.fromJsonWithItems(d)).toList();
   } else {
     return null;
   }
@@ -38,7 +58,7 @@ Future<Order?> fetchLastOrder() async {
 Future<bool> createOrder(String userId, String pyxiId, String problem,
     String? description, String? itemId) async {
   final Map<String, String?> data = {
-    "receiver_userId": userId,
+    "sender_userId": userId,
     "pyxiId": pyxiId,
     "problem": problem,
     "description": description,

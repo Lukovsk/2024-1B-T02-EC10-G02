@@ -1,3 +1,4 @@
+import 'package:PharmaControl/screens/enfermeiro/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
@@ -8,6 +9,8 @@ import 'package:gif_view/gif_view.dart';
 import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
 
 class CheckGif extends StatefulWidget {
+  const CheckGif({super.key});
+
   @override
   _CheckGifState createState() => _CheckGifState();
 }
@@ -19,12 +22,14 @@ class _CheckGifState extends State<CheckGif> {
       'lib/assets/videos/check.gif',
       height: 200,
       width: 200,
-      frameRate: 30, 
+      frameRate: 30,
     );
   }
 }
 
 class CheckPage extends StatefulWidget {
+  const CheckPage({super.key});
+
   @override
   _CheckPage createState() => _CheckPage();
 }
@@ -42,7 +47,7 @@ class _CheckPage extends State<CheckPage> {
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => OrderScreen()),
+          MaterialPageRoute(builder: (context) => const NurseOrders()),
         );
         break;
       case 2:
@@ -55,7 +60,7 @@ class _CheckPage extends State<CheckPage> {
 
   @override
   Widget build(BuildContext context) {
-    int _currentIndex = context.watch<PageState>().currentIndex;
+    int currentIndex = context.watch<PageState>().currentIndex;
 
     return Scaffold(
       body: Center(
@@ -72,14 +77,14 @@ class _CheckPage extends State<CheckPage> {
                   color: hsBlackColor,
                 ),
               ),
-              SizedBox(height: 20), // Espaço entre o texto e o GIF
+              const SizedBox(height: 20), // Espaço entre o texto e o GIF
               CheckGif(),
             ],
           ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: currentIndex,
         onTap: _onTap,
       ),
     );

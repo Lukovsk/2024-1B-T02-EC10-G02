@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:PharmaControl/screens/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
-import 'package:PharmaControl/screens/enfermeiro/order_state.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => PageState()),
-        ChangeNotifierProvider(create: (context) => Order()),
       ],
       child: MyApp(),
     ),

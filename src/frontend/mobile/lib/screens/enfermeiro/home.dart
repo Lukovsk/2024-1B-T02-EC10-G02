@@ -1,14 +1,13 @@
+import 'package:PharmaControl/screens/enfermeiro/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
 import 'package:PharmaControl/widgets/enfermeiro/my_requests_card.dart';
-import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
 
-import 'page_state.dart'; 
-
+import 'page_state.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -28,13 +27,13 @@ class _HomeState extends State<Home> {
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => OrderScreen()),
+          MaterialPageRoute(builder: (context) => const NurseOrders()),
         );
         break;
       case 2:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AuxHome()),
+          MaterialPageRoute(builder: (context) => const AuxHome()),
         );
         break;
       default:
@@ -44,10 +43,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    int _currentIndex = context.watch<PageState>().currentIndex;
+    int currentIndex = context.watch<PageState>().currentIndex;
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Column(
@@ -84,12 +83,7 @@ class _HomeState extends State<Home> {
             MyRequestsCard(),
             const Spacer(),
             ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => RequestPage()),
-                );
-              },
+              onPressed: _requestOrder,
               icon: const Icon(Icons.add, color: Colors.white),
               label: const Text(
                 'Nova Solicitação',
@@ -111,9 +105,16 @@ class _HomeState extends State<Home> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: currentIndex,
         onTap: _onTap,
       ),
+    );
+  }
+
+  void _requestOrder() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const RequestPage()),
     );
   }
 }

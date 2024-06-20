@@ -1,6 +1,6 @@
+import 'package:PharmaControl/screens/enfermeiro/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/constants/colors.dart';
-import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart'; 
 
 class MyRequestsCard extends StatelessWidget {
   @override
@@ -9,7 +9,7 @@ class MyRequestsCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => OrderScreen()),
+          MaterialPageRoute(builder: (context) => const NurseOrders()),
         );
       },
       child: Card(
@@ -53,8 +53,8 @@ class MyRequestsCard extends StatelessWidget {
               ),
               const Spacer(),
               const SizedBox(
-                height: 50.0, 
-                width: 50.0,  
+                height: 50.0,
+                width: 50.0,
                 child: Image(
                   image: AssetImage('lib/assets/images/medicine.png'),
                   fit: BoxFit.contain,
