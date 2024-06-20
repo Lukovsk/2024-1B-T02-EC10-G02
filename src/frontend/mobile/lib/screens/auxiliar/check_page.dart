@@ -1,8 +1,8 @@
-import 'package:PharmaControl/screens/enfermeiro/my_orders.dart';
+import 'package:PharmaControl/screens/auxiliar/home.dart';
+import 'package:PharmaControl/screens/auxiliar/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
-import 'package:PharmaControl/screens/enfermeiro/home.dart';
 import 'package:PharmaControl/models/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:gif_view/gif_view.dart';
@@ -30,19 +30,18 @@ class CheckPage extends StatefulWidget {
 
 class _CheckPage extends State<CheckPage> {
   void _onTap(int index) {
-    Navigator.pop(context);
     context.read<PageState>().setIndex(index);
     switch (index) {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Home()),
+          MaterialPageRoute(builder: (context) => const AuxHome()),
         );
         break;
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const NurseOrders()),
+          MaterialPageRoute(builder: (context) => const AuxOrders()),
         );
         break;
       case 2:

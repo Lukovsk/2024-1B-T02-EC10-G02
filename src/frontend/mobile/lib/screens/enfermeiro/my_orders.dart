@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import '../../models/pyxis.dart';
+
 class NurseOrders extends StatefulWidget {
   const NurseOrders({super.key});
 

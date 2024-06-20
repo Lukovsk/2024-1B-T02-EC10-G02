@@ -1,4 +1,5 @@
 import 'package:PharmaControl/models/order.dart';
+import 'package:PharmaControl/screens/enfermeiro/my_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,9 @@ import 'package:PharmaControl/screens/enfermeiro/home.dart';
 import 'package:PharmaControl/models/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/api/order.dart' as api_order;
+
+import '../../models/item.dart';
+import '../../models/pyxis.dart';
 
 class RequestPage extends StatefulWidget {
   const RequestPage({super.key});
@@ -35,29 +39,6 @@ class _RequestPageState extends State<RequestPage> {
   Item? _selectedItem;
 
   bool _inAsyncCall = false;
-
-  void _onTap(int index) {
-    context.read<PageState>().setIndex(index);
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
-        break;
-      case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const RequestPage()),
-        );
-        break;
-      case 2:
-        // Navigate to ProfileScreen()
-        break;
-      default:
-        break;
-    }
-  }
 
   void _asyncCall() async {
     setState(() {
@@ -162,8 +143,6 @@ class _RequestPageState extends State<RequestPage> {
       "Problemas técnicos com o pyxis",
     ];
 
-    int currentIndex = context.watch<PageState>().currentIndex;
-
     List<String> pyxisOptions = allPyxis.map((item) => item.name).toList();
 
     return Scaffold(
@@ -255,10 +234,6 @@ class _RequestPageState extends State<RequestPage> {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: _onTap,
       ),
     );
   }

@@ -3,6 +3,8 @@ import 'package:PharmaControl/models/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:PharmaControl/globals.dart' as globals;
 
+import '../models/pyxis.dart';
+
 var baseurl = globals.baseurl;
 var pubUrl = globals.publisherUrl;
 

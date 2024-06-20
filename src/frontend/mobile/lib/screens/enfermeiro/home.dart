@@ -5,11 +5,11 @@ import '/widgets/custom_app_bar.dart';
 import '/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
 import 'package:PharmaControl/widgets/enfermeiro/my_requests_card.dart';
-import 'package:PharmaControl/screens/auxiliar/home.dart';
-
-import '../../models/page_state.dart';
+import 'package:PharmaControl/models/page_state.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Home()),
+          MaterialPageRoute(builder: (context) => const Home()),
         );
         break;
       case 1:
@@ -31,10 +31,10 @@ class _HomeState extends State<Home> {
         );
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const AuxHome()),
-        );
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const AuxHome()),
+        // );
         break;
       default:
         break;
@@ -112,7 +112,7 @@ class _HomeState extends State<Home> {
   }
 
   void _requestOrder() {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const RequestPage()),
     );

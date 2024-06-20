@@ -8,6 +8,9 @@ import 'package:PharmaControl/api/order.dart' as api_order;
 import 'package:PharmaControl/globals.dart' as globals;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import '../../models/item.dart';
+import '../../models/pyxis.dart';
+
 class NovaSolicitacao extends StatefulWidget {
   final String problema;
   final Pyxis pyxis;
@@ -98,13 +101,7 @@ class _NovaSolicitacaoState extends State<NovaSolicitacao> {
               ),
               const SizedBox(height: 16),
               TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RequestPage()),
-                  );
-                },
+                onPressed: () => Navigator.pop(context),
                 child: const Text(
                   'Alterar pedido',
                   style: TextStyle(fontSize: 18, color: Colors.blue),
