@@ -1,5 +1,5 @@
 import 'package:PharmaControl/models/order.dart';
-import 'package:PharmaControl/screens/enfermeiro/orders.dart';
+import 'package:PharmaControl/screens/enfermeiro/my_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
