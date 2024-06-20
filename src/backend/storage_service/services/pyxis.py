@@ -3,8 +3,17 @@ from contextlib import asynccontextmanager
 from __init__ import db
 
 
-class PyxisService():
-    def __init__(self, id=None, name=None, reference=None, sector=None, ala=None, floor=None, items=None):
+class PyxisService:
+    def __init__(
+        self,
+        id=None,
+        name=None,
+        reference=None,
+        sector=None,
+        ala=None,
+        floor=None,
+        items=None,
+    ):
         self.id = id
         self.name = name
         self.reference = reference
@@ -32,7 +41,7 @@ class PyxisService():
                     include={
                         "items": True,
                         "order": True,
-                    }
+                    },
                 )
                 return pyxi
             except Exception as e:
@@ -44,7 +53,10 @@ class PyxisService():
                 pyxies = await self.db.pyxis.find_many(
                     where={
                         "deleted": False,
-                    }
+                    },
+                    include={
+                        "items": True,
+                    },
                 )
                 return pyxies
             except Exception as e:
@@ -53,27 +65,29 @@ class PyxisService():
     async def create(self):
         async with self.database_connection():
             try:
-                pyxis = await self.db.pyxis.create(
-                    data={
-                        "name": self.name,
-                        "reference": self.reference,
-                        "sector": self.sector,
-                        "ala": self.ala,
-                        "floor": self.floor,
-                        "items": {
-                            "connect": [{
-                                "id": itemId
-                            } for itemId in self.items]
+                pyxis = (
+                    await self.db.pyxis.create(
+                        data={
+                            "name": self.name,
+                            "reference": self.reference,
+                            "sector": self.sector,
+                            "ala": self.ala,
+                            "floor": self.floor,
+                            "items": {
+                                "connect": [{"id": itemId} for itemId in self.items]
+                            },
                         }
-                    }
-                ) if self.items else await self.db.pyxis.create(
-                    data={
-                        "name": self.name,
-                        "reference": self.reference,
-                        "sector": self.sector,
-                        "ala": self.ala,
-                        "floor": self.floor,
-                    }
+                    )
+                    if self.items
+                    else await self.db.pyxis.create(
+                        data={
+                            "name": self.name,
+                            "reference": self.reference,
+                            "sector": self.sector,
+                            "ala": self.ala,
+                            "floor": self.floor,
+                        }
+                    )
                 )
                 return pyxis
             except Exception as e:
@@ -87,9 +101,7 @@ class PyxisService():
                         "id": self.id,
                     },
                     data={
-                        "items": {
-                            "connect": [{"id": itemId} for itemId in self.items]
-                        },
+                        "items": {"connect": [{"id": itemId} for itemId in self.items]},
                     },
                 )
                 return pyxi
@@ -109,7 +121,7 @@ class PyxisService():
                         "sector": self.sector,
                         "ala": self.ala,
                         "floor": self.floor,
-                    }
+                    },
                 )
                 return pyxi
             except Exception as e:

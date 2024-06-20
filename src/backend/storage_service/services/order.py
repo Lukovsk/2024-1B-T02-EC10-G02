@@ -57,6 +57,12 @@ class OrderService:
                     where={
                         "deleted": False,
                     },
+                    include={
+                        "item": True,
+                        "pyxis": True,
+                        "sender_user": True,
+                        "receiver_user": True,
+                    },
                 )
                 return orders
             except Exception as e:
@@ -74,6 +80,12 @@ class OrderService:
                         order={
                             "createdAt": "desc",
                         },
+                        include={
+                            "item": True,
+                            "pyxis": True,
+                            "sender_user": True,
+                            "receiver_user": True,
+                        },
                     )
                     if self.sender_userId
                     else await self.db.order.find_many(
@@ -83,6 +95,12 @@ class OrderService:
                         },
                         order={
                             "createdAt": "desc",
+                        },
+                        include={
+                            "item": True,
+                            "pyxis": True,
+                            "sender_user": True,
+                            "receiver_user": True,
                         },
                     )
                 )
@@ -104,7 +122,9 @@ class OrderService:
                     include={
                         "item": True,
                         "pyxis": True,
-                    }
+                        "sender_user": True,
+                        "receiver_user": True,
+                    },
                 )
 
                 return orders
@@ -120,7 +140,14 @@ class OrderService:
                     where={
                         "deleted": False,
                         "canceled": True,
-                    }
+                    },
+                    include={
+                        "item": True,
+                        "pyxis": True,
+                        "sender_user": True,
+                        "receiver_user": True,
+                        "canceledBy": True,
+                    },
                 )
                 return orders
             except Exception as e:
@@ -133,6 +160,12 @@ class OrderService:
                 orders = await self.db.order.find_many(
                     where={
                         "deleted": False,
+                    },
+                    include={
+                        "item": True,
+                        "pyxis": True,
+                        "sender_user": True,
+                        "receiver_user": True,
                     },
                 )
                 return orders
