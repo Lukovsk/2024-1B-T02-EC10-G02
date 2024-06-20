@@ -1,9 +1,10 @@
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
-import 'package:PharmaControl/screens/enfermeiro/check_page.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:PharmaControl/api/order.dart' as api_order;
+import 'package:PharmaControl/globals.dart' as globals;
 
 class OrderDetail extends StatefulWidget {
   final Order order;
@@ -20,22 +21,76 @@ class _OrderState extends State<OrderDetail> {
     super.initState();
   }
 
-  // TODO: integrando, deve abrir um modal para demonstrar a razão do cancelamento
   void _cancelOnTap() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const AuxHome()),
+    TextEditingController motivoController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Motivo do Cancelamento'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: motivoController,
+                decoration: const InputDecoration(
+                  hintText: 'Digite o motivo do cancelamento',
+                ),
+                maxLines: 3,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Adicione a lógica para tratar o motivo do cancelamento
+                _cancelOrder(motivoController.text);
+              },
+              child: const Text('Confirmar'),
+            ),
+          ],
+        );
+      },
     );
   }
 
-  // TODO: integrando, o modal deve enviar um novo pedido à fila com o status de cancelamento e a razão do cancelamento no payload
+  void _cancelOrder(String reason) async {
+    if (await api_order.cancelOrder(
+        widget.order.id, reason, globals.user!.id!)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AuxHome()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no tentando concluir o pedido!'),
+        ),
+      );
+    }
+  }
 
   // TODO: integrando, deve enviar o pedido à fila com o status de finalizado e abrir um modal para fornecer o feedback
-  void _concludeOnTap() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => CheckPage()),
-    );
+  void _concludeOnTap() async {
+    if (await api_order.doneOrder(widget.order.id)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AuxHome()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no tentando concluir o pedido!'),
+        ),
+      );
+    }
   }
 
   @override
@@ -85,8 +140,8 @@ class _OrderState extends State<OrderDetail> {
                     width: 30,
                   ),
                 ),
-                boxShadow: [
-                  const BoxShadow(
+                boxShadow: const [
+                  BoxShadow(
                     color: Colors.black38,
                     spreadRadius: 1,
                     blurRadius: 5,
@@ -131,12 +186,14 @@ class _OrderState extends State<OrderDetail> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const PointsWithLine(),
-                        PointsInfo(pointTo: widget.order.pyxis ?? 1)
+                        PointsInfo(
+                          pointTo: widget.order.pyxis!.reference,
+                        )
                       ],
                     ),
                   ),
                   // * Info adicional
-                  AditionalInfo(info: widget.order.aditionalInfo ?? {}),
+                  AditionalInfo(order: widget.order),
 
                   // * Botões
                   Row(
@@ -187,12 +244,12 @@ class _OrderState extends State<OrderDetail> {
 }
 
 class AditionalInfo extends StatelessWidget {
+  final Order order;
+
   const AditionalInfo({
     super.key,
-    required Map<String, String> info,
+    required this.order,
   });
-
-  // TODO: criar lógica para criar dinamicamente a informação adicional, respeitando o máximo de duas colunas com três linhas cada.
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +267,7 @@ class AditionalInfo extends StatelessWidget {
               ),
             ),
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -219,22 +276,24 @@ class AditionalInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "ID medicamento: 1234543",
-                    style: TextStyle(
+                    "Problema: ${order.problem}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    "Quantidade: 20 unidades",
-                    style: TextStyle(
+                    order.problem == "estoque"
+                        ? "${order.item?.name}"
+                        : "${order.item?.description}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    "Ponto de referência: Ala-pediátrica",
-                    style: TextStyle(
+                    "Referência: ${order.pyxis?.reference}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
@@ -246,15 +305,15 @@ class AditionalInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "InfoX: XXXX",
-                    style: TextStyle(
+                    "Descrição: ${order.description}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    "InfoY: YYYY",
-                    style: TextStyle(
+                    "${order.item?.description}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
@@ -270,7 +329,7 @@ class AditionalInfo extends StatelessWidget {
 }
 
 class PointsInfo extends StatelessWidget {
-  final int pointTo;
+  final String? pointTo;
   const PointsInfo({
     super.key,
     required this.pointTo,
@@ -300,7 +359,7 @@ class PointsInfo extends StatelessWidget {
             children: [
               const Text("Ponto 2: ",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text("Pyxispyxis $pointTo",
+              Text("Pyxis $pointTo",
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w400)),
             ],

@@ -1,6 +1,8 @@
 // import 'dart:ffi';
 
-import 'package:PharmaControl/api/order.dart' as orderApi;
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
+import 'package:PharmaControl/api/order.dart' as order_api;
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/order.dart';
 import 'package:PharmaControl/screens/auxiliar/orders.dart';
@@ -23,12 +25,12 @@ class _HomeState extends State<AuxHome> {
 
   bool _notificationAllowed = true;
   bool _hasNotification = false;
+  Order? _order;
 
-  // TODO: deve haver um push notification que altera automaticamente para "requisição recebida"
   void _hamburguerOnTap() {
-    setState(() {
-      _hasNotification = !_hasNotification;
-    });
+    // setState(() {
+    //   _hasNotification = !_hasNotification;
+    // });
   }
 
   // ? Será que não é melhor colocar isso buildin no bottom navigation bar?
@@ -55,12 +57,13 @@ class _HomeState extends State<AuxHome> {
     }
   }
 
-  // TODO: #92 integrando, deve alterar o estado do auxiliar (faz uma requisição ao controller para alterar o estado dele)
   void fetchLastOrder() async {
-    final data = await orderApi.fetchLastOrder();
+    final data = await order_api.fetchLastOrder();
     if (data != null) {
       setState(() {
-        _notificationAllowed = !_notificationAllowed;
+        _order = data;
+        _notificationAllowed = true;
+        _hasNotification = true;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -71,16 +74,20 @@ class _HomeState extends State<AuxHome> {
     }
   }
 
-  // TODO: integrando, deve alterar o estado do pedido na fila, colocando que há um auxiliar que fará o pedido
-  void _onOrderAccepted() {
-    final order = Order.getExample();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => OrderDetail(order: order)),
-    );
+  void _onOrderAccepted() async {
+    if (await order_api.acceptOrder(globals.user!.id!, _order!.id)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => OrderDetail(order: _order!)),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Erro ao aceitar o pedido!'),
+      ));
+    }
   }
 
-  // TODO: integrando, deve fazer com que um outro auxiliar receba uma notificação (ideal guardar a informação que o pedido foi negato e por quem)
+  // TODO: integrando, deve fazer com que um outro auxiliar receba uma notificação (ideal guardar a informação que o pedido foi negado e por quem)
   void _onOrderDenied() {
     setState(() {
       _hasNotification = false;
@@ -99,7 +106,7 @@ class _HomeState extends State<AuxHome> {
       appBar: CustomAppBar(
         hamburguerOnTap: _hamburguerOnTap,
       ),
-      body: _hasNotification ? _buildNotified() : _buildUnNotified(),
+      body: _hasNotification ? _buildNotified(_order!) : _buildUnNotified(),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTap,
@@ -107,7 +114,7 @@ class _HomeState extends State<AuxHome> {
     );
   }
 
-  Container _buildNotified() => Container(
+  Container _buildNotified(Order order) => Container(
         alignment: Alignment.center,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -136,7 +143,8 @@ class _HomeState extends State<AuxHome> {
             AuxRequestedOrder(
               onAccepted: _onOrderAccepted,
               onDenied: _onOrderDenied,
-            )
+              order: order,
+            ),
           ],
         ),
       );
@@ -224,11 +232,13 @@ class _HomeState extends State<AuxHome> {
 class AuxRequestedOrder extends StatelessWidget {
   final Function() onAccepted;
   final Function() onDenied;
+  final Order order;
 
   const AuxRequestedOrder({
     super.key,
     required this.onAccepted,
     required this.onDenied,
+    required this.order,
   });
 
   @override
@@ -290,9 +300,9 @@ class AuxRequestedOrder extends StatelessWidget {
                         size: 40,
                       ),
                     ),
-                    const Text(
-                      "Pyxi - 12B",
-                      style: TextStyle(
+                    Text(
+                      "Pyxi - ${order.pyxis?.name}",
+                      style: const TextStyle(
                         fontSize: 14,
                         color: hsBlackColor,
                         fontWeight: FontWeight.w500,
@@ -300,12 +310,12 @@ class AuxRequestedOrder extends StatelessWidget {
                     )
                   ],
                 ),
-                const Column(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "ID medicamento: 1234543",
+                      "Problema: ${order.problem}",
                       style: TextStyle(
                         fontSize: 10,
                         color: hsBlackColor,
@@ -313,7 +323,9 @@ class AuxRequestedOrder extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Quantidade: 20 unidades",
+                      order.problem == "estoque"
+                          ? "${order.item?.name}"
+                          : "${order.item?.description}",
                       style: TextStyle(
                         fontSize: 10,
                         color: hsBlackColor,
@@ -321,7 +333,7 @@ class AuxRequestedOrder extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Ponto de referência: Ala-pediátrica",
+                      "Referência: ${order.pyxis?.reference}",
                       style: TextStyle(
                         fontSize: 10,
                         color: hsBlackColor,

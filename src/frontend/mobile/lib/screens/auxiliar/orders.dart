@@ -72,12 +72,11 @@ class AuxOrdersState extends State<AuxOrders> {
                 children: [
                   for (Order order in orderList.reversed)
                     OrderCard(
-                      title: order.medicine ?? "",
-                      status: order.status ?? false,
-                      date: order.createdAt ?? DateTime.now().toString(),
-                      canceled: order.canceled ?? true,
-                      pyxis: order.pyxis ?? 12,
-                      sector: order.sector ?? "B",
+                      title: order.problem!,
+                      status: order.status!,
+                      date: order.createdAt!,
+                      canceled: order.canceled!,
+                      pyxis: order.pyxis!,
                       rating: ((order.rating ?? 10) % 10),
                     ),
                 ],
@@ -95,51 +94,68 @@ class AuxOrdersState extends State<AuxOrders> {
 
   void fetchOrders() async {
     final orders = await getOrders();
-    setState(() {
-      orderList = orders;
-    });
+    if (orders != null) {
+      setState(() {
+        orderList = orders;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha buscando pedidos!'),
+        ),
+      );
+    }
   }
 }
 
 class OrderCard extends StatelessWidget {
   final String title;
-  final bool status;
+  final String status;
   final bool canceled;
   final String date;
-  final int pyxis;
-  final String sector;
+  final Pyxis pyxis;
   final int rating;
 
-  const OrderCard({
+  OrderCard({
     super.key,
     required this.title,
     required this.status,
     required this.canceled,
     required this.date,
     required this.pyxis,
-    required this.sector,
     required this.rating,
   });
 
+  final Map<String, List<dynamic>> statuses = {
+    "PENDING": [
+      "Pedido em andamento",
+      Colors.deepOrange,
+      Icons.pending,
+    ],
+    "DONE": [
+      "Pedido Concluído",
+      Colors.green,
+      Icons.check_circle,
+    ],
+    "CANCELED": [
+      "Pedido Cancelado",
+      Colors.red,
+      Icons.cancel,
+    ],
+    "ACCEPTED": [
+      "Pedido aceito",
+      Colors.deepOrange,
+      Icons.pending,
+    ],
+  };
+
   @override
   Widget build(BuildContext context) {
-    String statusMessage = canceled
-        ? "Pedido Cancelado"
-        : status
-            ? "Pedido Concluído"
-            : "Pedido em andamento";
+    String statusMessage = statuses[status]![0];
 
-    Color statusColor = canceled
-        ? Colors.red
-        : status
-            ? Colors.green
-            : Colors.deepOrange;
+    Color statusColor = statuses[status]![1];
 
-    IconData statusIcon = canceled
-        ? Icons.cancel
-        : status
-            ? Icons.check_circle
-            : Icons.pending;
+    IconData statusIcon = statuses[status]![2];
 
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8),
@@ -172,8 +188,8 @@ class OrderCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Data: $date'),
-                Text('Pyxis: $pyxis'),
-                Text('Setor: $sector'),
+                Text('Pyxis: ${pyxis.name}'),
+                Text('Setor: ${pyxis.sector}'),
               ],
             ),
             Divider(),
