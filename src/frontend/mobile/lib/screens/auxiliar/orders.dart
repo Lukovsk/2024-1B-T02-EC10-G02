@@ -85,17 +85,18 @@ class AuxOrdersState extends State<AuxOrders> {
               Expanded(
                 child: ListView(
                   children: [
-                    for (Order order in _foundOrders.reversed)
-                      OrderCard(
-                        title: order.problem == "estoque"
-                            ? order.item!.name
-                            : "Problema técnico",
-                        status: order.status!,
-                        date: order.createdAt!,
-                        canceled: order.canceled!,
-                        pyxis: order.pyxis!,
-                        rating: ((order.rating ?? 10) % 10),
-                      ),
+                    if (_foundOrders.isNotEmpty)
+                      for (Order order in _foundOrders.reversed)
+                        OrderCard(
+                          title: order.problem == "estoque"
+                              ? order.item!.name
+                              : "Problema técnico",
+                          status: order.status!,
+                          date: order.createdAt!,
+                          canceled: order.canceled!,
+                          pyxis: order.pyxis!,
+                          rating: ((order.rating ?? 10) % 10),
+                        ),
                   ],
                 ),
               ),
@@ -125,6 +126,7 @@ class AuxOrdersState extends State<AuxOrders> {
           content: Text('Falha buscando pedidos!'),
         ),
       );
+      _foundOrders = [];
     }
   }
 

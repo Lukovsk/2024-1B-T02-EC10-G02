@@ -181,11 +181,12 @@ class _OrderState extends State<OrderDetail> {
                         vertical: 15,
                       ),
                       child: Text(
-                        "Atendimento: Pyxis ${widget.order.pyxis?.name} \n Problema: ${widget.order.problem}",
+                        "Atendimento: ${widget.order.pyxis?.name} \n Problema: ${widget.order.problem} \n ${widget.order.item?.name ?? ''}",
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
 
@@ -201,7 +202,7 @@ class _OrderState extends State<OrderDetail> {
                         children: [
                           const PointsWithLine(),
                           PointsInfo(
-                            pointTo: widget.order.pyxis!.reference,
+                            pointTo: widget.order.pyxis!.name,
                           )
                         ],
                       ),
@@ -300,7 +301,7 @@ class AditionalInfo extends StatelessWidget {
                   Text(
                     order.problem == "estoque"
                         ? "${order.item?.name}"
-                        : "${order.item?.description}",
+                        : "${order.description}",
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -320,14 +321,21 @@ class AditionalInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Descrição: ${order.description}",
+                    "Andar: ${order.pyxis!.floor}",
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    "${order.item?.description}",
+                    "Ala ${order.pyxis!.ala}",
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    "Setor ${order.pyxis!.sector}",
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -374,7 +382,7 @@ class PointsInfo extends StatelessWidget {
             children: [
               const Text("Ponto 2: ",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text("Pyxis $pointTo",
+              Text("$pointTo",
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w400)),
             ],

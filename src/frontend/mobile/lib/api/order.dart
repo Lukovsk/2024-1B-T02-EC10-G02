@@ -19,7 +19,7 @@ Future<List<Order>?> getOrders() async {
   );
 
   if (response.statusCode == 200) {
-    final List<dynamic> data = json.decode(response.body);
+    final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
 
     return data.map((d) => Order.fromJson(d)).toList();
   } else {
@@ -34,7 +34,8 @@ Future<List<Pyxis>?> getPyxis() async {
   );
 
   if (response.statusCode == 200) {
-    final List<dynamic> data = json.decode(response.body)["pyxis"];
+    final List<dynamic> data =
+        json.decode(utf8.decode(response.bodyBytes))["pyxis"];
 
     return data.map((d) => Pyxis.fromJsonWithItems(d)).toList();
   } else {
@@ -49,7 +50,7 @@ Future<Order?> fetchLastOrder() async {
   );
 
   if (response.statusCode == 200) {
-    final data = json.decode(response.body);
+    final data = json.decode(utf8.decode(response.bodyBytes));
 
     return Order.fromJson(data);
   } else {

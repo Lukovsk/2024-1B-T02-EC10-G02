@@ -24,9 +24,9 @@ class _AutoCompleteTextFieldWidgetState
   Widget build(BuildContext context) {
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text.isEmpty) {
-          return const Iterable<String>.empty();
-        }
+        // if (textEditingValue.text.isEmpty) {
+        //   return const Iterable<String>.empty();
+        // }
         return widget.suggestions.where((String option) {
           return option.contains(textEditingValue.text.toLowerCase());
         });

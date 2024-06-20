@@ -9,7 +9,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => PageState()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }

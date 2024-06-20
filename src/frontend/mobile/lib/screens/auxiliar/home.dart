@@ -74,6 +74,10 @@ class _HomeState extends State<AuxHome> {
           content: Text('Há nenhum pedido novo!'),
         ),
       );
+      setState(() {
+        _notificationAllowed = true;
+        _hasNotification = false;
+      });
     }
     _asyncCall();
   }
@@ -103,6 +107,7 @@ class _HomeState extends State<AuxHome> {
   @override
   void initState() {
     super.initState();
+    fetchLastOrder();
   }
 
   @override
@@ -190,7 +195,7 @@ class _HomeState extends State<AuxHome> {
                   ),
                   child: Text(
                     _notificationAllowed
-                        ? "Nenhum pedido solicitado. Para ficar indisponível basta clicar no botão"
+                        ? "Nenhum pedido solicitado. Para verificar se há algum pedido solicitado, basta clicar no botão"
                         : "No momento você não está recebendo alertas de atendimento. Para ficar disponivel basta clicar no botão",
                     textAlign: TextAlign.center,
                     style: const TextStyle(),
@@ -357,9 +362,10 @@ class AuxRequestedOrder extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: onAccepted,
-                style:  ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(hsGreenColor),
-                  fixedSize:  MaterialStateProperty.all<Size>(Size(120, 0)),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(hsGreenColor),
+                  fixedSize: MaterialStateProperty.all<Size>(Size(120, 0)),
                 ),
                 child: const Text(
                   "Aceitar",
@@ -371,8 +377,9 @@ class AuxRequestedOrder extends StatelessWidget {
               TextButton(
                 onPressed: onDenied,
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith((states) => tdRed),
-                  fixedSize:  MaterialStateProperty.all<Size>(Size(120, 0)),
+                  backgroundColor:
+                      MaterialStateProperty.resolveWith((states) => tdRed),
+                  fixedSize: MaterialStateProperty.all<Size>(Size(120, 0)),
                 ),
                 child: const Text(
                   "Negar",

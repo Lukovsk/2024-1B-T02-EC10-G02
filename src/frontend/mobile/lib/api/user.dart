@@ -24,7 +24,7 @@ Future<Map> login(String email, String password) async {
     );
 
     if (response.statusCode == 200) {
-      final body = jsonDecode(response.body);
+      final body = jsonDecode(utf8.decode(response.bodyBytes));
       User user = User.fromJson(body["user"]);
       globals.user = user;
       log(globals.user?.name ?? "");

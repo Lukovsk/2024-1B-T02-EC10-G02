@@ -39,8 +39,8 @@ class Pyxis {
       ala: json["ala"],
       floor: json["floor"],
       items: (json["items"] as List).isNotEmpty
-          ? json["items"].map((d) => Item.fromJson(d)).toList()
-          : [],
+          ? (json["items"] as List).map((d) => Item.fromJson(d)).toList()
+          : null,
     );
   }
 }
