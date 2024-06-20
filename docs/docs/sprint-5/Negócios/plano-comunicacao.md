@@ -1,19 +1,19 @@
 ---
 title: "Plano de comunicação"
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 ## Introdução
 
 O Plano de comunicação consiste em uma ferramenta estratégica para facilitar a comunciação entre a empresa e determinado público alvo a fim de garantir uma comunicação clara e coesa, para alcançar os objetivos da organização com a mensagem comunicada.
 
+
 ## Objetivos de comunicação
+O objetivo principal da comunicação é informar os diferentes usuários do aplicativo PharmaControl (administradores, auxiliares de enfermagem e enfermeiros) sobre os novos fluxos e funcionalidades do sistema. A comunicação visa garantir que todos os usuários compreendam suas respectivas funções e possam utilizar a plataforma de maneira eficiente, promovendo assim uma gestão otimizada dos processos de medicação e atendimento.
 
 Os principais objetivos com o plano de comunicação são:
-
-- Facilitar a adesão e o uso do aplicativo;
-- Auxiliar na mudança de processos operacionais;
-- 
+- Facilitar a adesão e o uso do aplicativo
+- Auxiliar na mudança de processos operacionais
 
 ## Publico alvo
 
@@ -22,6 +22,26 @@ O público alvo envolve 3 personas que categorizam três tipos de colaboradores 
 - O **enfermeiro**: Responsável pela administração dos fármacos armazenados nos pyxis e usuário central da aplicação. Pois será ele que irá fazer os pedidos utilizando o aplicativo, sendo muito importante a boa compreensão de como utilizá-lo e das funcionalidades dele.
 - O **auxiliar**: Responsável por abastecer os pyxis e lidar com os chamados dos enfermeiros, sendo necessário agilidade e boa compreensão do fluxo de comunicação entre as partes que o aplicativo fornece.
 - O **administrador**: Responsável por analisar as informações de maneira geral sobre os dados gerados pelo aplicativo podendo identificar problemas de gargalo no operacinal do hospital.
+
+### Mensagens-chave
+
+**Para Administradores:**
+
+- Introdução ao novo fluxo de trabalho.
+- Utilização das páginas de home, sidebar e dashboard.
+- **Benefícios esperados:** eficiência e resolução rápida de problemas operacionais.
+
+**Para Auxiliares de Enfermagem:**
+
+- Guia passo a passo para habilitar o modo disponível e responder solicitações.
+- Navegação pelas páginas de home, perfil e histórico de pedidos.
+- **Benefícios esperados:** facilidade na gestão de tarefas e clareza nas instruções de entrega.
+
+**Para Enfermeiros:**
+
+- Navegação e uso da home com carrossel de medicamentos e formulário de requisição.
+- Acesso e gestão de pedidos em andamento e finalizados.
+- **Benefícios esperados:** rapidez na solicitação de medicamentos e feedback contínuo sobre os pedidos.
 
 ## Estratégia de comunicação
 
@@ -56,13 +76,40 @@ O método SMART é uma técnica para definir objetivos de maneira clara e eficaz
 - **T**: Em 3 meses
 
 ## Canais de comunicação
-
-Os principais canais de comunicação pensados são os já utilizados para a comunicação interna dos colaborades, sendo eles o email corporativo ou através de uma apresentação por meio de uma reunião formal ministrada pelo time de tecnologia para os demais colaboradores. Outra sugestão caso haja uma plataforma de treinamento e seja possivel alimentar essa plataforma com conteúdos autorais, gravar materiais sobre o funcionamento o app e como solicitar ajuda ou reportar algum problema durante o uso.
-
+- **E-mail:** Informativos detalhados e guias de uso.
+- **Mídias Sociais Internas (Intranet):** Anúncios rápidos e lembretes.
+- **Reuniões Presenciais/Online:** Sessões de treinamento e Q&A.
+- **Manuais e Vídeos Tutoriais:** Disponíveis na intranet para consulta a qualquer momento.
+- **Chat Corporativo:** Suporte em tempo real e esclarecimento de dúvidas.
 ## Avaliação dos resultados
 
 Para a avaliação dos resultados e necessário que KPI's sejam elaborados para que eles possam ser revisitados e analisados com o desenvolvimento da implementação da aplicação. Três KPI's sugeridos são:
 
 - Adesão 100% do aplicativo
 - NPS da solução acima de 90%
-- 
+
+## Cronograma
+
+**Semana 1:**
+
+- **E-mail Inicial:** Introdução ao novo sistema e cronograma de implementação.
+- **Reunião de Kickoff:** Apresentação geral do projeto PharmaControl para todos os usuários.
+
+**Semana 2-3:**
+
+- **E-mails Detalhados:** Guias de uso específicos para cada tipo de usuário.
+- **Sessões de Treinamento:** Reuniões presenciais/online para cada grupo de usuários.
+
+**Semana 4:**
+
+- **Lançamento do Sistema:** Disponibilização do sistema PharmaControl para todos os usuários.
+- **Suporte Intensivo** Equipe de suporte disponível para esclarecer dúvidas e resolver problemas iniciais.
+
+**Semana 5-6:**
+
+- **Feedback e Ajustes:** Coleta de feedback dos usuários e ajustes no sistema conforme necessário.
+- **E-mail de Follow-up:** Agradecimento pelo feedback e informe sobre melhorias implementadas.
+
+**Mensalmente:**
+
+- **Relatórios de Uso e Melhoria:** E-mails com dados de uso e sugestões de melhorias contínuas.
