@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/screens/splash.dart';
 import 'package:provider/provider.dart';
-import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
+import 'package:PharmaControl/models/page_state.dart';
 
 void main() {
   runApp(

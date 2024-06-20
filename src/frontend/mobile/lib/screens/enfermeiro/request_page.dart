@@ -5,7 +5,7 @@ import 'package:PharmaControl/screens/enfermeiro/revision_page.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/widgets/enfermeiro/text_field.dart';
 import 'package:PharmaControl/screens/enfermeiro/home.dart';
-import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
+import 'package:PharmaControl/models/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/api/order.dart' as api_order;
 

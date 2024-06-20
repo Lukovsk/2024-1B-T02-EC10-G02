@@ -7,7 +7,7 @@ import 'package:PharmaControl/screens/enfermeiro/request_page.dart';
 import 'package:PharmaControl/widgets/enfermeiro/my_requests_card.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
 
-import 'page_state.dart';
+import '../../models/page_state.dart';
 
 class Home extends StatefulWidget {
   @override

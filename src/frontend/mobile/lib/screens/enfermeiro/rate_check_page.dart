@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/screens/enfermeiro/home.dart';
-import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
+import 'package:PharmaControl/models/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:gif_view/gif_view.dart';
 
 class CheckGif extends StatefulWidget {
+  const CheckGif({super.key});
+
   @override
   _CheckGifState createState() => _CheckGifState();
 }
