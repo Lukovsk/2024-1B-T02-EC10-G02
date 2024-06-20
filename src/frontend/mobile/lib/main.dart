@@ -9,7 +9,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => PageState()),
-        ChangeNotifierProvider(create: (context) => OrderState()),
+        ChangeNotifierProvider(create: (context) => Order()),
       ],
       child: MyApp(),
     ),

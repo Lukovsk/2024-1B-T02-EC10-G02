@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 class Order {
+  final String id;
   final String problema;
   final String pyxis;
   final String material;
@@ -11,6 +10,7 @@ class Order {
   final String aditionalInfo;
 
   Order({
+    required this.id,
     required this.problema,
     required this.pyxis,
     required this.material,
@@ -20,20 +20,32 @@ class Order {
     this.avaliacaoPreenchida = false,
     this.aditionalInfo = '',
   });
-}
 
-class OrderState with ChangeNotifier {
-  List<Order> _orders = [];
-
-  List<Order> get orders => _orders;
-
-  void addOrder(Order order) {
-    _orders.add(order);
-    notifyListeners();
+  factory Order.fromJson(Map<String, dynamic> json) {
+    return Order(
+      id: json["id"] as String,
+      problema: json["problema"],
+      pyxis: json["pyxis"],
+      material: json["material"],
+      status: json["status"],
+      date: json["date"],
+      rating: json["rating"] as int,
+      avaliacaoPreenchida: json["avaliacaoPreenchida"] ?? false,
+      aditionalInfo: json["aditionalInfo"] ?? '',
+    );
   }
 
-  void preencherAvaliacao(Order order) {
-    order.avaliacaoPreenchida = true;
-    notifyListeners();
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'problema': problema,
+      'pyxis': pyxis,
+      'material': material,
+      'status': status,
+      'date': date,
+      'rating': rating,
+      'avaliacaoPreenchida': avaliacaoPreenchida,
+      'aditionalInfo': aditionalInfo,
+    };
   }
 }

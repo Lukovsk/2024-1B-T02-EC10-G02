@@ -1,11 +1,14 @@
-import 'package:PharmaControl/screens/enfermeiro/revision_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:PharmaControl/screens/enfermeiro/revision_page.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/widgets/enfermeiro/text_field.dart';
 import 'package:PharmaControl/screens/enfermeiro/home.dart';
 import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
+import 'package:PharmaControl/screens/enfermeiro/order_state.dart';
 
 class RequestPage extends StatefulWidget {
   @override
@@ -92,6 +95,50 @@ class _RequestPageState extends State<RequestPage> {
       }
     });
   }
+
+  Future<void> _submitRequest() async {
+  final order = Order(
+    id: 'unique_order_id',  // Você pode gerar um ID único aqui
+    problema: problemController.text,
+    pyxis: pyxisController.text,
+    material: mainController.text,
+    status: 'new',
+    date: DateTime.now().toIso8601String(),
+    rating: 0,
+    avaliacaoPreenchida: false,
+    aditionalInfo: '', 
+  );
+
+  context.read<Order>();
+
+  final url = Uri.parse('http://50.19.149.200:3001/order/');
+  final response = await http.post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(order.toJson()),
+  );
+
+  if (response.statusCode == 200) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NovaSolicitacao(
+          problema: problemController.text,
+          pyxis: pyxisController.text,
+          material: mainController.text,
+          problemSelected: problemController.text,
+        ),
+      ),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Falha ao enviar solicitação')),
+    );
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -188,17 +235,7 @@ class _RequestPageState extends State<RequestPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NovaSolicitacao(
-                          problema: problemController.text,
-                          pyxis: pyxisController.text,
-                          material: mainController.text,
-                            problemSelected: thirdInputLabel,
-                        ),
-                      ),
-                    );
+                    _submitRequest();
                   },
                   child: Text(
                     'Revisar solicitação',

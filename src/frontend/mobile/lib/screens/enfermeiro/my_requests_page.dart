@@ -44,7 +44,7 @@ class _OrderScreen extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     int _currentIndex = context.watch<PageState>().currentIndex;
-    var orders = context.watch<OrderState>().orders;
+    var orders = context.watch<Order>().orders;
     return Scaffold(
       appBar: AppBar(
         title: Text('Meus Pedidos', style: TextStyle(color: Colors.white)),
