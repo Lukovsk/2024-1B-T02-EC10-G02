@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/globals.dart' as globals;
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '/widgets/bottom_navigation_bar.dart';
 
 class AuxHome extends StatefulWidget {
@@ -22,15 +23,16 @@ class AuxHome extends StatefulWidget {
 class _HomeState extends State<AuxHome> {
   // ? Será que não é melhor colocar isso buildin no bottom navigation bar?
   int _currentIndex = 0;
+  bool _inAsyncCall = false;
 
   bool _notificationAllowed = true;
   bool _hasNotification = false;
   Order? _order;
 
-  void _hamburguerOnTap() {
-    // setState(() {
-    //   _hasNotification = !_hasNotification;
-    // });
+  void _asyncCall() async {
+    setState(() {
+      _inAsyncCall = !_inAsyncCall;
+    });
   }
 
   // ? Será que não é melhor colocar isso buildin no bottom navigation bar?
@@ -58,6 +60,7 @@ class _HomeState extends State<AuxHome> {
   }
 
   void fetchLastOrder() async {
+    _asyncCall();
     final data = await order_api.fetchLastOrder();
     if (data != null) {
       setState(() {
@@ -72,9 +75,11 @@ class _HomeState extends State<AuxHome> {
         ),
       );
     }
+    _asyncCall();
   }
 
   void _onOrderAccepted() async {
+    _asyncCall();
     if (await order_api.acceptOrder(globals.user!.id!, _order!.id)) {
       Navigator.pushReplacement(
         context,
@@ -85,6 +90,7 @@ class _HomeState extends State<AuxHome> {
         content: Text('Erro ao aceitar o pedido!'),
       ));
     }
+    _asyncCall();
   }
 
   // TODO: integrando, deve fazer com que um outro auxiliar receba uma notificação (ideal guardar a informação que o pedido foi negado e por quem)
@@ -103,10 +109,11 @@ class _HomeState extends State<AuxHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(
-        hamburguerOnTap: _hamburguerOnTap,
-      ),
-      body: _hasNotification ? _buildNotified(_order!) : _buildUnNotified(),
+      appBar: CustomAppBar(),
+      body: ModalProgressHUD(
+          inAsyncCall: _inAsyncCall,
+          child:
+              _hasNotification ? _buildNotified(_order!) : _buildUnNotified()),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTap,

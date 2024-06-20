@@ -7,6 +7,7 @@ import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class AuxOrders extends StatefulWidget {
   const AuxOrders({super.key});
@@ -16,13 +17,22 @@ class AuxOrders extends StatefulWidget {
 }
 
 class AuxOrdersState extends State<AuxOrders> {
+  bool _inAsyncCall = false;
   int _currentIndex = 1;
   List<Order> orderList = [];
+  List<Order> _foundOrders = [];
 
   @override
   void initState() {
     super.initState();
     fetchOrders();
+    _foundOrders = orderList;
+  }
+
+  void _inAsync() {
+    setState(() {
+      _inAsyncCall = !_inAsyncCall;
+    });
   }
 
   void _bottomNavOnTap(int index) {
@@ -53,37 +63,42 @@ class AuxOrdersState extends State<AuxOrders> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Pesquisar pedido',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+      body: ModalProgressHUD(
+        inAsyncCall: _inAsyncCall,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                onChanged: (value) => _runFilter(value),
+                decoration: InputDecoration(
+                  hintText: 'Pesquisar pedido',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: ListView(
-                children: [
-                  for (Order order in orderList.reversed)
-                    OrderCard(
-                      title:
-                          "${order.problem == "estoque" ? order.item!.name : order.description!} - ${order.problem}",
-                      status: order.status!,
-                      date: order.createdAt!,
-                      canceled: order.canceled!,
-                      pyxis: order.pyxis!,
-                      rating: ((order.rating ?? 10) % 10),
-                    ),
-                ],
+              SizedBox(height: 16),
+              Expanded(
+                child: ListView(
+                  children: [
+                    for (Order order in _foundOrders.reversed)
+                      OrderCard(
+                        title: order.problem == "estoque"
+                            ? order.item!.name
+                            : "Problema técnico",
+                        status: order.status!,
+                        date: order.createdAt!,
+                        canceled: order.canceled!,
+                        pyxis: order.pyxis!,
+                        rating: ((order.rating ?? 10) % 10),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
@@ -94,10 +109,13 @@ class AuxOrdersState extends State<AuxOrders> {
   }
 
   void fetchOrders() async {
+    _inAsync();
     final orders = await getOrders();
     if (orders != null) {
       setState(() {
+        _inAsyncCall = !_inAsyncCall;
         orderList = orders;
+        _foundOrders = orders;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -106,6 +124,24 @@ class AuxOrdersState extends State<AuxOrders> {
         ),
       );
     }
+  }
+
+  void _runFilter(String enteredKeyword) {
+    List<Order> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = orderList;
+    } else {
+      results = orderList
+          .where((item) =>
+              (item.problem == "estoque" ? item.item!.name : "Problema técnico")
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      _foundOrders = results;
+    });
   }
 }
 
