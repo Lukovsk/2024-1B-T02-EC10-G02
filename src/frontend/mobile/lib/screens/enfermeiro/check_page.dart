@@ -7,14 +7,9 @@ import 'package:PharmaControl/models/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:gif_view/gif_view.dart';
 
-class CheckGif extends StatefulWidget {
+class CheckGif extends StatelessWidget {
   const CheckGif({super.key});
 
-  @override
-  _CheckGifState createState() => _CheckGifState();
-}
-
-class _CheckGifState extends State<CheckGif> {
   @override
   Widget build(BuildContext context) {
     return GifView.asset(

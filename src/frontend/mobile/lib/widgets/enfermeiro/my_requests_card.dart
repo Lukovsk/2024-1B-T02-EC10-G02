@@ -6,12 +6,7 @@ class MyRequestsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const NurseOrders()),
-        );
-      },
+      onTap: () => _onTap(context),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
@@ -64,6 +59,13 @@ class MyRequestsCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _onTap(context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const NurseOrders()),
     );
   }
 }

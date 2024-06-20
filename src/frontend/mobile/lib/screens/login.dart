@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _isAsyncCall = false;
+  bool _inAsyncCall = false;
 
   final userController = TextEditingController();
 
@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: ModalProgressHUD(
-          inAsyncCall: _isAsyncCall,
+          inAsyncCall: _inAsyncCall,
           child: SafeArea(
             child: Center(
               child: Column(
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _asyncCall() async {
     setState(() {
-      _isAsyncCall = !_isAsyncCall;
+      _inAsyncCall = !_inAsyncCall;
     });
   }
 
