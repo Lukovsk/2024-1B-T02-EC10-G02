@@ -5,6 +5,7 @@ import 'package:PharmaControl/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/api/order.dart' as api_order;
 import 'package:PharmaControl/globals.dart' as globals;
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class OrderDetail extends StatefulWidget {
   final Order order;
@@ -16,9 +17,16 @@ class OrderDetail extends StatefulWidget {
 }
 
 class _OrderState extends State<OrderDetail> {
+  bool _inAsyncCall = false;
   @override
   void initState() {
     super.initState();
+  }
+
+  void _inAsync() {
+    setState(() {
+      _inAsyncCall = !_inAsyncCall;
+    });
   }
 
   void _cancelOnTap() {
@@ -62,6 +70,7 @@ class _OrderState extends State<OrderDetail> {
   }
 
   void _cancelOrder(String reason) async {
+    _inAsync();
     if (await api_order.cancelOrder(
         widget.order.id, reason, globals.user!.id!)) {
       Navigator.pushReplacement(
@@ -75,10 +84,12 @@ class _OrderState extends State<OrderDetail> {
         ),
       );
     }
+    _inAsync();
   }
 
   // TODO: integrando, deve enviar o pedido à fila com o status de finalizado e abrir um modal para fornecer o feedback
   void _concludeOnTap() async {
+    _inAsync();
     if (await api_order.doneOrder(widget.order.id)) {
       Navigator.pushReplacement(
         context,
@@ -91,6 +102,7 @@ class _OrderState extends State<OrderDetail> {
         ),
       );
     }
+    _inAsync();
   }
 
   @override
@@ -98,145 +110,148 @@ class _OrderState extends State<OrderDetail> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const CustomAppBar(),
-      body: Container(
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // header
-            Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: const Text(
-                    "Atendimento em andamento",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: hsNiceBlueColor,
-                  thickness: 6,
-                ),
-              ],
-            ),
-            // card
-            Container(
-              margin: const EdgeInsets.symmetric(
-                vertical: 40,
-                horizontal: 20,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: const Border(
-                  top: BorderSide(
-                    color: hsGreenColor,
-                    width: 30,
-                  ),
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black38,
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 4),
-                  )
-                ],
-              ),
-              padding: const EdgeInsets.only(
-                top: 12,
-                bottom: 20,
-                left: 10,
-                right: 10,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      body: ModalProgressHUD(
+        inAsyncCall: _inAsyncCall,
+        child: Container(
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // header
+              Column(
                 children: [
-                  // * Título
                   Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    child: Text(
-                      "Atendimento: Pyxis ${widget.order.pyxis?.name} \n Problema: ${widget.order.problem}",
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: const Text(
+                      "Atendimento em andamento",
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-
-                  // * From To Container
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 15,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const PointsWithLine(),
-                        PointsInfo(
-                          pointTo: widget.order.pyxis!.reference,
-                        )
-                      ],
-                    ),
+                  const Divider(
+                    color: hsNiceBlueColor,
+                    thickness: 6,
                   ),
-                  // * Info adicional
-                  AditionalInfo(order: widget.order),
-
-                  // * Botões
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                        onPressed: _concludeOnTap,
-                        style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(hsNiceBlueColor),
-                          fixedSize:
-                              MaterialStatePropertyAll<Size>(Size(180, 0)),
-                        ),
-                        child: const Text(
-                          "Finalizar",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: _cancelOnTap,
-                        style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(tdRed),
-                          fixedSize:
-                              MaterialStatePropertyAll<Size>(Size(100, 0)),
-                        ),
-                        child: const Text(
-                          "Cancelar",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               ),
-            )
-          ],
+              // card
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 40,
+                  horizontal: 20,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: const Border(
+                    top: BorderSide(
+                      color: hsGreenColor,
+                      width: 30,
+                    ),
+                  ),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black38,
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: Offset(0, 4),
+                    )
+                  ],
+                ),
+                padding: const EdgeInsets.only(
+                  top: 12,
+                  bottom: 20,
+                  left: 10,
+                  right: 10,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // * Título
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      child: Text(
+                        "Atendimento: Pyxis ${widget.order.pyxis?.name} \n Problema: ${widget.order.problem}",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+
+                    // * From To Container
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 25,
+                        vertical: 15,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const PointsWithLine(),
+                          PointsInfo(
+                            pointTo: widget.order.pyxis!.reference,
+                          )
+                        ],
+                      ),
+                    ),
+                    // * Info adicional
+                    AditionalInfo(order: widget.order),
+
+                    // * Botões
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton(
+                          onPressed: _concludeOnTap,
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                hsNiceBlueColor),
+                            fixedSize:
+                                MaterialStatePropertyAll<Size>(Size(180, 0)),
+                          ),
+                          child: const Text(
+                            "Finalizar",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: _cancelOnTap,
+                          style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll<Color>(tdRed),
+                            fixedSize:
+                                MaterialStatePropertyAll<Size>(Size(100, 0)),
+                          ),
+                          child: const Text(
+                            "Cancelar",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
