@@ -1,13 +1,12 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'dart:math';
-
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
-import 'package:PharmaControl/screens/enfermeiro/check_page.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
+import 'package:PharmaControl/widgets/fancy_container.dart';
 import 'package:flutter/material.dart';
+import 'package:PharmaControl/api/order.dart' as api_order;
+import 'package:PharmaControl/globals.dart' as globals;
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class OrderDetail extends StatefulWidget {
   final Order order;
@@ -19,171 +18,250 @@ class OrderDetail extends StatefulWidget {
 }
 
 class _OrderState extends State<OrderDetail> {
+  bool _inAsyncCall = false;
   @override
   void initState() {
     super.initState();
   }
 
-  // TODO: integrando, deve abrir um modal para demonstrar a razão do cancelamento
+  void _inAsync() {
+    setState(() {
+      _inAsyncCall = !_inAsyncCall;
+    });
+  }
+
   void _cancelOnTap() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => AuxHome()),
+    TextEditingController motivoController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Motivo do Cancelamento'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: motivoController,
+                decoration: const InputDecoration(
+                  hintText: 'Digite o motivo do cancelamento',
+                ),
+                maxLines: 3,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Adicione a lógica para tratar o motivo do cancelamento
+                _cancelOrder(motivoController.text);
+              },
+              child: const Text('Confirmar'),
+            ),
+          ],
+        );
+      },
     );
   }
 
-  // TODO: integrando, o modal deve enviar um novo pedido à fila com o status de cancelamento e a razão do cancelamento no payload
+  void _cancelOrder(String reason) async {
+    _inAsync();
+    if (await api_order.cancelOrder(
+        widget.order.id, reason, globals.user!.id!)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AuxHome()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no tentando concluir o pedido!'),
+        ),
+      );
+    }
+    _inAsync();
+  }
 
   // TODO: integrando, deve enviar o pedido à fila com o status de finalizado e abrir um modal para fornecer o feedback
-  void _concludeOnTap() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => CheckPage()),
-    );
+  void _concludeOnTap() async {
+    _inAsync();
+    if (await api_order.doneOrder(widget.order.id)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AuxHome()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no tentando concluir o pedido!'),
+        ),
+      );
+    }
+    _inAsync();
   }
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(),
-      body: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // header
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    "Atendimento em andamento",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Divider(
-                  color: hsNiceBlueColor,
-                  thickness: 6,
-                ),
-              ],
-            ),
-            // card
-            Container(
-              margin: EdgeInsets.symmetric(
-                vertical: 40,
-                horizontal: 20,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border(
-                  top: BorderSide(
-                    color: hsGreenColor,
-                    width: 30,
-                  ),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black38,
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 4),
-                  )
-                ],
-              ),
-              padding: EdgeInsets.only(
-                top: 12,
-                bottom: 20,
-                left: 10,
-                right: 10,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      appBar: const CustomAppBar(),
+      body: ModalProgressHUD(
+        inAsyncCall: _inAsyncCall,
+        child: Container(
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // header
+              Column(
                 children: [
-                  // * Título
                   Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    child: Text(
-                      "Atendimento: Pyxi - ${widget.order.pyxi}",
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: const Text(
+                      "Atendimento em andamento",
                       style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-
-                  // * From To Container
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 15,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        PointsWithLine(),
-                        PointsInfo(pointTo: widget.order.pyxi)
-                      ],
-                    ),
-                  ),
-                  // * Info adicional
-                  AditionalInfo(info: widget.order.aditionalInfo),
-
-                  // * Botões
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                        onPressed: _concludeOnTap,
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(hsNiceBlueColor),
-                          fixedSize:
-                              MaterialStatePropertyAll<Size>(Size(180, 0)),
-                        ),
-                        child: Text(
-                          "Finalizar",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: _cancelOnTap,
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(hsRedColor),
-                          fixedSize:
-                              MaterialStatePropertyAll<Size>(Size(100, 0)),
-                        ),
-                        child: Text(
-                          "Cancelar",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                  FancyContainer(
+                    size: Size(width, 8),
+                    cycle: const Duration(seconds: 2),
+                    colors: const <Color>[
+                      Colors.cyan,
+                      Colors.blue,
+                      Colors.cyan,
+                      Colors.blue,
+                      Colors.cyan,
                     ],
-                  )
+                  ),
                 ],
               ),
-            )
-          ],
+              // card
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 40,
+                  horizontal: 20,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: const Border(
+                    top: BorderSide(
+                      color: hsGreenColor,
+                      width: 30,
+                    ),
+                  ),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black38,
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: Offset(0, 4),
+                    )
+                  ],
+                ),
+                padding: const EdgeInsets.only(
+                  top: 12,
+                  bottom: 20,
+                  left: 10,
+                  right: 10,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // * Título
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      child: Text(
+                        "Atendimento: ${widget.order.pyxis?.name} \n Problema: ${widget.order.problem} \n ${widget.order.item?.name ?? ''}",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                    // * From To Container
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 25,
+                        vertical: 15,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const PointsWithLine(),
+                          PointsInfo(
+                            pointTo: widget.order.pyxis!.name,
+                          )
+                        ],
+                      ),
+                    ),
+                    // * Info adicional
+                    AditionalInfo(order: widget.order),
+
+                    // * Botões
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton(
+                          onPressed: _concludeOnTap,
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                hsNiceBlueColor),
+                            fixedSize:
+                                MaterialStatePropertyAll<Size>(Size(180, 0)),
+                          ),
+                          child: const Text(
+                            "Finalizar",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: _cancelOnTap,
+                          style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll<Color>(tdRed),
+                            fixedSize:
+                                MaterialStatePropertyAll<Size>(Size(100, 0)),
+                          ),
+                          child: const Text(
+                            "Cancelar",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -191,22 +269,22 @@ class _OrderState extends State<OrderDetail> {
 }
 
 class AditionalInfo extends StatelessWidget {
+  final Order order;
+
   const AditionalInfo({
     super.key,
-    required Map<String, String> info,
+    required this.order,
   });
-
-  // TODO: criar lógica para criar dinamicamente a informação adicional, respeitando o máximo de duas colunas com três linhas cada.
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 30),
+      margin: const EdgeInsets.only(bottom: 30),
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Text(
+            margin: const EdgeInsets.only(bottom: 20),
+            child: const Text(
               "Informações adicionais",
               style: TextStyle(
                 fontSize: 20,
@@ -223,22 +301,24 @@ class AditionalInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "ID medicamento: 1234543",
-                    style: TextStyle(
+                    "Problema: ${order.problem}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    "Quantidade: 20 unidades",
-                    style: TextStyle(
+                    order.problem == "estoque"
+                        ? "${order.item?.name}"
+                        : "${order.description}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    "Ponto de referência: Ala-pediátrica",
-                    style: TextStyle(
+                    "Referência: ${order.pyxis?.reference}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
@@ -250,15 +330,22 @@ class AditionalInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "InfoX: XXXX",
-                    style: TextStyle(
+                    "Andar: ${order.pyxis!.floor}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    "InfoY: YYYY",
-                    style: TextStyle(
+                    "Ala ${order.pyxis!.ala}",
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    "Setor ${order.pyxis!.sector}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
@@ -274,7 +361,7 @@ class AditionalInfo extends StatelessWidget {
 }
 
 class PointsInfo extends StatelessWidget {
-  final String pointTo;
+  final String? pointTo;
   const PointsInfo({
     super.key,
     required this.pointTo,
@@ -283,7 +370,7 @@ class PointsInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 25,
         horizontal: 30,
       ),
@@ -291,7 +378,7 @@ class PointsInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text("Ponto 1: ",
@@ -302,10 +389,11 @@ class PointsInfo extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("Ponto 2: ",
+              const Text("Ponto 2: ",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text("Pyxi $pointTo",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+              Text("$pointTo",
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w400)),
             ],
           ),
         ],
@@ -326,7 +414,7 @@ class PointsWithLine extends StatelessWidget {
       children: [
         //bolinhas
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
             horizontal: 14,
           ),
@@ -334,7 +422,7 @@ class PointsWithLine extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             color: hsDarkBlueColor,
           ),
-          child: Text(
+          child: const Text(
             "1",
             style: TextStyle(
               color: Colors.white,
@@ -343,14 +431,14 @@ class PointsWithLine extends StatelessWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 80,
             vertical: 2,
           ),
           color: hsDarkBlueColor,
         ),
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 8,
             horizontal: 14,
           ),
@@ -358,7 +446,7 @@ class PointsWithLine extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             color: hsDarkBlueColor,
           ),
-          child: Text(
+          child: const Text(
             "2",
             style: TextStyle(
               color: Colors.white,

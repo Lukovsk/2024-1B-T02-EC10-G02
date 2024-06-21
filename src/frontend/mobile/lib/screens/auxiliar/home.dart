@@ -1,11 +1,16 @@
 // import 'dart:ffi';
 
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
+import 'package:PharmaControl/api/order.dart' as order_api;
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/order.dart';
 import 'package:PharmaControl/screens/auxiliar/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/constants/colors.dart';
+import 'package:PharmaControl/globals.dart' as globals;
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '/widgets/bottom_navigation_bar.dart';
 
 class AuxHome extends StatefulWidget {
@@ -18,14 +23,15 @@ class AuxHome extends StatefulWidget {
 class _HomeState extends State<AuxHome> {
   // ? Será que não é melhor colocar isso buildin no bottom navigation bar?
   int _currentIndex = 0;
+  bool _inAsyncCall = false;
 
-  bool _notificationAllowed = false;
+  bool _notificationAllowed = true;
   bool _hasNotification = false;
+  Order? _order;
 
-  // TODO: deve haver um push notification que altera automaticamente para "requisição recebida"
-  void _hamburguerOnTap() {
+  void _asyncCall() async {
     setState(() {
-      _hasNotification = !_hasNotification;
+      _inAsyncCall = !_inAsyncCall;
     });
   }
 
@@ -39,13 +45,13 @@ class _HomeState extends State<AuxHome> {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AuxHome()),
+          MaterialPageRoute(builder: (context) => const AuxHome()),
         );
         break;
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AuxOrders()),
+          MaterialPageRoute(builder: (context) => const AuxOrders()),
         );
         break;
       default:
@@ -53,23 +59,45 @@ class _HomeState extends State<AuxHome> {
     }
   }
 
-  // TODO: integrando, deve alterar o estado do auxiliar (faz uma requisição ao controller para alterar o estado dele)
-  void changeAllowNotification() {
-    setState(() {
-      _notificationAllowed = !_notificationAllowed;
-    });
+  void fetchLastOrder() async {
+    _asyncCall();
+    final data = await order_api.fetchLastOrder();
+    if (data != null) {
+      setState(() {
+        _order = data;
+        _notificationAllowed = true;
+        _hasNotification = true;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Há nenhum pedido novo!'),
+        ),
+      );
+      setState(() {
+        _notificationAllowed = true;
+        _hasNotification = false;
+      });
+    }
+    _asyncCall();
   }
 
-  // TODO: integrando, deve alterar o estado do pedido na fila, colocando que há um auxiliar que fará o pedido
-  void _onOrderAccepted() {
-    final order = Order.getExample();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => OrderDetail(order: order)),
-    );
+  void _onOrderAccepted() async {
+    _asyncCall();
+    if (await order_api.acceptOrder(globals.user!.id!, _order!.id)) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => OrderDetail(order: _order!)),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Erro ao aceitar o pedido!'),
+      ));
+    }
+    _asyncCall();
   }
 
-  // TODO: integrando, deve fazer com que um outro auxiliar receba uma notificação (ideal guardar a informação que o pedido foi negato e por quem)
+  // TODO: integrando, deve fazer com que um outro auxiliar receba uma notificação (ideal guardar a informação que o pedido foi negado e por quem)
   void _onOrderDenied() {
     setState(() {
       _hasNotification = false;
@@ -79,16 +107,18 @@ class _HomeState extends State<AuxHome> {
   @override
   void initState() {
     super.initState();
+    fetchLastOrder();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(
-        hamburguerOnTap: _hamburguerOnTap,
-      ),
-      body: _hasNotification ? _buildNotified() : _buildUnNotified(),
+      appBar: CustomAppBar(),
+      body: ModalProgressHUD(
+          inAsyncCall: _inAsyncCall,
+          child:
+              _hasNotification ? _buildNotified(_order!) : _buildUnNotified()),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTap,
@@ -96,7 +126,7 @@ class _HomeState extends State<AuxHome> {
     );
   }
 
-  Container _buildNotified() => Container(
+  Container _buildNotified(Order order) => Container(
         alignment: Alignment.center,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -125,7 +155,8 @@ class _HomeState extends State<AuxHome> {
             AuxRequestedOrder(
               onAccepted: _onOrderAccepted,
               onDenied: _onOrderDenied,
-            )
+              order: order,
+            ),
           ],
         ),
       );
@@ -164,8 +195,8 @@ class _HomeState extends State<AuxHome> {
                   ),
                   child: Text(
                     _notificationAllowed
-                        ? "Nenhum pedido solicitado. Para ficar indisponível basta clicar no botão"
-                        : "No momento você não está recebendo alertas de atendimento. para ficar disponivel basta clicar no botão",
+                        ? "Nenhum pedido solicitado. Para verificar se há algum pedido solicitado, basta clicar no botão"
+                        : "No momento você não está recebendo alertas de atendimento. Para ficar disponivel basta clicar no botão",
                     textAlign: TextAlign.center,
                     style: const TextStyle(),
                   ),
@@ -188,7 +219,7 @@ class _HomeState extends State<AuxHome> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: ElevatedButton(
-                    onPressed: changeAllowNotification,
+                    onPressed: fetchLastOrder,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: hsNiceBlueColor,
                       minimumSize: const Size(60, 80),
@@ -196,8 +227,8 @@ class _HomeState extends State<AuxHome> {
                     ),
                     child: Icon(
                       _notificationAllowed
-                          ? Icons.notifications_off_rounded
-                          : Icons.notifications_on_rounded,
+                          ? Icons.replay_outlined
+                          : Icons.replay_outlined,
                       size: 40,
                       color: Colors.white,
                     ),
@@ -213,11 +244,13 @@ class _HomeState extends State<AuxHome> {
 class AuxRequestedOrder extends StatelessWidget {
   final Function() onAccepted;
   final Function() onDenied;
+  final Order order;
 
   const AuxRequestedOrder({
     super.key,
     required this.onAccepted,
     required this.onDenied,
+    required this.order,
   });
 
   @override
@@ -279,9 +312,9 @@ class AuxRequestedOrder extends StatelessWidget {
                         size: 40,
                       ),
                     ),
-                    const Text(
-                      "Pyxi - 12B",
-                      style: TextStyle(
+                    Text(
+                      "Pyxi - ${order.pyxis?.name}",
+                      style: const TextStyle(
                         fontSize: 14,
                         color: hsBlackColor,
                         fontWeight: FontWeight.w500,
@@ -289,12 +322,12 @@ class AuxRequestedOrder extends StatelessWidget {
                     )
                   ],
                 ),
-                const Column(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "ID medicamento: 1234543",
+                      "Problema: ${order.problem}",
                       style: TextStyle(
                         fontSize: 10,
                         color: hsBlackColor,
@@ -302,7 +335,9 @@ class AuxRequestedOrder extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Quantidade: 20 unidades",
+                      order.problem == "estoque"
+                          ? "${order.item?.name}"
+                          : "${order.description}",
                       style: TextStyle(
                         fontSize: 10,
                         color: hsBlackColor,
@@ -310,7 +345,7 @@ class AuxRequestedOrder extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Ponto de referência: Ala-pediátrica",
+                      "Referência: ${order.pyxis?.reference}",
                       style: TextStyle(
                         fontSize: 10,
                         color: hsBlackColor,
@@ -328,8 +363,9 @@ class AuxRequestedOrder extends StatelessWidget {
               TextButton(
                 onPressed: onAccepted,
                 style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(hsRedColor),
-                  fixedSize: MaterialStatePropertyAll<Size>(Size(120, 0)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(hsGreenColor),
+                  fixedSize: MaterialStateProperty.all<Size>(Size(120, 0)),
                 ),
                 child: const Text(
                   "Aceitar",
@@ -340,9 +376,10 @@ class AuxRequestedOrder extends StatelessWidget {
               ),
               TextButton(
                 onPressed: onDenied,
-                style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(hsRedColor),
-                  fixedSize: MaterialStatePropertyAll<Size>(Size(120, 0)),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.resolveWith((states) => tdRed),
+                  fixedSize: MaterialStateProperty.all<Size>(Size(120, 0)),
                 ),
                 child: const Text(
                   "Negar",
