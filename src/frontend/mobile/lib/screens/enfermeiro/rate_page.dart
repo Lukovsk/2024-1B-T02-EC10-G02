@@ -1,13 +1,12 @@
+import 'package:PharmaControl/models/order.dart';
+import 'package:PharmaControl/screens/enfermeiro/my_orders.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:PharmaControl/screens/enfermeiro/order_state.dart';
-import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class AvaliacaoPage extends StatefulWidget {
   final Order order;
 
-  AvaliacaoPage({required this.order});
+  const AvaliacaoPage({super.key, required this.order});
 
   @override
   _AvaliacaoPageState createState() => _AvaliacaoPageState();
@@ -22,11 +21,11 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Avalie o Pedido e o Aplicativo',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Color(0xFF2563AF),
+        backgroundColor: const Color(0xFF2563AF),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -35,22 +34,22 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Avalie o pedido!',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 RatingBar.builder(
                   initialRating: _pedidoRating,
                   minRating: 1,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
@@ -60,7 +59,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                     });
                   },
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 TextField(
                   controller: _comentarioController,
                   maxLines: 4,
@@ -71,23 +70,23 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 32.0),
-                Text(
+                const SizedBox(height: 32.0),
+                const Text(
                   'Avalie o aplicativo também!',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 RatingBar.builder(
                   initialRating: _appRating,
                   minRating: 1,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
@@ -97,30 +96,29 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                     });
                   },
                 ),
-                SizedBox(height: 32.0),
+                const SizedBox(height: 32.0),
                 ElevatedButton(
                   onPressed: () {
                     // Marcar avaliação como preenchida
-                    context.read<OrderState>().preencherAvaliacao(widget.order);
-
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => OrderScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const NurseOrders()),
                     );
                   },
-                  child: Text(
-                    'Enviar',
-                    style: TextStyle(fontSize: 20.0, color: Colors.white),
-                  ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF2563AF),
-                    padding: EdgeInsets.symmetric(
+                    backgroundColor: const Color(0xFF2563AF),
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 32.0,
                       vertical: 12.0,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
+                  ),
+                  child: const Text(
+                    'Enviar',
+                    style: TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
                 ),
               ],

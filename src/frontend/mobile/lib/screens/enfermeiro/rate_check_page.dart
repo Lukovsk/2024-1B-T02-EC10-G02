@@ -1,13 +1,15 @@
+import 'package:PharmaControl/screens/enfermeiro/my_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:PharmaControl/widgets/bottom_navigation_bar.dart';
 import 'package:PharmaControl/screens/enfermeiro/home.dart';
-import 'package:PharmaControl/screens/enfermeiro/page_state.dart';
+import 'package:PharmaControl/models/page_state.dart';
 import 'package:PharmaControl/constants/colors.dart';
 import 'package:gif_view/gif_view.dart';
-import 'package:PharmaControl/screens/enfermeiro/my_requests_page.dart';
 
 class CheckGif extends StatefulWidget {
+  const CheckGif({super.key});
+
   @override
   _CheckGifState createState() => _CheckGifState();
 }
@@ -19,7 +21,7 @@ class _CheckGifState extends State<CheckGif> {
       'lib/assets/videos/check.gif',
       height: 400,
       width: 400,
-      frameRate: 30, 
+      frameRate: 30,
     );
   }
 }
@@ -42,7 +44,7 @@ class _CheckPage extends State<CheckPage> {
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => OrderScreen()),
+          MaterialPageRoute(builder: (context) => const NurseOrders()),
         );
         break;
       case 2:

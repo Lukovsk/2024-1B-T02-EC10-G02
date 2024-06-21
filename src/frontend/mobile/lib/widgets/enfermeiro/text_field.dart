@@ -20,14 +20,13 @@ class AutoCompleteTextFieldWidget extends StatefulWidget {
 
 class _AutoCompleteTextFieldWidgetState
     extends State<AutoCompleteTextFieldWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text.isEmpty) {
-          return const Iterable<String>.empty();
-        }
+        // if (textEditingValue.text.isEmpty) {
+        //   return const Iterable<String>.empty();
+        // }
         return widget.suggestions.where((String option) {
           return option.contains(textEditingValue.text.toLowerCase());
         });
@@ -36,7 +35,10 @@ class _AutoCompleteTextFieldWidgetState
         widget.controller.text = selection;
         widget.onSelected(selection);
       },
-      fieldViewBuilder: (BuildContext context, TextEditingController fieldTextEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController fieldTextEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
         fieldTextEditingController.value = widget.controller.value;
         return TextField(
           controller: fieldTextEditingController,
