@@ -44,7 +44,7 @@ class NurseOrdersState extends State<NurseOrders> {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Home()),
+          MaterialPageRoute(builder: (context) => const Home()),
         );
         break;
       case 1:
@@ -62,7 +62,7 @@ class NurseOrdersState extends State<NurseOrders> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: ModalProgressHUD(
         inAsyncCall: _inAsyncCall,
         child: Padding(
@@ -73,13 +73,13 @@ class NurseOrdersState extends State<NurseOrders> {
                 onChanged: (value) => _runFilter(value),
                 decoration: InputDecoration(
                   hintText: 'Pesquisar pedido',
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Expanded(
                 child: ListView(
                   children: [
@@ -165,22 +165,22 @@ class OrderCard extends StatelessWidget {
 
   final Map<String, List<dynamic>> statuses = {
     "PENDING": [
-      "Pedido em andamento",
+      "Em andamento",
       Colors.deepOrange,
       Icons.pending,
     ],
     "DONE": [
-      "Pedido Concluído",
+      "Concluído",
       Colors.green,
       Icons.check_circle,
     ],
     "CANCELED": [
-      "Pedido Cancelado",
+      "Cancelado",
       Colors.red,
       Icons.cancel,
     ],
     "ACCEPTED": [
-      "Pedido aceito",
+      "Aceito",
       Colors.deepOrange,
       Icons.pending,
     ],
@@ -195,7 +195,7 @@ class OrderCard extends StatelessWidget {
     IconData statusIcon = statuses[status]![2];
 
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -204,9 +204,15 @@ class OrderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
                 Row(
                   children: [
@@ -214,13 +220,13 @@ class OrderCard extends StatelessWidget {
                       statusMessage,
                       style: TextStyle(color: statusColor),
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Icon(statusIcon, color: statusColor),
                   ],
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -229,15 +235,15 @@ class OrderCard extends StatelessWidget {
                 Text('Setor: ${pyxis.sector}'),
               ],
             ),
-            Divider(),
-            Text('Avaliação'),
+            const Divider(),
+            const Text('Avaliação'),
             RatingBar.builder(
               initialRating: rating.toDouble(),
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,
               itemCount: 5,
-              itemBuilder: (context, _) => Icon(
+              itemBuilder: (context, _) => const Icon(
                 Icons.star,
                 color: Colors.amber,
               ),

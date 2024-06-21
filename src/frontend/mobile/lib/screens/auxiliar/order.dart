@@ -2,6 +2,7 @@ import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/models/order.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
 import 'package:PharmaControl/widgets/custom_app_bar.dart';
+import 'package:PharmaControl/widgets/fancy_container.dart';
 import 'package:flutter/material.dart';
 import 'package:PharmaControl/api/order.dart' as api_order;
 import 'package:PharmaControl/globals.dart' as globals;
@@ -75,7 +76,7 @@ class _OrderState extends State<OrderDetail> {
         widget.order.id, reason, globals.user!.id!)) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AuxHome()),
+        MaterialPageRoute(builder: (context) => const AuxHome()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -93,7 +94,7 @@ class _OrderState extends State<OrderDetail> {
     if (await api_order.doneOrder(widget.order.id)) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AuxHome()),
+        MaterialPageRoute(builder: (context) => const AuxHome()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -107,6 +108,7 @@ class _OrderState extends State<OrderDetail> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const CustomAppBar(),
@@ -133,9 +135,16 @@ class _OrderState extends State<OrderDetail> {
                       ),
                     ),
                   ),
-                  const Divider(
-                    color: hsNiceBlueColor,
-                    thickness: 6,
+                  FancyContainer(
+                    size: Size(width, 8),
+                    cycle: const Duration(seconds: 2),
+                    colors: const <Color>[
+                      Colors.cyan,
+                      Colors.blue,
+                      Colors.cyan,
+                      Colors.blue,
+                      Colors.cyan,
+                    ],
                   ),
                 ],
               ),
