@@ -18,7 +18,7 @@ async def controller_get_sender_orders(senderId: str):
     try:
         orders = await orderService.get_sender_orders()
 
-        redis_client.setex(redis_id, 120, json.dumps(orders).encode())
+        redis_client.setex(redis_id, 30, json.dumps(orders).encode())
 
         return orders
     except Exception as e:
@@ -35,7 +35,7 @@ async def controller_get_receiver_orders(receiverId: str):
     try:
         orders = await orderService.get_receiver_orders()
 
-        redis_client.setex(redis_id, 120, json.dumps(orders).encode())
+        redis_client.setex(redis_id, 30, json.dumps(orders).encode())
 
         return orders
     except Exception as e:
@@ -52,7 +52,7 @@ async def controller_get_order_details(id: str):
     try:
         order = await orderService.get_order_details()
 
-        redis_client.setex(redis_id, 120, json.dumps(order).encode())
+        redis_client.setex(redis_id, 60, json.dumps(order).encode())
 
         return order
     except Exception as e:
@@ -69,7 +69,7 @@ async def controller_get_pending_orders():
     try:
         orders = await orderService.get_all_pendings()
 
-        redis_client.setex(redis_id, 120, json.dumps(orders).encode())
+        redis_client.setex(redis_id, 30, json.dumps(orders).encode())
 
         return orders
     except Exception as e:
