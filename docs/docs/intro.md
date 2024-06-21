@@ -75,3 +75,7 @@ A organização operacional do projeto deu-se a partir dos pilares postulados pe
 - Desenvolvimento do Plano de Comunicação. 
 
 #### **Apresentação da terceira sprint review**
+
+[Acesse a apresentação aqui!!](../static/reviews/SPRINT%2005%20-%20GRUPO%202%20-%20M10.pdf)
+
+[Ou aqui para o link direto ao Canva](https://www.canva.com/design/DAGIrH-dG88/rJgAoNDaro-kajfzVEor9g/edit?utm_content=DAGIrH-dG88&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
