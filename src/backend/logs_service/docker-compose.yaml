@@ -54,6 +54,17 @@ services:
       timeout: 10s
       retries: 120
 
+  fastapi:
+    build: .
+    depends_on:
+      - es01
+    ports:
+      - "8000:8000"
+    environment:
+      - ES_HOST=http://es01:9200
+    volumes:
+      - .:/app
+
 volumes:
   esdata01:
     driver: local

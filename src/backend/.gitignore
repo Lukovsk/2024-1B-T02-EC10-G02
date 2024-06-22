@@ -1,3 +1,10 @@
+
+src/backend/app/routes/__pycache__/medicineRoutes.cpython-310.pyc
+.env
+venv
+pyvenv.cfg
+__pycache__
+bin
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -56,6 +63,5 @@ node_modules
 venv
 
 ./prisma/db.db
-/app/prisma/migrations
 
 .vscode

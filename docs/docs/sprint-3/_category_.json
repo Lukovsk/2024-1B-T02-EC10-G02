@@ -1,4 +1,8 @@
 {
   "label": "Sprint 3",
-  "position": 4
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Na Sprint 3, aprimoramos o fluxo principal do backend, desenvolvemos o fluxo principal do aplicativo mobile, evoluímos a arquitetura da solução e efetuamos testes de carga no fluxo principal."
+  }
 }

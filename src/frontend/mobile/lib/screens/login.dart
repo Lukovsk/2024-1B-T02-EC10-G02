@@ -6,11 +6,20 @@ import 'package:PharmaControl/constants/colors.dart';
 import 'package:PharmaControl/screens/admin/home.dart';
 import 'package:PharmaControl/screens/auxiliar/home.dart';
 import 'package:PharmaControl/screens/enfermeiro/home.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool _inAsyncCall = false;
+
   final userController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   @override
@@ -29,54 +38,57 @@ class LoginPage extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // logo
-                Image.asset(
-                  'lib/assets/logo.png',
-                  width: 250,
-                ),
-                // Faça seu login
-                Text(
-                  "Faça seu login",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
+        body: ModalProgressHUD(
+          inAsyncCall: _inAsyncCall,
+          child: SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // logo
+                  Image.asset(
+                    'lib/assets/logo.png',
+                    width: 250,
                   ),
-                ),
+                  // Faça seu login
+                  Text(
+                    "Faça seu login",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
 
-                // user
-                LoginTextField(
-                  controller: userController,
-                  hintText: "Usuário",
-                  obscureText: false,
-                ),
+                  // user
+                  LoginTextField(
+                    controller: userController,
+                    hintText: "Usuário",
+                    obscureText: false,
+                  ),
 
-                // password
-                LoginTextField(
-                  controller: passwordController,
-                  hintText: "Senha",
-                  obscureText: true,
-                ),
+                  // password
+                  LoginTextField(
+                    controller: passwordController,
+                    hintText: "Senha",
+                    obscureText: true,
+                  ),
 
-                // forgot password?
-                ForgotPasswordButton(
-                  onTap: () {},
-                ),
+                  // forgot password?
+                  ForgotPasswordButton(
+                    onTap: () {},
+                  ),
 
-                // login
-                LoginButton(
-                  onTap: () {
-                    _login(context);
-                  },
-                ),
+                  // login
+                  LoginButton(
+                    onTap: () {
+                      _login(context);
+                    },
+                  ),
 
-                SizedBox(width: 10),
-              ],
+                  SizedBox(width: 10),
+                ],
+              ),
             ),
           ),
         ),
@@ -84,21 +96,37 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  void _asyncCall() async {
+    setState(() {
+      _inAsyncCall = !_inAsyncCall;
+    });
+  }
+
   void _login(context) async {
+    _asyncCall();
     Map<dynamic, dynamic> user =
         await login(userController.text, passwordController.text);
-
-    if (user["name"] == "Administrador") {
+    _asyncCall();
+    if (user["user"] == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no login!'),
+        ),
+      );
+      return;
+    }
+    String role = user["role"];
+    if (role == "ADMIN") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AdminHome()),
       );
-    } else if (user["name"] == "Auxiliar") {
+    } else if (role == "ASSISTANT") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AuxHome()),
       );
-    } else if (user["name"] == "Enfermeiro") {
+    } else if (role == "NURSE") {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Home()),
@@ -161,11 +189,7 @@ class LoginButton extends StatelessWidget {
         color: Color.fromARGB(255, 220, 217, 217),
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: (){
-              Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => Home()),);
-          },
+          onTap: onTap,
           borderRadius: BorderRadius.circular(8),
           child: Container(
             padding: EdgeInsets.all(20),
